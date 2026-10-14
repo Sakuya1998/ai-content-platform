@@ -8,10 +8,10 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
-	projectmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/project"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/objectstorage"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
+	projectmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/objectstorage"
 )
 
 const videoProfileJSON = `{"name":"video profile","provider":"volcengine","api_key":"video-test-key","chat_models":["chat"],"embedding_models":["embed"],"video_models":[{"model_name":"seedance-a","capabilities":{"text_to_video":true,"image_to_video":true,"durations":[5,10],"ratios":["16:9","9:16"],"resolutions":["720p"],"generate_audio":true,"cancellation":false}},{"model_name":"seedance-b","capabilities":{"text_to_video":true,"image_to_video":false,"durations":[8],"ratios":["1:1"],"resolutions":["1080p"],"generate_audio":false,"cancellation":true}}]}`

@@ -1,4 +1,4 @@
-name: novel-agent-platform
+name: ai-content-platform-platform
 services:
   rocketmq-init:
     image: apache/rocketmq:5.3.1
@@ -18,7 +18,7 @@ services:
     command: [sh, /init-mq.sh]
     depends_on: [rocketmq-broker]
   runtime-dispatch: &runtime-messaging
-    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    image: ${RUNTIME_IMAGE:-ai-content-platform-runtime:local}
     restart: unless-stopped
     env_file:
       - path: ../../apps/runtime/.env.example
@@ -52,7 +52,7 @@ services:
     profiles: [workers]
     command: [python, -m, agent_runtime.entrypoints.messaging, memory-worker]
   artifact-init:
-    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    image: ${RUNTIME_IMAGE:-ai-content-platform-runtime:local}
     build:
       context: ../..
       dockerfile: apps/runtime/Dockerfile
@@ -66,7 +66,7 @@ services:
       rustfs: { condition: service_started }
     command: ["python", "tools/migrate/platform_storage_init.py", "--create-bucket"]
   migrate:
-    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    image: ${RUNTIME_IMAGE:-ai-content-platform-runtime:local}
     build:
       context: ../..
       dockerfile: apps/runtime/Dockerfile
@@ -85,7 +85,7 @@ services:
       postgres-runtime: { condition: service_healthy }
     command: ["python", "tools/migrate/platform_migrate.py"]
   control-plane:
-    image: ${CONTROL_PLANE_IMAGE:-novel-agent-control-plane:local}
+    image: ${CONTROL_PLANE_IMAGE:-ai-content-platform-control-plane:local}
     build:
       context: ../../apps/control
       dockerfile: Dockerfile
@@ -107,7 +107,7 @@ services:
       rustfs: { condition: service_started }
     ports: ["${CONTROL_PLANE_PORT:-8080}:8080"]
   runtime:
-    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    image: ${RUNTIME_IMAGE:-ai-content-platform-runtime:local}
     build:
       context: .
     restart: unless-stopped

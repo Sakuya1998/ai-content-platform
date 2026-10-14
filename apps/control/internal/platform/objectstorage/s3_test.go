@@ -17,7 +17,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
 )
 
 func TestS3RequestsDoNotSignProxyMutableEncodingHeader(t *testing.T) {

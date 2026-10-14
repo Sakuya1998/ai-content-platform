@@ -3,7 +3,7 @@ package resources
 import (
 	"encoding/json"
 	"github.com/google/uuid"
-	contentmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/content"
+	contentmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/content"
 	"net/http"
 	"strconv"
 	"strings"

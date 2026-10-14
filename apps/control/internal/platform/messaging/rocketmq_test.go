@@ -8,7 +8,7 @@ import (
 
 	rmq "github.com/apache/rocketmq-clients/golang/v5"
 	v2 "github.com/apache/rocketmq-clients/golang/v5/protocol/v2"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
 )
 
 func TestRocketMQRequiresProxyEndpoint(t *testing.T) {

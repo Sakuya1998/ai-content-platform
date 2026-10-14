@@ -7,8 +7,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/governance"
 )
 
 func (a *MQRepository) SubmitOperation(ctx context.Context, workspace, project, operation, key string, arguments map[string]any) (contracts.Command, error) {

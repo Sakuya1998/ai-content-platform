@@ -1,7 +1,7 @@
-name: novel-agent-external
+name: ai-content-platform-external
 services:
   runtime-dispatch: &external-messaging
-    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    image: ${RUNTIME_IMAGE:-ai-content-platform-runtime:local}
     restart: unless-stopped
     env_file: [../../apps/runtime/.env.external]
     depends_on:
@@ -29,7 +29,7 @@ services:
     profiles: [workers]
     command: [python, -m, agent_runtime.entrypoints.messaging, memory-worker]
   migrate:
-    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    image: ${RUNTIME_IMAGE:-ai-content-platform-runtime:local}
     build:
       context: ../..
       dockerfile: apps/runtime/Dockerfile
@@ -39,7 +39,7 @@ services:
       - ../../apps/runtime/.env.external
     command: ["python", "scripts/platform_migrate.py"]
   control-plane:
-    image: ${CONTROL_PLANE_IMAGE:-novel-agent-control-plane:local}
+    image: ${CONTROL_PLANE_IMAGE:-ai-content-platform-control-plane:local}
     build:
       context: ../..
       dockerfile: apps/control/Dockerfile
@@ -52,7 +52,7 @@ services:
     ports:
       - "${CONTROL_PLANE_PORT:-8080}:8080"
   runtime:
-    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    image: ${RUNTIME_IMAGE:-ai-content-platform-runtime:local}
     build:
       context: ../..
       dockerfile: apps/runtime/Dockerfile

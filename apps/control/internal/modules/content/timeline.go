@@ -2,7 +2,7 @@ package content
 
 import (
 	"encoding/json"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/governance"
 	"regexp"
 	"strings"
 	"unicode"

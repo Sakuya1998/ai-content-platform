@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/governance"
 )
 
 type creationPolicyWrite struct {

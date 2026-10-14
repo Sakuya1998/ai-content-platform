@@ -7,9 +7,9 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/identity"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/workflow"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/database"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/identity"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/workflow"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/database"
 )
 
 type AuditWriter func(context.Context, pgx.Tx, identity.Principal, string, string, string) error

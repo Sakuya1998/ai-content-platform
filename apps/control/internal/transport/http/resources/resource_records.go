@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	executionmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/execution"
+	executionmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/execution"
 )
 
 type ContentEnvelope = executionmodule.Envelope

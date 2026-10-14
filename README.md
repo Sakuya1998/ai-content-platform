@@ -1,11 +1,11 @@
-# Novel Agent Platform
+# AI Content Platform Platform
 
 通用 AI 内容创作平台 Monorepo。
 
 ## 仓库结构
 
 ```
-novel-agent/
+ai-content-platform/
 ├── apps/                   # 应用服务
 │   ├── control/           # Go 管理面
 │   └── runtime/           # Python 执行运行时

@@ -6,9 +6,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/sakuya/novel-agent/apps/control/internal/app"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/logger"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/app"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/logger"
 )
 
 func main() {

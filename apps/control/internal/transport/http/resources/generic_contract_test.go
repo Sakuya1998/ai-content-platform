@@ -11,11 +11,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
-	executionpostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/execution/postgres"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/identity"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
-	"github.com/sakuya/novel-agent/apps/control/internal/transport/http/api"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
+	executionpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/execution/postgres"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/identity"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/transport/http/api"
 )
 
 func TestGenericContentTypesShareProjectDocumentAndTaskContract(t *testing.T) {

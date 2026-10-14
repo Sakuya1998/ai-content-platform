@@ -1,8 +1,8 @@
 package task
 
 import (
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/project"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/governance"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
 )
 
 func ResourceSnapshot(resource project.Resource, args map[string]any, workflow string) map[string]any {

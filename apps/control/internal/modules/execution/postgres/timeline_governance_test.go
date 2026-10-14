@@ -13,12 +13,12 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
-	contentpostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/content/postgres"
-	projectmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/project"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/objectstorage"
-	resources "github.com/sakuya/novel-agent/apps/control/internal/transport/http/resources"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
+	contentpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/content/postgres"
+	projectmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/objectstorage"
+	resources "github.com/sakuya/ai-content-platform/apps/control/internal/transport/http/resources"
 )
 
 func TestImmutableContentHTTPAndExecutionPreserveFloatHash(t *testing.T) {

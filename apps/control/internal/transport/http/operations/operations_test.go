@@ -6,19 +6,19 @@ import (
 	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	contentpostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/content/postgres"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/evaluation"
-	evaluationpostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/evaluation/postgres"
-	executionpostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/execution/postgres"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/identity"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/knowledge"
-	knowledgepostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/knowledge/postgres"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/observability"
-	observabilitypostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/observability/postgres"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/project"
-	projectpostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/project/postgres"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/task"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/objectstorage"
+	contentpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/content/postgres"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/evaluation"
+	evaluationpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/evaluation/postgres"
+	executionpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/execution/postgres"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/identity"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/knowledge"
+	knowledgepostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/knowledge/postgres"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/observability"
+	observabilitypostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/observability/postgres"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
+	projectpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/project/postgres"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/objectstorage"
 
 	"context"
 	"encoding/json"
@@ -28,8 +28,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
 )
 
 func createProjectFixture(pool *pgxpool.Pool, workspace, name, contentType string) (project.Resource, error) {

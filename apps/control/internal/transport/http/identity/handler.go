@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/identity"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/identity"
 )
 
 type Settings struct {

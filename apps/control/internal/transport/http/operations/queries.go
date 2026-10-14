@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/identity"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/identity"
 )
 
 func (a *OperationsAPI) benchmark(w http.ResponseWriter, r *http.Request, p identity.Principal) {

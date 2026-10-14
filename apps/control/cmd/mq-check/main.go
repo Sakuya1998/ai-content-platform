@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
-	"github.com/sakuya/novel-agent/apps/control/internal/platform/messaging"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/messaging"
 )
 
 func main() {

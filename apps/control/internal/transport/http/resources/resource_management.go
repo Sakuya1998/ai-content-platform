@@ -13,11 +13,11 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
-	contentmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/content"
-	projectmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/project"
-	"github.com/sakuya/novel-agent/apps/control/internal/modules/project/transfer"
-	taskmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/task"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
+	contentmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/content"
+	projectmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/project/transfer"
+	taskmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
 )
 
 const maxResourceImportBytes int64 = 32 << 20

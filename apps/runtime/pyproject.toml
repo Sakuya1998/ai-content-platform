@@ -1,5 +1,5 @@
 [project]
-name = "novel-agent"
+name = "ai-content-platform"
 version = "2.0.0"
 description = "General AI content platform Runtime"
 readme = {text = "Agent Runtime for Novel Agent Platform", content-type = "text/plain"}

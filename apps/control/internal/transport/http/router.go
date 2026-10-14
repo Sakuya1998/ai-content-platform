@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/sakuya/novel-agent/apps/control/internal/transport/http/api"
+	"github.com/sakuya/ai-content-platform/apps/control/internal/transport/http/api"
 )
 
 func NewRouter(handler http.Handler, logger *slog.Logger, allowedOrigins []string) http.Handler {

@@ -1,4 +1,4 @@
-module github.com/sakuya/novel-agent/apps/control
+module github.com/sakuya/ai-content-platform/apps/control
 
 go 1.25.0
 

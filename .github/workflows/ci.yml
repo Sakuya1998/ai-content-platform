@@ -88,8 +88,8 @@ jobs:
         run: python tools/dev/check_deployment.py
       - name: Build image
         run: |
-          docker build -f apps/runtime/Dockerfile -t novel-agent-runtime:ci .
-          docker build -f apps/control/Dockerfile -t novel-agent-control-plane:ci apps/control
+          docker build -f apps/runtime/Dockerfile -t ai-content-platform-runtime:ci .
+          docker build -f apps/control/Dockerfile -t ai-content-platform-control-plane:ci apps/control
 
   audit:
     runs-on: ubuntu-latest
