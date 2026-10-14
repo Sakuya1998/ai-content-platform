@@ -1,4 +1,4 @@
-name: API Release
+name: Platform Release
 
 on:
   push:
@@ -23,8 +23,14 @@ jobs:
       - run: uv sync --locked --all-extras
       - run: uv run --locked ruff check src tests scripts main.py
       - run: uv run --locked pytest
-      - run: uv run --locked python scripts/export_openapi.py
-      - run: git diff --exit-code -- openapi/novel-agent-v1.json
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go-control-plane/go.mod
+          cache-dependency-path: go-control-plane/go.sum
+      - run: go test -race ./...
+        working-directory: go-control-plane
+      - run: go vet ./...
+        working-directory: go-control-plane
 
   image:
     needs: verify
@@ -32,6 +38,13 @@ jobs:
     permissions:
       contents: read
       packages: write
+    strategy:
+      matrix:
+        include:
+          - service: runtime
+            context: .
+          - service: control-plane
+            context: go-control-plane
     steps:
       - uses: actions/checkout@v4
       - uses: docker/login-action@v3
@@ -42,11 +55,11 @@ jobs:
       - uses: docker/metadata-action@v5
         id: meta
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.service }}
           tags: type=ref,event=tag
       - uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ${{ matrix.context }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

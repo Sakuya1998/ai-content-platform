@@ -1,0 +1,6 @@
+[
+  {"workspace_id":"ws-1","project_id":"project-1","category":"uploads","resource_id":"asset-1","filename":"source.pdf","expected":"workspaces/ws-1/projects/project-1/uploads/asset-1/source.pdf"},
+  {"workspace_id":"ws-1","project_id":"project-1","category":"documents","resource_id":"doc-1","version_id":"v-1","filename":"content.json","expected":"workspaces/ws-1/projects/project-1/documents/doc-1/versions/v-1/content.json"},
+  {"workspace_id":"ws-1","project_id":"project-1","category":"assets","resource_id":"asset-2","version_id":"v-2","filename":"video.mp4","expected":"workspaces/ws-1/projects/project-1/assets/asset-2/versions/v-2/video.mp4"},
+  {"workspace_id":"ws-1","project_id":"project-1","category":"exports","resource_id":"export-1","filename":"screenplay.pdf","expected":"workspaces/ws-1/projects/project-1/exports/export-1/screenplay.pdf"}
+]

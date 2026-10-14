@@ -1,20 +1,18 @@
 # 发布门槛清单
 
-发布前必须全部满足：
+- Python Ruff、pytest、Go race/vet 与跨服务 JSON Schema 产物检查通过；数据库测试使用隔离 PG 实例及非超级用户。
+- Go Control Plane 和 Python Runtime 镜像分别构建、扫描并固定 tag；默认 Runtime 依赖不含 Chroma 或 SQLite checkpoint。
+- 平台 Compose/Kubernetes 配置通过检查，两服务 `/healthz`、`/readyz` 可用。
+- 外部 PostgreSQL/pgvector、四个 RocketMQ NORMAL Topic、五个消费组、共享 `agent-artifacts` bucket 和 Redis ACL 已验证。
+- 工作区模型 Profile 与三类路由已配置并测试；提示词包显式绑定，任务冻结不可变版本。
+- 生产 CORS 仅允许显式来源，Cookie Secure/HttpOnly/SameSite 与 CSRF 校验通过。
+- 跨工作区访问、viewer 权限、任务取消、SSE 重连、审核恢复和产物不可覆盖测试通过。
+- `scripts/platform_backup.py` 加密备份已验证，Control 模型加密主密钥单独备份，恢复与镜像回滚演练通过。
+- 日志记录 request_id/job_id，不输出模型密钥、Cookie、完整 Prompt、稿件或预签名 URL。
+- 真实模型长篇质量及长任务恢复验收完成后再切换业务流量；旧数据导入仅使用 `platform_legacy_*` 工具。
 
-- 后端 `ruff`、pytest、OpenAPI artifact 校验和评测回归通过。
-- 前端 `npm run check`、浏览器 E2E 和依赖审计通过。
-- API 与前端镜像分别构建、扫描并固定 tag；不得从对方仓库复制源码。
-- Compose/部署配置通过离线检查，`/healthz` 与 `/readyz` 均可用。
-- CORS 只允许显式来源；生产 Cookie 为 Secure/HttpOnly/SameSite，Cookie 会话写操作有 CSRF 校验。
-- 跨工作区访问、viewer 权限、文件上传路径、审计日志和速率限制测试通过。
-- 备份 checksum 已验证；SSE/job 恢复、导入导出、回滚 tag 和旧入口均已演练。
-- 日志包含 request_id/job_id，不输出模型密钥、Cookie、完整 Prompt 或正文。
+## 观测
 
-## 观测项与告警映射
+Go `/metrics` 需要内部服务 token，目前提供 `agent_control_database_up`。Prometheus 配置见 `deploy/prometheus.yml`，部署时挂载 token 文件。任务积压、状态和投影缺口使用鉴权后的 `/api/monitoring/summary`；没有实现的 HTTP、SSE 或模型指标不应配置告警。
 
-Prometheus 已采集并告警：API 可用性、5xx、平均请求延迟、活跃 SSE 流和审计写入失败；对应规则位于 `deploy/novel-agent-alerts.yml`。
-
-任务积压/失败、模型调用失败和数据库备份状态目前通过管理端的脱敏 monitoring summary、备份 checksum 校验和发布演练检查，不伪造不存在的 Prometheus 指标。需要将这些摘要接入统一指标后，再增加自动告警规则。
-
-发布后在稳定窗口持续观察上述告警，以及任务/模型/备份摘要；任何告警未恢复前不得结束稳定窗口。
+发布后的稳定窗口检查就绪状态、MQ 重试/死信、Outbox 待发送年龄、租约失效和数据库备份。异常恢复后重新执行只读检查与代表性工作流。

@@ -1,0 +1,23 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "prompt": {
+      "maxLength": 16000,
+      "minLength": 1,
+      "title": "Prompt",
+      "type": "string"
+    },
+    "parameters": {
+      "additionalProperties": true,
+      "title": "Parameters",
+      "type": "object"
+    }
+  },
+  "required": [
+    "prompt"
+  ],
+  "title": "MusicRequest",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/music-request.schema.json"
+}

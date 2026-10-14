@@ -1,0 +1,22 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "prompt": {
+      "minLength": 1,
+      "title": "Prompt",
+      "type": "string"
+    },
+    "parameters": {
+      "additionalProperties": true,
+      "title": "Parameters",
+      "type": "object"
+    }
+  },
+  "required": [
+    "prompt"
+  ],
+  "title": "VideoRequest",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/video-request.schema.json"
+}

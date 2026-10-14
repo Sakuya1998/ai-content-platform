@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "workflow": "novel-to-screenplay@1",
+  "skills": ["adaptation@1"],
+  "prompt_packs": ["screenplay@2"],
+  "tools": ["canon_lookup@1"],
+  "mcp_policies": ["research-readonly@1"],
+  "model_routes": { "creative": "route@1" },
+  "schema_versions": { "content_ir": "1.0" }
+}

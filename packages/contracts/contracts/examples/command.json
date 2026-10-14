@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "command_id": "018f5f6b-9c5a-7b31-8c7b-5dbfd8af4f22",
+  "command_type": "workflow.run",
+  "workspace_id": "workspace-001",
+  "project_id": "project-001",
+  "job_id": "job-001",
+  "workflow_run_id": "run-001",
+  "capability_snapshot_hash": "c944431c8dcc650a2dd1d51d29af8a218a054b7cffc1ff340fa8875f75070485",
+  "execution_snapshot": {
+    "object_key": "workspaces/workspace-001/projects/project-001/assets/job-001/versions/v1/execution.json",
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "size_bytes": 2048
+  },
+  "payload": { "document_version_id": "version-004", "input_type": "novel", "output_type": "screenplay" },
+  "occurred_at": "2026-09-30T08:00:00Z",
+  "trace_id": "trace-4cc2",
+  "idempotency_key": "chapter-004-generation-3"
+}

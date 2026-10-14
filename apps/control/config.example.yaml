@@ -1,0 +1,57 @@
+# Go Control Plane hierarchical configuration.
+# Environment variables CONTROL_PLANE_* override this file.
+server:
+  environment: production
+  name: control
+  http_addr: ":8080"
+database:
+  addr: postgres-control:5432
+  db: control
+  username: control
+  password: change-me
+  max_connections: 100
+  min_connections: 50
+  idle_timeout_seconds: 300
+redis:
+  key_prefix: "control:"
+  addr: redis:6379
+  db: 0
+  username: default
+  password: change-me
+  max_connections: 100
+  min_connections: 50
+  idle_timeout_seconds: 300
+mq:
+  enabled: true
+  type: rocketmq
+  endpoint: rocketmq-proxy:8081
+  tls_enabled: false
+  access_key: ""
+  secret_key: ""
+  namespace: ""
+  topics:
+    tasks: agent-prod-runtime-tasks
+    control: agent-prod-runtime-control
+    events: agent-prod-runtime-events
+    memory: agent-prod-memory-tasks
+  groups:
+    projection: agent-prod-control-projection
+object_storage:
+  default: s3
+  providers:
+    - type: s3
+      endpoint: http://rustfs:9000
+      public_endpoint: http://localhost:9000
+      region: us-east-1
+      bucket: agent-artifacts
+      access_key: change-me
+      secret_key: change-me
+security:
+  allow_memory: false
+  internal_token: change-me
+  auth_enabled: true
+  cookie_secure: true
+  session_hours: 720
+  allowed_origins: ["https://studio.example.com"]
+  model_encryption_key: ""
+  execution_encryption_key: ""

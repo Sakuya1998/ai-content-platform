@@ -1,0 +1,2913 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Agent Control API",
+    "version": "2.0.0"
+  },
+  "paths": {
+    "/api/v2/projects": {
+      "get": {
+        "operationId": "get_projects",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_projects",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}": {
+      "get": {
+        "operationId": "get_projects__project_id_",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_projects__project_id_",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectUpdate"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_projects__project_id_",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/import": {
+      "post": {
+        "operationId": "post_projects_import",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/projection": {
+      "get": {
+        "operationId": "get_projects__project_id__projection",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/brief": {
+      "put": {
+        "operationId": "put_projects__project_id__brief",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BriefRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/brief/versions": {
+      "get": {
+        "operationId": "get_projects__project_id__brief_versions",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/jobs": {
+      "get": {
+        "operationId": "get_projects__project_id__jobs",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/blocks/{block_index}/versions": {
+      "get": {
+        "operationId": "get_projects__project_id__blocks__block_index__versions",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "block_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/blocks/{block_index}/versions/diff": {
+      "get": {
+        "operationId": "get_projects__project_id__blocks__block_index__versions_diff",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "block_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/blocks/{block_index}/versions/{version}": {
+      "get": {
+        "operationId": "get_projects__project_id__blocks__block_index__versions__version_",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "block_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/blocks/{block_index}/candidates": {
+      "get": {
+        "operationId": "get_projects__project_id__blocks__block_index__candidates",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "block_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_projects__project_id__blocks__block_index__candidates",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "block_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/blocks/{block_index}/evaluations": {
+      "get": {
+        "operationId": "get_projects__project_id__blocks__block_index__evaluations",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "block_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/blocks/{block_index}/evaluations/compare": {
+      "get": {
+        "operationId": "get_projects__project_id__blocks__block_index__evaluations_compare",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "block_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/blocks/{block_index}/versions/{version}/restore": {
+      "post": {
+        "operationId": "post_projects__project_id__blocks__block_index__versions__version__restore",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "block_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/blocks/{block_index}/versions/{version}/evaluate": {
+      "post": {
+        "operationId": "post_projects__project_id__blocks__block_index__versions__version__evaluate",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "block_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/blocks/{block_index}/candidates/{candidate_id}/select": {
+      "post": {
+        "operationId": "post_projects__project_id__blocks__block_index__candidates__candidate_id__select",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "block_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "candidate_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/blocks/{block_index}/evaluations/{evaluation_id}/baseline": {
+      "put": {
+        "operationId": "put_projects__project_id__blocks__block_index__evaluations__evaluation_id__baseline",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "block_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evaluation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/planning/{artifact_type}/versions": {
+      "get": {
+        "operationId": "get_projects__project_id__planning__artifact_type__versions",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifact_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/planning/{artifact_type}/versions/diff": {
+      "get": {
+        "operationId": "get_projects__project_id__planning__artifact_type__versions_diff",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifact_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/planning/{artifact_type}/versions/{version}": {
+      "get": {
+        "operationId": "get_projects__project_id__planning__artifact_type__versions__version_",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifact_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/planning/{artifact_type}/candidates": {
+      "get": {
+        "operationId": "get_projects__project_id__planning__artifact_type__candidates",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifact_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_projects__project_id__planning__artifact_type__candidates",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifact_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/planning/{artifact_type}/evaluations": {
+      "get": {
+        "operationId": "get_projects__project_id__planning__artifact_type__evaluations",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifact_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/planning/{artifact_type}/evaluations/compare": {
+      "get": {
+        "operationId": "get_projects__project_id__planning__artifact_type__evaluations_compare",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifact_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/planning/{artifact_type}/versions/{version}/restore": {
+      "post": {
+        "operationId": "post_projects__project_id__planning__artifact_type__versions__version__restore",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifact_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/planning/{artifact_type}/versions/{version}/evaluate": {
+      "post": {
+        "operationId": "post_projects__project_id__planning__artifact_type__versions__version__evaluate",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifact_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/planning/{artifact_type}/candidates/{candidate_id}/select": {
+      "post": {
+        "operationId": "post_projects__project_id__planning__artifact_type__candidates__candidate_id__select",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifact_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "candidate_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/planning/{artifact_type}/evaluations/{evaluation_id}/baseline": {
+      "put": {
+        "operationId": "put_projects__project_id__planning__artifact_type__evaluations__evaluation_id__baseline",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifact_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evaluation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/audits": {
+      "get": {
+        "operationId": "get_projects__project_id__audits",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/conflicts": {
+      "get": {
+        "operationId": "get_projects__project_id__conflicts",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/memory": {
+      "get": {
+        "operationId": "get_projects__project_id__memory",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/memory/quality": {
+      "get": {
+        "operationId": "get_projects__project_id__memory_quality",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/usage": {
+      "get": {
+        "operationId": "get_projects__project_id__usage",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/traces": {
+      "get": {
+        "operationId": "get_projects__project_id__traces",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/export": {
+      "get": {
+        "operationId": "get_projects__project_id__export",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/memory/rebuild": {
+      "post": {
+        "operationId": "post_projects__project_id__memory_rebuild",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/memory/evaluate": {
+      "post": {
+        "operationId": "post_projects__project_id__memory_evaluate",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/memory/search": {
+      "post": {
+        "operationId": "post_projects__project_id__memory_search",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/memory/refresh": {
+      "post": {
+        "operationId": "post_projects__project_id__memory_refresh",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/export/jobs": {
+      "post": {
+        "operationId": "post_projects__project_id__export_jobs",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/documents": {
+      "get": {
+        "operationId": "get_documents",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_documents",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/documents/{document_id}": {
+      "get": {
+        "operationId": "get_documents__document_id_",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/documents/{document_id}/versions": {
+      "get": {
+        "operationId": "get_documents__document_id__versions",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_documents__document_id__versions",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VersionRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/documents/{document_id}/versions/{version}": {
+      "get": {
+        "operationId": "get_documents__document_id__versions__version_",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/documents/{document_id}/versions/diff": {
+      "get": {
+        "operationId": "get_documents__document_id__versions_diff",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/content/versions/{version_id}": {
+      "get": {
+        "operationId": "get_content_versions__version_id_",
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/jobs": {
+      "get": {
+        "operationId": "get_jobs",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_jobs",
+        "parameters": [],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/jobs/{job_id}": {
+      "get": {
+        "operationId": "get_jobs__job_id_",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/jobs/{job_id}/cancel": {
+      "post": {
+        "operationId": "post_jobs__job_id__cancel",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/jobs/{job_id}/resume": {
+      "post": {
+        "operationId": "post_jobs__job_id__resume",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResumeRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/jobs/{job_id}/events": {
+      "get": {
+        "operationId": "get_jobs__job_id__events",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/transfers/{transfer_id}": {
+      "get": {
+        "operationId": "get_transfers__transfer_id_",
+        "parameters": [
+          {
+            "name": "transfer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/transfers/{transfer_id}/download": {
+      "get": {
+        "operationId": "get_transfers__transfer_id__download",
+        "parameters": [
+          {
+            "name": "transfer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/transfers/{transfer_id}/cancel": {
+      "post": {
+        "operationId": "post_transfers__transfer_id__cancel",
+        "parameters": [
+          {
+            "name": "transfer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/productions": {
+      "get": {
+        "operationId": "get_projects__project_id__productions",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_projects__project_id__productions",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/productions/{production_id}": {
+      "get": {
+        "operationId": "get_projects__project_id__productions__production_id_",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "production_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/productions/{production_id}/resume": {
+      "post": {
+        "operationId": "post_projects__project_id__productions__production_id__resume",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "production_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/productions/{production_id}/cancel": {
+      "post": {
+        "operationId": "post_projects__project_id__productions__production_id__cancel",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "production_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{project_id}/productions/{production_id}/advance": {
+      "post": {
+        "operationId": "post_projects__project_id__productions__production_id__advance",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "production_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/workspaces/{workspace_id}/workflows": {
+      "get": {
+        "operationId": "get_workspaces__workspace_id__workflows",
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_workspaces__workspace_id__workflows",
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/workspaces/{workspace_id}/workflows/{workflow_id}": {
+      "get": {
+        "operationId": "get_workspaces__workspace_id__workflows__workflow_id_",
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workflow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/workspaces/{workspace_id}/workflows/{workflow_id}/publish": {
+      "post": {
+        "operationId": "post_workspaces__workspace_id__workflows__workflow_id__publish",
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workflow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/workspaces/{workspace_id}/workflows/{workflow_id}/disable": {
+      "post": {
+        "operationId": "post_workspaces__workspace_id__workflows__workflow_id__disable",
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workflow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProjectRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "content_type"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "content_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "brief": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "DocumentRequest": {
+        "type": "object",
+        "required": [
+          "project_id",
+          "title",
+          "document_type"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "document_type": {
+            "type": "string"
+          }
+        }
+      },
+      "ProjectUpdate": {
+        "type": "object",
+        "required": [
+          "title",
+          "expected_revision"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "WorkflowRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "definition"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "definition": {
+            "type": "object",
+            "required": [
+              "template",
+              "nodes"
+            ],
+            "properties": {
+              "template": {
+                "type": "string"
+              },
+              "nodes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ContentIR": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "blocks"
+        ],
+        "properties": {
+          "schema_version": {
+            "const": "1.0"
+          },
+          "blocks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        }
+      },
+      "VersionRequest": {
+        "type": "object",
+        "required": [
+          "expected_version",
+          "document"
+        ],
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "document": {
+            "$ref": "#/components/schemas/ContentIR"
+          }
+        }
+      },
+      "JobRequest": {
+        "type": "object",
+        "required": [
+          "project_id",
+          "workflow",
+          "workflow_version"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workflow": {
+            "type": "string",
+            "pattern": "^[^@]+$"
+          },
+          "workflow_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "operation": {
+            "type": "string"
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "document_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "document_type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "objective": {
+            "type": "string"
+          },
+          "source_version_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "input_version_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ResumeRequest": {
+        "type": "object",
+        "required": [
+          "action"
+        ],
+        "properties": {
+          "action": {
+            "enum": [
+              "approve",
+              "revise",
+              "reconcile"
+            ]
+          },
+          "feedback": {
+            "type": "string"
+          }
+        }
+      },
+      "BriefRequest": {
+        "type": "object",
+        "required": [
+          "brief",
+          "expected_version"
+        ],
+        "properties": {
+          "brief": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "change_summary": {
+            "type": "string",
+            "maxLength": 500
+          }
+        }
+      },
+      "Job": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "enum": [
+              "queued",
+              "running",
+              "waiting_review",
+              "cancel_requested",
+              "completed",
+              "failed",
+              "cancelled"
+            ]
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "session": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "session"
+      }
+    }
+  },
+  "security": [
+    {
+      "session": []
+    }
+  ]
+}

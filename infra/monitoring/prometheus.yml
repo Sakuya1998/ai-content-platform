@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - /etc/prometheus/rules/novel-agent-alerts.yml
+
+scrape_configs:
+  - job_name: agent-control
+    metrics_path: /metrics
+    authorization:
+      type: Bearer
+      credentials_file: /run/secrets/control_internal_token
+    static_configs:
+      - targets: ["control-plane:8080"]

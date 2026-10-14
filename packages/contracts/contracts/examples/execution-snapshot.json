@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "workspace_id": "workspace-001",
+  "project_id": "project-001",
+  "job_id": "job-001",
+  "snapshot": {
+    "schema_version": "1.0",
+    "workflow": "content.generate@1",
+    "skills": ["controlled-text@1"],
+    "prompt_packs": ["content@1"],
+    "prompt_bindings": {"content.write": "prompt-version-12"},
+    "creation_policy": {"version_id": "policy-version-3", "content_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"},
+    "tools": [],
+    "mcp_policies": [],
+    "model_routes": {"creative": "route-version-5", "analysis": "route-version-5"},
+    "schema_versions": {"content_ir": "1.0"},
+    "snapshot_hash": "c944431c8dcc650a2dd1d51d29af8a218a054b7cffc1ff340fa8875f75070485"
+  },
+  "request": {
+    "project_id": "project-001",
+    "document_type": "screenplay",
+    "title": "Station scene",
+    "objective": "Adapt the frozen source into a screenplay",
+    "source_version_id": "version-004"
+  },
+  "source": {
+    "document_version_id": "version-004",
+    "document": {
+      "project_id": "project-001",
+      "document_type": "novel",
+      "blocks": [{"type": "chapter", "text": "A train arrived at dawn."}]
+    }
+  },
+  "inputs": [],
+  "resolved_resources": {
+    "prompts": {"content.write": {"version_id": "prompt-version-12", "messages": []}},
+    "model_routes": {"creative": {"provider": "openai_compatible", "model_name": "writer-v1", "credential_ref": "profile-version-5"}},
+    "creation_policy": {"version_id": "policy-version-3"},
+    "governance": []
+  },
+  "committed_version": null
+}

@@ -1,0 +1,17 @@
+groups:
+  - name: agent-control-availability
+    rules:
+      - alert: AgentControlDown
+        expr: up{job="agent-control"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Go Control Plane metrics are unavailable
+      - alert: AgentControlDatabaseDown
+        expr: agent_control_database_up{job="agent-control"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Control PostgreSQL is unavailable

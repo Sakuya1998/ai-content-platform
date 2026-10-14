@@ -1,0 +1,45 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "output_formats": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 7,
+      "minItems": 1,
+      "title": "Output Formats",
+      "type": "array"
+    },
+    "min_duration_seconds": {
+      "default": 0.5,
+      "maximum": 30,
+      "minimum": 0.5,
+      "title": "Min Duration Seconds",
+      "type": "number"
+    },
+    "max_duration_seconds": {
+      "default": 30,
+      "maximum": 30,
+      "minimum": 0.5,
+      "title": "Max Duration Seconds",
+      "type": "number"
+    },
+    "prompt_influence": {
+      "default": true,
+      "title": "Prompt Influence",
+      "type": "boolean"
+    },
+    "loop": {
+      "default": true,
+      "title": "Loop",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "output_formats"
+  ],
+  "title": "SoundEffectCapabilities",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/sound-effect-capabilities.schema.json"
+}

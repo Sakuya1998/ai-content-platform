@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: runtime-dispatch, namespace: novel-agent}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: runtime-dispatch}}
+  template:
+    metadata: {labels: {app: runtime-dispatch}}
+    spec:
+      containers:
+        - name: dispatch
+          image: novel-agent-runtime:local
+          command: [python, -m, agent_runtime.entrypoints.messaging, dispatch]
+          envFrom: [{configMapRef: {name: novel-agent-runtime}}, {secretRef: {name: novel-agent-runtime}}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: runtime-control, namespace: novel-agent}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: runtime-control}}
+  template:
+    metadata: {labels: {app: runtime-control}}
+    spec:
+      containers:
+        - name: control
+          image: novel-agent-runtime:local
+          command: [python, -m, agent_runtime.entrypoints.messaging, control]
+          envFrom: [{configMapRef: {name: novel-agent-runtime}}, {secretRef: {name: novel-agent-runtime}}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: runtime-relay, namespace: novel-agent}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: runtime-relay}}
+  template:
+    metadata: {labels: {app: runtime-relay}}
+    spec:
+      containers:
+        - name: relay
+          image: novel-agent-runtime:local
+          command: [python, -m, agent_runtime.entrypoints.messaging, relay]
+          envFrom: [{configMapRef: {name: novel-agent-runtime}}, {secretRef: {name: novel-agent-runtime}}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: memory-dispatch, namespace: novel-agent}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: memory-dispatch}}
+  template:
+    metadata: {labels: {app: memory-dispatch}}
+    spec:
+      containers:
+        - name: dispatch
+          image: novel-agent-runtime:local
+          command: [python, -m, agent_runtime.entrypoints.messaging, memory]
+          envFrom: [{configMapRef: {name: novel-agent-runtime}}, {secretRef: {name: novel-agent-runtime}}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: memory-scheduler, namespace: novel-agent}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: memory-scheduler}}
+  template:
+    metadata: {labels: {app: memory-scheduler}}
+    spec:
+      containers:
+        - name: scheduler
+          image: novel-agent-runtime:local
+          command: [python, -m, agent_runtime.entrypoints.messaging, memory-scheduler]
+          envFrom: [{configMapRef: {name: novel-agent-runtime}}, {secretRef: {name: novel-agent-runtime}}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: runtime-worker, namespace: novel-agent}
+spec:
+  # Configure RUNTIME_WORKER_HANDLER, then scale this deployment.
+  replicas: 0
+  selector: {matchLabels: {app: runtime-worker}}
+  template:
+    metadata: {labels: {app: runtime-worker}}
+    spec:
+      containers:
+        - name: worker
+          image: novel-agent-runtime:local
+          command: [python, -m, agent_runtime.entrypoints.messaging, worker]
+          envFrom: [{configMapRef: {name: novel-agent-runtime}}, {secretRef: {name: novel-agent-runtime}}]
+          env:
+            - name: RUNTIME_WORKER_ID
+              valueFrom: {fieldRef: {fieldPath: metadata.name}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: memory-worker, namespace: novel-agent}
+spec:
+  # Configure RUNTIME_MEMORY_HANDLER, then scale this deployment.
+  replicas: 0
+  selector: {matchLabels: {app: memory-worker}}
+  template:
+    metadata: {labels: {app: memory-worker}}
+    spec:
+      containers:
+        - name: worker
+          image: novel-agent-runtime:local
+          command: [python, -m, agent_runtime.entrypoints.messaging, memory-worker]
+          envFrom: [{configMapRef: {name: novel-agent-runtime}}, {secretRef: {name: novel-agent-runtime}}]
+          env:
+            - name: RUNTIME_WORKER_ID
+              valueFrom: {fieldRef: {fieldPath: metadata.name}}

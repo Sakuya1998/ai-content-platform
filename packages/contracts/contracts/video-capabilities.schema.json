@@ -1,0 +1,50 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "text_to_video": {
+      "default": false,
+      "title": "Text To Video",
+      "type": "boolean"
+    },
+    "image_to_video": {
+      "default": false,
+      "title": "Image To Video",
+      "type": "boolean"
+    },
+    "durations": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Durations",
+      "type": "array"
+    },
+    "ratios": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Ratios",
+      "type": "array"
+    },
+    "resolutions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Resolutions",
+      "type": "array"
+    },
+    "generate_audio": {
+      "default": false,
+      "title": "Generate Audio",
+      "type": "boolean"
+    },
+    "cancellation": {
+      "default": false,
+      "title": "Cancellation",
+      "type": "boolean"
+    }
+  },
+  "title": "VideoCapabilities",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/video-capabilities.schema.json"
+}

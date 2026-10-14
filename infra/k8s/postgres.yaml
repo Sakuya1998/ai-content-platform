@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: {name: postgres-control, namespace: novel-agent}
+spec:
+  serviceName: postgres-control
+  replicas: 1
+  selector: {matchLabels: {app: postgres-control}}
+  template:
+    metadata: {labels: {app: postgres-control}}
+    spec:
+      containers:
+        - name: postgres
+          image: pgvector/pgvector:pg16
+          env: [{name: POSTGRES_USER, valueFrom: {secretKeyRef: {name: novel-agent-control, key: POSTGRES_USER}}}, {name: POSTGRES_PASSWORD, valueFrom: {secretKeyRef: {name: novel-agent-control, key: POSTGRES_PASSWORD}}}, {name: POSTGRES_DB, valueFrom: {secretKeyRef: {name: novel-agent-control, key: POSTGRES_DB}}}]
+          ports: [{containerPort: 5432}]
+          volumeMounts: [{name: data, mountPath: /var/lib/postgresql/data}]
+  volumeClaimTemplates: [{metadata: {name: data}, spec: {accessModes: [ReadWriteOnce], resources: {requests: {storage: 10Gi}}}}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: postgres-control, namespace: novel-agent}
+spec: {selector: {app: postgres-control}, ports: [{port: 5432, targetPort: 5432}]}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: {name: postgres-runtime, namespace: novel-agent}
+spec:
+  serviceName: postgres-runtime
+  replicas: 1
+  selector: {matchLabels: {app: postgres-runtime}}
+  template:
+    metadata: {labels: {app: postgres-runtime}}
+    spec:
+      containers:
+        - name: postgres
+          image: pgvector/pgvector:pg16
+          env: [{name: POSTGRES_USER, valueFrom: {secretKeyRef: {name: novel-agent-runtime, key: POSTGRES_USER}}}, {name: POSTGRES_PASSWORD, valueFrom: {secretKeyRef: {name: novel-agent-runtime, key: POSTGRES_PASSWORD}}}, {name: POSTGRES_DB, valueFrom: {secretKeyRef: {name: novel-agent-runtime, key: POSTGRES_DB}}}]
+          ports: [{containerPort: 5432}]
+          volumeMounts: [{name: data, mountPath: /var/lib/postgresql/data}]
+  volumeClaimTemplates: [{metadata: {name: data}, spec: {accessModes: [ReadWriteOnce], resources: {requests: {storage: 10Gi}}}}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: postgres-runtime, namespace: novel-agent}
+spec: {selector: {app: postgres-runtime}, ports: [{port: 5432, targetPort: 5432}]}
