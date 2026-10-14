@@ -358,6 +358,12 @@ def main():
         action="store_true",
         help="预览模式，不实际执行操作"
     )
+    parser.add_argument(
+        "--yes",
+        "-y",
+        action="store_true",
+        help="自动确认，不询问"
+    )
     args = parser.parse_args()
 
     print("=" * 80)
@@ -368,10 +374,13 @@ def main():
         print("\n⚠️  DRY RUN 模式 - 仅预览，不会实际执行\n")
     else:
         print("\n⚠️  即将重组仓库结构\n")
-        response = input("确认继续？(yes/no): ")
-        if response.lower() != "yes":
-            print("已取消")
-            return
+        if not args.yes:
+            response = input("确认继续？(yes/no): ")
+            if response.lower() != "yes":
+                print("已取消")
+                return
+        else:
+            print("自动确认模式，开始执行...\n")
 
     # 检查 Git 状态
     if not args.dry_run and not check_git_status():
