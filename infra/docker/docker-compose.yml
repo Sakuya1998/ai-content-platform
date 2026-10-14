@@ -21,9 +21,9 @@ services:
     image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
     restart: unless-stopped
     env_file:
-      - path: ../../.env.runtime.example
+      - path: ../../apps/runtime/.env.example
         required: true
-      - path: ../../.env.runtime
+      - path: ../../apps/runtime/.env
         required: false
     depends_on:
       migrate: { condition: service_completed_successfully }
@@ -58,9 +58,9 @@ services:
       dockerfile: apps/runtime/Dockerfile
     restart: "no"
     env_file:
-      - path: ../../.env.runtime.example
+      - path: ../../apps/runtime/.env.example
         required: true
-      - path: ../../.env.runtime
+      - path: ../../apps/runtime/.env
         required: false
     depends_on:
       rustfs: { condition: service_started }
