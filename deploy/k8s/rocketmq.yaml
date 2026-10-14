@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: rocketmq-namesrv, namespace: novel-agent}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: rocketmq-namesrv}}
+  template:
+    metadata: {labels: {app: rocketmq-namesrv}}
+    spec: {containers: [{name: namesrv, image: apache/rocketmq:5.3.1, command: [sh, mqnamesrv], ports: [{containerPort: 9876}]}]}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: rocketmq-namesrv, namespace: novel-agent}
+spec: {selector: {app: rocketmq-namesrv}, ports: [{port: 9876, targetPort: 9876}]}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: rocketmq-broker, namespace: novel-agent}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: rocketmq-broker}}
+  template:
+    metadata: {labels: {app: rocketmq-broker}}
+    spec: {containers: [{name: broker, image: apache/rocketmq:5.3.1, command: [sh, mqbroker, -n, rocketmq-namesrv:9876], ports: [{containerPort: 10911}]}]}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: rocketmq-broker, namespace: novel-agent}
+spec: {selector: {app: rocketmq-broker}, ports: [{port: 10911, targetPort: 10911}]}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: rocketmq-proxy, namespace: novel-agent}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: rocketmq-proxy}}
+  template:
+    metadata: {labels: {app: rocketmq-proxy}}
+    spec:
+      containers:
+        - name: proxy
+          image: apache/rocketmq:5.3.1
+          command: [sh, mqproxy, -n, rocketmq-namesrv:9876]
+          ports: [{containerPort: 8081}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: rocketmq-proxy, namespace: novel-agent}
+spec: {selector: {app: rocketmq-proxy}, ports: [{port: 8081, targetPort: 8081}]}

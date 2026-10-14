@@ -1,53 +1,17 @@
 groups:
-  - name: novel-agent-availability
+  - name: agent-control-availability
     rules:
-      - alert: NovelAgentApiDown
-        expr: up{job="novel-agent"} == 0
+      - alert: AgentControlDown
+        expr: up{job="agent-control"} == 0
         for: 2m
         labels:
           severity: critical
         annotations:
-          summary: Novel Agent API 不可用
-          description: Prometheus 连续 2 分钟无法抓取 Novel Agent API 指标。
-
-      - alert: NovelAgentHighHttp5xx
-        expr: increase(novel_agent_requests_5xx[5m]) >= 5
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: Novel Agent API 5xx 错误偏高
-          description: 最近 5 分钟出现至少 5 次 5xx 响应，请检查 API 日志和依赖状态。
-
-      - alert: NovelAgentHighRequestLatency
-        expr: |
-          (
-            rate(novel_agent_request_duration_ms_sum[5m])
-            /
-            rate(novel_agent_request_duration_ms_count[5m])
-          ) > 1000
-          and rate(novel_agent_request_duration_ms_count[5m]) > 0
-        for: 10m
-        labels:
-          severity: warning
-        annotations:
-          summary: Novel Agent API 平均延迟偏高
-          description: 最近 5 分钟 API 平均请求耗时超过 1 秒，请检查数据库、模型调用和下游依赖。
-
-      - alert: NovelAgentTooManyActiveStreams
-        expr: novel_agent_active_streams > 100
-        for: 10m
-        labels:
-          severity: warning
-        annotations:
-          summary: Novel Agent SSE 长连接数量偏高
-          description: 活跃 SSE 流超过 100 条，可能存在客户端重连风暴或连接泄漏。
-
-      - alert: NovelAgentAuditWriteFailures
-        expr: increase(novel_agent_audit_write_failures[5m]) > 0
+          summary: Go Control Plane metrics are unavailable
+      - alert: AgentControlDatabaseDown
+        expr: agent_control_database_up{job="agent-control"} == 0
         for: 1m
         labels:
-          severity: warning
+          severity: critical
         annotations:
-          summary: Novel Agent 审计写入失败
-          description: 审计日志无法持久化，可能影响合规追踪。
+          summary: Control PostgreSQL is unavailable

@@ -33,6 +33,10 @@ RUN if [ -n "$PYPI_INDEX_URL" ]; then \
 # ---- 运行阶段:仅保留 venv 产物 + 运行所需源码 ----
 FROM python:3.14-slim
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg fonts-noto-cjk \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -43,19 +47,20 @@ WORKDIR /app
 # 仅复制运行产物和维护脚本(tests/文档等不进镜像)
 COPY src ./src
 COPY scripts ./scripts
+COPY migrations ./migrations
 
-# 非 root 运行(生产实践);memory/ 保存数据库,data/ 保存模型密钥主密钥
+# 非 root 运行；data/ 仅供显式维护任务使用，业务状态保存在 PostgreSQL/RustFS。
 RUN useradd --create-home appuser \
-    && mkdir -p /app/memory /app/data /app/output \
+    && mkdir -p /app/data \
     && chown -R appuser:appuser /app
 USER appuser
 
 EXPOSE 8000
 STOPSIGNAL SIGTERM
 
-ENV PYTHONPATH="/app/src"
+ENV PYTHONPATH="/app:/app/src"
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/readyz', timeout=3)" || exit 1
 
-CMD ["uvicorn", "novel_agent.api.server:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "agent_runtime.api.app:app", "--host", "0.0.0.0", "--port", "8000"]

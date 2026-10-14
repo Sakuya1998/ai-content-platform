@@ -1,0 +1,40 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "generation": {
+      "default": false,
+      "title": "Generation",
+      "type": "boolean"
+    },
+    "editing": {
+      "default": false,
+      "title": "Editing",
+      "type": "boolean"
+    },
+    "sizes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Sizes",
+      "type": "array"
+    },
+    "formats": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Formats",
+      "type": "array"
+    },
+    "max_images": {
+      "default": 1,
+      "maximum": 4,
+      "minimum": 1,
+      "title": "Max Images",
+      "type": "integer"
+    }
+  },
+  "title": "ImageCapabilities",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/image-capabilities.schema.json"
+}

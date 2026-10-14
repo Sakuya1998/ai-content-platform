@@ -1,0 +1,69 @@
+name: novel-agent-external
+services:
+  runtime-dispatch: &external-messaging
+    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    restart: unless-stopped
+    env_file: [.env.runtime.external]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    healthcheck: { disable: true }
+    command: [python, -m, agent_runtime.entrypoints.messaging, dispatch]
+  runtime-control:
+    <<: *external-messaging
+    command: [python, -m, agent_runtime.entrypoints.messaging, control]
+  runtime-relay:
+    <<: *external-messaging
+    command: [python, -m, agent_runtime.entrypoints.messaging, relay]
+  memory-dispatch:
+    <<: *external-messaging
+    command: [python, -m, agent_runtime.entrypoints.messaging, memory]
+  memory-scheduler:
+    <<: *external-messaging
+    command: [python, -m, agent_runtime.entrypoints.messaging, memory-scheduler]
+  runtime-worker:
+    <<: *external-messaging
+    profiles: [workers]
+    command: [python, -m, agent_runtime.entrypoints.messaging, worker]
+  memory-worker:
+    <<: *external-messaging
+    profiles: [workers]
+    command: [python, -m, agent_runtime.entrypoints.messaging, memory-worker]
+  migrate:
+    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    build:
+      context: .
+    restart: "no"
+    env_file:
+      - .env.control.external
+      - .env.runtime.external
+    command: ["python", "scripts/platform_migrate.py"]
+  control-plane:
+    image: ${CONTROL_PLANE_IMAGE:-novel-agent-control-plane:local}
+    build:
+      context: ./go-control-plane
+    restart: unless-stopped
+    env_file:
+      - .env.control.external
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "${CONTROL_PLANE_PORT:-8080}:8080"
+  runtime:
+    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    build:
+      context: .
+    restart: unless-stopped
+    env_file:
+      - .env.runtime.external
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "${RUNTIME_PORT:-8000}:8000"
+    command: ["uvicorn", "agent_runtime.api.app:app", "--host", "0.0.0.0", "--port", "8000"]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/readyz', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5

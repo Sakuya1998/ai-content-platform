@@ -1,0 +1,14 @@
+{
+  "event_id": "018f5f6b-9c5a-7b31-8c7b-5dbfd8af4f23",
+  "event_type": "job.completed",
+  "workspace_id": "workspace-001",
+  "project_id": "project-001",
+  "job_id": "job-001",
+  "workflow_run_id": "run-001",
+  "operation_id": "op-001",
+  "payload": { "document_version_id": "version-005", "status": "completed" },
+  "occurred_at": "2026-09-30T08:01:02Z",
+  "trace_id": "trace-4cc2",
+  "sequence": 19,
+  "schema_version": "1.0"
+}

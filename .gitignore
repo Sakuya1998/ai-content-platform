@@ -25,16 +25,19 @@ dist/
 
 # 机密与环境配置
 .env
+.env.control
+.env.runtime
+.env.control.external
+.env.runtime.external
 
-# 运行时数据(小说项目与配置含 API Key)
+# 运行时数据（包含用户数据、API Key、备份等）
 data/
 *.key
+output/
+memory/
 
-# 记忆系统运行数据(向量库 / SQLite)
-memory/chroma_db/
-memory/novels.db
-memory/checkpoints.db
-memory/checkpoints.db-*
+# AI 辅助开发临时工具
+.superpowers/
 
 # 系统/编辑器
 .DS_Store

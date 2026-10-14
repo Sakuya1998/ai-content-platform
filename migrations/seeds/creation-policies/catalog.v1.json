@@ -1,0 +1,1227 @@
+{
+  "schema_version": "creation-policy-seed@1",
+  "definitions": [
+    {
+      "key": "builtin.novel",
+      "name": "Novel creation policy",
+      "payload": {
+        "schema_version": "creation-policy@1",
+        "canon": {
+          "entity_types": [
+            "character",
+            "content_unit",
+            "setting",
+            "location",
+            "organization"
+          ],
+          "fact_types": [
+            "chapter_summary",
+            "event",
+            "location",
+            "state",
+            "relationship",
+            "setting",
+            "identity",
+            "other",
+            "manual",
+            "organization"
+          ],
+          "require_evidence": true,
+          "max_audit_entries": 200
+        },
+        "memory": {
+          "group_size": 5,
+          "leaf_summary_chars": 500,
+          "group_summary_chars": 1800,
+          "document_summary_chars": 6000,
+          "neighbor_window": 5
+        },
+        "constraints": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "schema_version": {
+                "type": "string",
+                "const": "creative-brief-v1"
+              },
+              "target_audience": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "age_rating": {
+                "type": "string",
+                "enum": [
+                  "all_ages",
+                  "mature",
+                  "teen"
+                ]
+              },
+              "point_of_view": {
+                "type": "string",
+                "enum": [
+                  "first_person",
+                  "multiple",
+                  "third_limited",
+                  "third_omniscient"
+                ]
+              },
+              "narrative_tense": {
+                "type": "string",
+                "enum": [
+                  "mixed",
+                  "past",
+                  "present"
+                ]
+              },
+              "narrative_distance": {
+                "type": "string",
+                "enum": [
+                  "close",
+                  "distant",
+                  "medium"
+                ]
+              },
+              "ending_tone": {
+                "type": "string",
+                "enum": [
+                  "bittersweet",
+                  "hopeful",
+                  "open",
+                  "tragic",
+                  "unspecified"
+                ]
+              },
+              "themes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                "maxItems": 8
+              },
+              "must_include": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                "maxItems": 12
+              },
+              "avoid_content": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                "maxItems": 12
+              },
+              "intensity": {
+                "type": "object",
+                "properties": {
+                  "romance": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 5
+                  },
+                  "mystery": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 5
+                  },
+                  "action": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 5
+                  },
+                  "darkness": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 5
+                  }
+                },
+                "required": [
+                  "romance",
+                  "mystery",
+                  "action",
+                  "darkness"
+                ],
+                "additionalProperties": false
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "schema_version",
+              "target_audience",
+              "age_rating",
+              "point_of_view",
+              "narrative_tense",
+              "narrative_distance",
+              "ending_tone",
+              "themes",
+              "must_include",
+              "avoid_content",
+              "intensity",
+              "notes"
+            ],
+            "additionalProperties": false
+          },
+          "defaults": {
+            "schema_version": "creative-brief-v1",
+            "target_audience": "大众类型小说读者",
+            "age_rating": "teen",
+            "point_of_view": "third_limited",
+            "narrative_tense": "past",
+            "narrative_distance": "medium",
+            "ending_tone": "unspecified",
+            "themes": [],
+            "must_include": [],
+            "avoid_content": [],
+            "intensity": {
+              "romance": 2,
+              "mystery": 2,
+              "action": 2,
+              "darkness": 2
+            },
+            "notes": ""
+          },
+          "labels": {
+            "target_audience": "目标读者",
+            "point_of_view": "叙事视角",
+            "age_rating": "内容分级",
+            "themes": "核心主题",
+            "must_include": "必须包含",
+            "avoid_content": "禁止或回避"
+          },
+          "max_prompt_chars": 20000
+        },
+        "evaluation": {
+          "engine_version": "checks@1",
+          "gate_threshold": 70,
+          "critical_threshold": 40,
+          "rules": [
+            {
+              "key": "text.length@1",
+              "dimension": "length_adherence",
+              "weight": 1,
+              "critical": false,
+              "parameters": {
+                "scale": 100
+              }
+            },
+            {
+              "key": "text.structure@1",
+              "dimension": "structure",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "min_paragraphs": 3,
+                "min_chars": 200
+              }
+            },
+            {
+              "key": "novel.scenes@1",
+              "dimension": "scene_coverage",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "duplicate_penalty": 12.5
+              }
+            },
+            {
+              "key": "novel.narrative@1",
+              "dimension": "narrative_coverage",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "invalid_penalty": 25,
+                "duplicate_penalty": 20
+              }
+            },
+            {
+              "key": "text.repetition@1",
+              "dimension": "repetition_control",
+              "weight": 1,
+              "critical": false,
+              "parameters": {
+                "duplicate_penalty": 25,
+                "window_size": 12,
+                "window_penalty": 160,
+                "max_window_penalty": 50
+              }
+            },
+            {
+              "key": "text.consistency@1",
+              "dimension": "consistency",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "high": 25,
+                "medium": 12,
+                "low": 5
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "builtin.content",
+      "name": "Content creation policy",
+      "payload": {
+        "schema_version": "creation-policy@1",
+        "canon": {
+          "entity_types": [
+            "entity",
+            "content_unit",
+            "brand",
+            "character",
+            "location"
+          ],
+          "fact_types": [
+            "event",
+            "state",
+            "relationship",
+            "setting",
+            "identity",
+            "other",
+            "claim",
+            "summary"
+          ],
+          "require_evidence": true,
+          "max_audit_entries": 200
+        },
+        "memory": {
+          "group_size": 5,
+          "leaf_summary_chars": 500,
+          "group_summary_chars": 1800,
+          "document_summary_chars": 6000,
+          "neighbor_window": 5
+        },
+        "constraints": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "objective": {
+                "type": "string",
+                "minLength": 1
+              },
+              "document_type": {
+                "type": "string",
+                "enum": [
+                  "novel",
+                  "screenplay",
+                  "copy",
+                  "short_drama",
+                  "advertisement",
+                  "generic"
+                ]
+              },
+              "must_include": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "avoid_content": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "objective",
+              "document_type"
+            ],
+            "additionalProperties": false
+          },
+          "defaults": {
+            "objective": "Create content",
+            "document_type": "generic",
+            "must_include": [],
+            "avoid_content": [],
+            "notes": ""
+          },
+          "labels": {
+            "objective": "Objective",
+            "document_type": "Content type"
+          },
+          "max_prompt_chars": 20000
+        },
+        "evaluation": {
+          "engine_version": "checks@1",
+          "gate_threshold": 0,
+          "critical_threshold": 0,
+          "rules": [
+            {
+              "key": "text.repetition@1",
+              "dimension": "repetition_control",
+              "weight": 1,
+              "critical": false,
+              "parameters": {
+                "duplicate_penalty": 25,
+                "window_size": 12,
+                "window_penalty": 160,
+                "max_window_penalty": 50
+              }
+            },
+            {
+              "key": "text.consistency@1",
+              "dimension": "consistency",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "high": 25,
+                "medium": 12,
+                "low": 5
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "builtin.video",
+      "name": "视频生成默认规则",
+      "payload": {
+        "schema_version": "creation-policy@1",
+        "canon": {
+          "entity_types": [
+            "entity",
+            "content_unit",
+            "brand",
+            "character",
+            "location"
+          ],
+          "fact_types": [
+            "event",
+            "state",
+            "relationship",
+            "setting",
+            "identity",
+            "other",
+            "claim",
+            "summary"
+          ],
+          "require_evidence": true,
+          "max_audit_entries": 200
+        },
+        "memory": {
+          "group_size": 5,
+          "leaf_summary_chars": 500,
+          "group_summary_chars": 1800,
+          "document_summary_chars": 6000,
+          "neighbor_window": 5
+        },
+        "constraints": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "objective": {
+                "type": "string",
+                "minLength": 1
+              },
+              "document_type": {
+                "type": "string",
+                "enum": [
+                  "video"
+                ]
+              },
+              "must_include": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "avoid_content": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "objective",
+              "document_type"
+            ],
+            "additionalProperties": false
+          },
+          "defaults": {
+            "objective": "Create content",
+            "document_type": "video",
+            "must_include": [],
+            "avoid_content": [],
+            "notes": ""
+          },
+          "labels": {
+            "objective": "Objective",
+            "document_type": "Content type"
+          },
+          "max_prompt_chars": 20000
+        },
+        "evaluation": {
+          "engine_version": "checks@1",
+          "gate_threshold": 0,
+          "critical_threshold": 0,
+          "rules": [
+            {
+              "key": "text.repetition@1",
+              "dimension": "repetition_control",
+              "weight": 1,
+              "critical": false,
+              "parameters": {
+                "duplicate_penalty": 25,
+                "window_size": 12,
+                "window_penalty": 160,
+                "max_window_penalty": 50
+              }
+            },
+            {
+              "key": "text.consistency@1",
+              "dimension": "consistency",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "high": 25,
+                "medium": 12,
+                "low": 5
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "builtin.image",
+      "name": "图片生成规则",
+      "payload": {
+        "schema_version": "creation-policy@1",
+        "canon": {
+          "entity_types": [
+            "entity",
+            "content_unit",
+            "brand",
+            "character",
+            "location"
+          ],
+          "fact_types": [
+            "event",
+            "state",
+            "relationship",
+            "setting",
+            "identity",
+            "other",
+            "claim",
+            "summary"
+          ],
+          "require_evidence": true,
+          "max_audit_entries": 200
+        },
+        "memory": {
+          "group_size": 5,
+          "leaf_summary_chars": 500,
+          "group_summary_chars": 1800,
+          "document_summary_chars": 6000,
+          "neighbor_window": 5
+        },
+        "constraints": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "objective": {
+                "type": "string",
+                "minLength": 1
+              },
+              "document_type": {
+                "type": "string",
+                "enum": [
+                  "image"
+                ]
+              },
+              "must_include": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "avoid_content": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "objective",
+              "document_type"
+            ],
+            "additionalProperties": false
+          },
+          "defaults": {
+            "objective": "Create content",
+            "document_type": "image",
+            "must_include": [],
+            "avoid_content": [],
+            "notes": ""
+          },
+          "labels": {
+            "objective": "Objective",
+            "document_type": "Content type"
+          },
+          "max_prompt_chars": 20000
+        },
+        "evaluation": {
+          "engine_version": "checks@1",
+          "gate_threshold": 0,
+          "critical_threshold": 0,
+          "rules": [
+            {
+              "key": "text.repetition@1",
+              "dimension": "repetition_control",
+              "weight": 1,
+              "critical": false,
+              "parameters": {
+                "duplicate_penalty": 25,
+                "window_size": 12,
+                "window_penalty": 160,
+                "max_window_penalty": 50
+              }
+            },
+            {
+              "key": "text.consistency@1",
+              "dimension": "consistency",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "high": 25,
+                "medium": 12,
+                "low": 5
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "builtin.speech",
+      "name": "语音合成规则",
+      "payload": {
+        "schema_version": "creation-policy@1",
+        "canon": {
+          "entity_types": [
+            "entity",
+            "content_unit",
+            "brand",
+            "character",
+            "location"
+          ],
+          "fact_types": [
+            "event",
+            "state",
+            "relationship",
+            "setting",
+            "identity",
+            "other",
+            "claim",
+            "summary"
+          ],
+          "require_evidence": true,
+          "max_audit_entries": 200
+        },
+        "memory": {
+          "group_size": 5,
+          "leaf_summary_chars": 500,
+          "group_summary_chars": 1800,
+          "document_summary_chars": 6000,
+          "neighbor_window": 5
+        },
+        "constraints": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "objective": {
+                "type": "string",
+                "minLength": 1
+              },
+              "document_type": {
+                "type": "string",
+                "enum": [
+                  "audio"
+                ]
+              },
+              "must_include": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "avoid_content": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "objective",
+              "document_type"
+            ],
+            "additionalProperties": false
+          },
+          "defaults": {
+            "objective": "Create content",
+            "document_type": "audio",
+            "must_include": [],
+            "avoid_content": [],
+            "notes": ""
+          },
+          "labels": {
+            "objective": "Objective",
+            "document_type": "Content type"
+          },
+          "max_prompt_chars": 20000
+        },
+        "evaluation": {
+          "engine_version": "checks@1",
+          "gate_threshold": 0,
+          "critical_threshold": 0,
+          "rules": [
+            {
+              "key": "text.repetition@1",
+              "dimension": "repetition_control",
+              "weight": 1,
+              "critical": false,
+              "parameters": {
+                "duplicate_penalty": 25,
+                "window_size": 12,
+                "window_penalty": 160,
+                "max_window_penalty": 50
+              }
+            },
+            {
+              "key": "text.consistency@1",
+              "dimension": "consistency",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "high": 25,
+                "medium": 12,
+                "low": 5
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "builtin.storyboard",
+      "name": "builtin.storyboard",
+      "payload": {
+        "schema_version": "creation-policy@1",
+        "canon": {
+          "entity_types": [
+            "entity",
+            "content_unit",
+            "brand",
+            "character",
+            "location"
+          ],
+          "fact_types": [
+            "event",
+            "state",
+            "relationship",
+            "setting",
+            "identity",
+            "other",
+            "claim",
+            "summary"
+          ],
+          "require_evidence": true,
+          "max_audit_entries": 200
+        },
+        "memory": {
+          "group_size": 5,
+          "leaf_summary_chars": 500,
+          "group_summary_chars": 1800,
+          "document_summary_chars": 6000,
+          "neighbor_window": 5
+        },
+        "constraints": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "objective": {
+                "type": "string",
+                "minLength": 1
+              },
+              "document_type": {
+                "type": "string",
+                "enum": [
+                  "storyboard"
+                ]
+              },
+              "must_include": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "avoid_content": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "objective",
+              "document_type"
+            ],
+            "additionalProperties": false
+          },
+          "defaults": {
+            "objective": "Create content",
+            "document_type": "storyboard",
+            "must_include": [],
+            "avoid_content": [],
+            "notes": ""
+          },
+          "labels": {
+            "objective": "Objective",
+            "document_type": "Content type"
+          },
+          "max_prompt_chars": 20000
+        },
+        "evaluation": {
+          "engine_version": "checks@1",
+          "gate_threshold": 0,
+          "critical_threshold": 0,
+          "rules": [
+            {
+              "key": "text.repetition@1",
+              "dimension": "repetition_control",
+              "weight": 1,
+              "critical": false,
+              "parameters": {
+                "duplicate_penalty": 25,
+                "window_size": 12,
+                "window_penalty": 160,
+                "max_window_penalty": 50
+              }
+            },
+            {
+              "key": "text.consistency@1",
+              "dimension": "consistency",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "high": 25,
+                "medium": 12,
+                "low": 5
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "builtin.timeline",
+      "name": "builtin.timeline",
+      "payload": {
+        "schema_version": "creation-policy@1",
+        "canon": {
+          "entity_types": [
+            "entity",
+            "content_unit",
+            "brand",
+            "character",
+            "location"
+          ],
+          "fact_types": [
+            "event",
+            "state",
+            "relationship",
+            "setting",
+            "identity",
+            "other",
+            "claim",
+            "summary"
+          ],
+          "require_evidence": true,
+          "max_audit_entries": 200
+        },
+        "memory": {
+          "group_size": 5,
+          "leaf_summary_chars": 500,
+          "group_summary_chars": 1800,
+          "document_summary_chars": 6000,
+          "neighbor_window": 5
+        },
+        "constraints": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "objective": {
+                "type": "string",
+                "minLength": 1
+              },
+              "document_type": {
+                "type": "string",
+                "enum": [
+                  "timeline"
+                ]
+              },
+              "must_include": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "avoid_content": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "objective",
+              "document_type"
+            ],
+            "additionalProperties": false
+          },
+          "defaults": {
+            "objective": "Create content",
+            "document_type": "timeline",
+            "must_include": [],
+            "avoid_content": [],
+            "notes": ""
+          },
+          "labels": {
+            "objective": "Objective",
+            "document_type": "Content type"
+          },
+          "max_prompt_chars": 20000
+        },
+        "evaluation": {
+          "engine_version": "checks@1",
+          "gate_threshold": 0,
+          "critical_threshold": 0,
+          "rules": [
+            {
+              "key": "text.repetition@1",
+              "dimension": "repetition_control",
+              "weight": 1,
+              "critical": false,
+              "parameters": {
+                "duplicate_penalty": 25,
+                "window_size": 12,
+                "window_penalty": 160,
+                "max_window_penalty": 50
+              }
+            },
+            {
+              "key": "text.consistency@1",
+              "dimension": "consistency",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "high": 25,
+                "medium": 12,
+                "low": 5
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "builtin.compose",
+      "name": "builtin.compose",
+      "payload": {
+        "schema_version": "creation-policy@1",
+        "canon": {
+          "entity_types": [
+            "entity",
+            "content_unit",
+            "brand",
+            "character",
+            "location"
+          ],
+          "fact_types": [
+            "event",
+            "state",
+            "relationship",
+            "setting",
+            "identity",
+            "other",
+            "claim",
+            "summary"
+          ],
+          "require_evidence": true,
+          "max_audit_entries": 200
+        },
+        "memory": {
+          "group_size": 5,
+          "leaf_summary_chars": 500,
+          "group_summary_chars": 1800,
+          "document_summary_chars": 6000,
+          "neighbor_window": 5
+        },
+        "constraints": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "objective": {
+                "type": "string",
+                "minLength": 1
+              },
+              "document_type": {
+                "type": "string",
+                "enum": [
+                  "video"
+                ]
+              },
+              "must_include": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "avoid_content": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "objective",
+              "document_type"
+            ],
+            "additionalProperties": false
+          },
+          "defaults": {
+            "objective": "Create content",
+            "document_type": "video",
+            "must_include": [],
+            "avoid_content": [],
+            "notes": ""
+          },
+          "labels": {
+            "objective": "Objective",
+            "document_type": "Content type"
+          },
+          "max_prompt_chars": 20000
+        },
+        "evaluation": {
+          "engine_version": "checks@1",
+          "gate_threshold": 0,
+          "critical_threshold": 0,
+          "rules": [
+            {
+              "key": "text.repetition@1",
+              "dimension": "repetition_control",
+              "weight": 1,
+              "critical": false,
+              "parameters": {
+                "duplicate_penalty": 25,
+                "window_size": 12,
+                "window_penalty": 160,
+                "max_window_penalty": 50
+              }
+            },
+            {
+              "key": "text.consistency@1",
+              "dimension": "consistency",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "high": 25,
+                "medium": 12,
+                "low": 5
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "builtin.assemble",
+      "name": "自动时间线组装",
+      "payload": {
+        "schema_version": "creation-policy@1",
+        "canon": {
+          "entity_types": [
+            "entity",
+            "content_unit",
+            "brand",
+            "character",
+            "location"
+          ],
+          "fact_types": [
+            "event",
+            "state",
+            "relationship",
+            "setting",
+            "identity",
+            "other",
+            "claim",
+            "summary"
+          ],
+          "require_evidence": true,
+          "max_audit_entries": 200
+        },
+        "memory": {
+          "group_size": 5,
+          "leaf_summary_chars": 500,
+          "group_summary_chars": 1800,
+          "document_summary_chars": 6000,
+          "neighbor_window": 5
+        },
+        "constraints": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "objective": {
+                "type": "string",
+                "minLength": 1
+              },
+              "document_type": {
+                "type": "string",
+                "enum": [
+                  "timeline"
+                ]
+              },
+              "must_include": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "avoid_content": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 12
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "objective",
+              "document_type"
+            ],
+            "additionalProperties": false
+          },
+          "defaults": {
+            "objective": "Create content",
+            "document_type": "timeline",
+            "must_include": [],
+            "avoid_content": [],
+            "notes": ""
+          },
+          "labels": {
+            "objective": "Objective",
+            "document_type": "Content type"
+          },
+          "max_prompt_chars": 20000
+        },
+        "evaluation": {
+          "engine_version": "checks@1",
+          "gate_threshold": 0,
+          "critical_threshold": 0,
+          "rules": [
+            {
+              "key": "text.repetition@1",
+              "dimension": "repetition_control",
+              "weight": 1,
+              "critical": false,
+              "parameters": {
+                "duplicate_penalty": 25,
+                "window_size": 12,
+                "window_penalty": 160,
+                "max_window_penalty": 50
+              }
+            },
+            {
+              "key": "text.consistency@1",
+              "dimension": "consistency",
+              "weight": 1,
+              "critical": true,
+              "parameters": {
+                "high": 25,
+                "medium": 12,
+                "low": 5
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "workflows": {
+    "novel.write@1": "builtin.novel",
+    "content.generate@1": "builtin.content",
+    "content.adapt@1": "builtin.content",
+    "memory.refresh@1": "builtin.content",
+    "media.video@1": "builtin.video",
+    "media.image@1": "builtin.image",
+    "media.speech@1": "builtin.speech",
+    "media.music@1": "builtin.speech",
+    "media.sound_effect@1": "builtin.speech",
+    "media.storyboard@1": "builtin.storyboard",
+    "media.timeline@1": "builtin.timeline",
+    "media.compose@1": "builtin.compose",
+    "media.assemble@1": "builtin.assemble"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "output_formats": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 2,
+      "minItems": 1,
+      "title": "Output Formats",
+      "type": "array"
+    },
+    "min_duration_ms": {
+      "default": 3000,
+      "maximum": 600000,
+      "minimum": 3000,
+      "title": "Min Duration Ms",
+      "type": "integer"
+    },
+    "max_duration_ms": {
+      "default": 600000,
+      "maximum": 600000,
+      "minimum": 3000,
+      "title": "Max Duration Ms",
+      "type": "integer"
+    },
+    "instrumental": {
+      "default": true,
+      "title": "Instrumental",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "output_formats"
+  ],
+  "title": "MusicCapabilities",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/music-capabilities.schema.json"
+}

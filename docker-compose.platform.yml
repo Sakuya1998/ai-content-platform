@@ -1,0 +1,191 @@
+name: novel-agent-platform
+services:
+  rocketmq-init:
+    image: apache/rocketmq:5.3.1
+    restart: "no"
+    env_file:
+      - path: .env.control.example
+        required: true
+      - path: .env.runtime.example
+        required: true
+      - path: .env.control
+        required: false
+      - path: .env.runtime
+        required: false
+    environment:
+      MQ_ADMIN_NAMESERVER: rocketmq-namesrv:9876
+    volumes: [./deploy/rocketmq/init.sh:/init-mq.sh:ro]
+    command: [sh, /init-mq.sh]
+    depends_on: [rocketmq-broker]
+  runtime-dispatch: &runtime-messaging
+    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    restart: unless-stopped
+    env_file:
+      - path: .env.runtime.example
+        required: true
+      - path: .env.runtime
+        required: false
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      rocketmq-init: { condition: service_completed_successfully }
+      rocketmq-proxy: { condition: service_started }
+    healthcheck: { disable: true }
+    command: [python, -m, agent_runtime.entrypoints.messaging, dispatch]
+  runtime-control:
+    <<: *runtime-messaging
+    command: [python, -m, agent_runtime.entrypoints.messaging, control]
+  runtime-relay:
+    <<: *runtime-messaging
+    command: [python, -m, agent_runtime.entrypoints.messaging, relay]
+  memory-dispatch:
+    <<: *runtime-messaging
+    command: [python, -m, agent_runtime.entrypoints.messaging, memory]
+  memory-scheduler:
+    <<: *runtime-messaging
+    command: [python, -m, agent_runtime.entrypoints.messaging, memory-scheduler]
+  runtime-worker:
+    <<: *runtime-messaging
+    profiles: [workers]
+    command: [python, -m, agent_runtime.entrypoints.messaging, worker]
+  memory-worker:
+    <<: *runtime-messaging
+    profiles: [workers]
+    command: [python, -m, agent_runtime.entrypoints.messaging, memory-worker]
+  artifact-init:
+    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    build:
+      context: .
+    restart: "no"
+    env_file:
+      - path: .env.runtime.example
+        required: true
+      - path: .env.runtime
+        required: false
+    depends_on:
+      rustfs: { condition: service_started }
+    command: ["python", "scripts/platform_storage_init.py", "--create-bucket"]
+  migrate:
+    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    build:
+      context: .
+    restart: "no"
+    env_file:
+      - path: .env.control.example
+        required: true
+      - path: .env.runtime.example
+        required: true
+      - path: .env.control
+        required: false
+      - path: .env.runtime
+        required: false
+    depends_on:
+      postgres-control: { condition: service_healthy }
+      postgres-runtime: { condition: service_healthy }
+    command: ["python", "scripts/platform_migrate.py"]
+  control-plane:
+    image: ${CONTROL_PLANE_IMAGE:-novel-agent-control-plane:local}
+    build:
+      context: ./go-control-plane
+    restart: unless-stopped
+    environment:
+      SERVICE_NAME: control-plane
+    env_file:
+      - path: .env.control.example
+        required: true
+      - path: .env.control
+        required: false
+    depends_on:
+      postgres-control: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+      artifact-init: { condition: service_completed_successfully }
+      rocketmq-proxy: { condition: service_started }
+      rocketmq-init: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+      rustfs: { condition: service_started }
+    ports: ["${CONTROL_PLANE_PORT:-8080}:8080"]
+  runtime:
+    image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
+    build:
+      context: .
+    restart: unless-stopped
+    environment:
+      SERVICE_NAME: runtime
+    env_file:
+      - path: .env.runtime.example
+        required: true
+      - path: .env.runtime
+        required: false
+    depends_on:
+      postgres-runtime: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+      artifact-init: { condition: service_completed_successfully }
+      rocketmq-proxy: { condition: service_started }
+      redis: { condition: service_healthy }
+      rustfs: { condition: service_started }
+    ports: ["${RUNTIME_PORT:-8000}:8000"]
+    command: ["uvicorn", "agent_runtime.api.app:app", "--host", "0.0.0.0", "--port", "8000"]
+    healthcheck: { test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/readyz', timeout=2)"], interval: 10s, timeout: 3s, retries: 5 }
+  postgres-control:
+    image: pgvector/pgvector:pg16
+    env_file:
+      - path: .env.control.example
+        required: true
+      - path: .env.control
+        required: false
+    volumes: [postgres-control-data:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"], interval: 10s, timeout: 5s, retries: 5 }
+  postgres-runtime:
+    image: pgvector/pgvector:pg16
+    env_file:
+      - path: .env.runtime.example
+        required: true
+      - path: .env.runtime
+        required: false
+    volumes: [postgres-runtime-data:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"], interval: 10s, timeout: 5s, retries: 5 }
+  rocketmq-namesrv:
+    image: apache/rocketmq:5.3.1
+    command: [sh, mqnamesrv]
+    environment:
+      JAVA_OPT_EXT: "-Xms128m -Xmx256m -Xmn64m"
+  rocketmq-broker:
+    image: apache/rocketmq:5.3.1
+    command: [sh, mqbroker, -n, rocketmq-namesrv:9876, -c, /etc/rocketmq/broker.conf]
+    environment:
+      JAVA_OPT_EXT: "-Xms256m -Xmx512m -Xmn128m"
+    depends_on: [rocketmq-namesrv]
+    volumes: [rocketmq-data:/home/rocketmq/store, ./deploy/rocketmq/broker.conf:/etc/rocketmq/broker.conf:ro]
+  rocketmq-proxy:
+    image: apache/rocketmq:5.3.1
+    command: [sh, mqproxy, -n, rocketmq-namesrv:9876]
+    environment:
+      JAVA_OPT_EXT: "-Xms128m -Xmx256m -Xmn64m"
+    depends_on: [rocketmq-broker]
+    ports: ["${ROCKETMQ_PROXY_PORT:-8081}:8081"]
+  redis:
+    image: redis:7.4-alpine
+    env_file:
+      - path: .env.runtime.example
+        required: true
+      - path: .env.runtime
+        required: false
+    command: [sh, -c, 'if [ -n "$${REDIS_PASSWORD}" ]; then exec redis-server --appendonly yes --requirepass "$${REDIS_PASSWORD}"; else exec redis-server --appendonly yes; fi']
+    volumes: [redis-data:/data]
+    ports: ["${REDIS_PORT:-6379}:6379"]
+    healthcheck: { test: [CMD-SHELL, 'if [ -n "$${REDIS_PASSWORD}" ]; then redis-cli -a "$${REDIS_PASSWORD}" ping; else redis-cli ping; fi'], interval: 10s, timeout: 3s, retries: 5 }
+  rustfs:
+    image: rustfs/rustfs:latest
+    command: [--console-address, ":9001", /data]
+    env_file:
+      - path: .env.runtime.example
+        required: true
+      - path: .env.runtime
+        required: false
+    volumes: [rustfs-data:/data]
+    ports: ["${RUSTFS_API_PORT:-9000}:9000", "${RUSTFS_CONSOLE_PORT:-9001}:9001"]
+volumes:
+  postgres-control-data:
+  postgres-runtime-data:
+  rocketmq-data:
+  redis-data:
+  rustfs-data:

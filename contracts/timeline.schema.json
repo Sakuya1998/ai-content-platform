@@ -1,0 +1,281 @@
+{
+  "$defs": {
+    "AudioTrack": {
+      "additionalProperties": false,
+      "description": "An independently positioned audio segment.",
+      "properties": {
+        "track_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "title": "Track Id",
+          "type": "string"
+        },
+        "asset_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "duration_ms": {
+          "exclusiveMinimum": 0,
+          "maximum": 600000,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "source_start_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Source Start Ms",
+          "type": "integer"
+        },
+        "gain": {
+          "default": 1.0,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Gain",
+          "type": "number"
+        },
+        "role": {
+          "default": "narration",
+          "enum": [
+            "narration",
+            "music",
+            "effect"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "fade_in_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Fade In Ms",
+          "type": "integer"
+        },
+        "fade_out_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Fade Out Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "track_id",
+        "asset_id",
+        "start_ms",
+        "duration_ms"
+      ],
+      "title": "AudioTrack",
+      "type": "object"
+    },
+    "SubtitleCue": {
+      "additionalProperties": false,
+      "description": "A text cue; text is data and cannot carry control characters.",
+      "properties": {
+        "cue_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "title": "Cue Id",
+          "type": "string"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "end_ms": {
+          "minimum": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "text": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cue_id",
+        "start_ms",
+        "end_ms",
+        "text"
+      ],
+      "title": "SubtitleCue",
+      "type": "object"
+    },
+    "TimelineAsset": {
+      "additionalProperties": false,
+      "description": "A block in an immutable content version, never a user-supplied path.",
+      "properties": {
+        "asset_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "document_version_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Document Version Id",
+          "type": "string"
+        },
+        "block_position": {
+          "minimum": 0,
+          "title": "Block Position",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "asset_id",
+        "document_version_id",
+        "block_position"
+      ],
+      "title": "TimelineAsset",
+      "type": "object"
+    },
+    "VisualShot": {
+      "additionalProperties": false,
+      "description": "One segment on the ordered, continuous primary visual track.",
+      "properties": {
+        "shot_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "title": "Shot Id",
+          "type": "string"
+        },
+        "asset_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "duration_ms": {
+          "exclusiveMinimum": 0,
+          "maximum": 600000,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "source_start_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Source Start Ms",
+          "type": "integer"
+        },
+        "fit": {
+          "default": "contain",
+          "enum": [
+            "contain",
+            "cover"
+          ],
+          "title": "Fit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "shot_id",
+        "asset_id",
+        "start_ms",
+        "duration_ms"
+      ],
+      "title": "VisualShot",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Deterministic render instructions with no provider URLs or executable expressions.",
+  "properties": {
+    "schema_version": {
+      "const": "timeline@1",
+      "default": "timeline@1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "width": {
+      "maximum": 1920,
+      "minimum": 64,
+      "multipleOf": 2,
+      "title": "Width",
+      "type": "integer"
+    },
+    "height": {
+      "maximum": 1920,
+      "minimum": 64,
+      "multipleOf": 2,
+      "title": "Height",
+      "type": "integer"
+    },
+    "fps": {
+      "maximum": 60,
+      "minimum": 1,
+      "title": "Fps",
+      "type": "integer"
+    },
+    "duration_ms": {
+      "exclusiveMinimum": 0,
+      "maximum": 600000,
+      "title": "Duration Ms",
+      "type": "integer"
+    },
+    "assets": {
+      "items": {
+        "$ref": "#/$defs/TimelineAsset"
+      },
+      "maxItems": 256,
+      "minItems": 1,
+      "title": "Assets",
+      "type": "array"
+    },
+    "shots": {
+      "items": {
+        "$ref": "#/$defs/VisualShot"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Shots",
+      "type": "array"
+    },
+    "audio_tracks": {
+      "items": {
+        "$ref": "#/$defs/AudioTrack"
+      },
+      "maxItems": 128,
+      "title": "Audio Tracks",
+      "type": "array"
+    },
+    "subtitles": {
+      "items": {
+        "$ref": "#/$defs/SubtitleCue"
+      },
+      "maxItems": 256,
+      "title": "Subtitles",
+      "type": "array"
+    }
+  },
+  "required": [
+    "width",
+    "height",
+    "fps",
+    "duration_ms",
+    "assets",
+    "shots"
+  ],
+  "title": "Timeline",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/timeline.schema.json"
+}

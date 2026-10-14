@@ -1,0 +1,155 @@
+{
+  "$defs": {
+    "AssemblyEffect": {
+      "additionalProperties": false,
+      "properties": {
+        "shot_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "title": "Shot Id",
+          "type": "string"
+        },
+        "version_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Version Id",
+          "type": "string"
+        },
+        "block_position": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Block Position",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "shot_id",
+        "version_id"
+      ],
+      "title": "AssemblyEffect",
+      "type": "object"
+    },
+    "AssemblyShot": {
+      "additionalProperties": false,
+      "properties": {
+        "shot_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "title": "Shot Id",
+          "type": "string"
+        },
+        "visual_version_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Visual Version Id",
+          "type": "string"
+        },
+        "visual_block_position": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Visual Block Position",
+          "type": "integer"
+        },
+        "audio_version_id": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Audio Version Id"
+        },
+        "audio_block_position": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Audio Block Position",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "shot_id",
+        "visual_version_id"
+      ],
+      "title": "AssemblyShot",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "width": {
+      "default": 1280,
+      "maximum": 1920,
+      "minimum": 64,
+      "multipleOf": 2,
+      "title": "Width",
+      "type": "integer"
+    },
+    "height": {
+      "default": 720,
+      "maximum": 1920,
+      "minimum": 64,
+      "multipleOf": 2,
+      "title": "Height",
+      "type": "integer"
+    },
+    "fps": {
+      "default": 25,
+      "maximum": 60,
+      "minimum": 1,
+      "title": "Fps",
+      "type": "integer"
+    },
+    "subtitles": {
+      "default": true,
+      "title": "Subtitles",
+      "type": "boolean"
+    },
+    "shots": {
+      "items": {
+        "$ref": "#/$defs/AssemblyShot"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Shots",
+      "type": "array"
+    },
+    "music_version_id": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Music Version Id"
+    },
+    "music_block_position": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Music Block Position",
+      "type": "integer"
+    },
+    "effects": {
+      "items": {
+        "$ref": "#/$defs/AssemblyEffect"
+      },
+      "maxItems": 32,
+      "title": "Effects",
+      "type": "array"
+    }
+  },
+  "required": [
+    "shots"
+  ],
+  "title": "AssemblyRequest",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/assembly-request.schema.json"
+}

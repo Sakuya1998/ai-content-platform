@@ -1,0 +1,77 @@
+{
+  "$defs": {
+    "StoryboardShot": {
+      "additionalProperties": false,
+      "properties": {
+        "shot_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "title": "Shot Id",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 8000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "dialogue": {
+          "default": "",
+          "maxLength": 8000,
+          "title": "Dialogue",
+          "type": "string"
+        },
+        "duration_ms": {
+          "exclusiveMinimum": 0,
+          "maximum": 600000,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "source_block_ids": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+            "type": "string"
+          },
+          "maxItems": 256,
+          "title": "Source Block Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "shot_id",
+        "description",
+        "duration_ms"
+      ],
+      "title": "StoryboardShot",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "storyboard@1",
+      "default": "storyboard@1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "shots": {
+      "items": {
+        "$ref": "#/$defs/StoryboardShot"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Shots",
+      "type": "array"
+    }
+  },
+  "required": [
+    "shots"
+  ],
+  "title": "Storyboard",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/storyboard.schema.json"
+}

@@ -1,0 +1,180 @@
+{
+  "$defs": {
+    "FrozenWorkflowDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "version_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Version Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "content_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/WorkflowDefinition"
+        }
+      },
+      "required": [
+        "version_id",
+        "name",
+        "version",
+        "content_hash",
+        "definition"
+      ],
+      "title": "FrozenWorkflowDefinition",
+      "type": "object"
+    },
+    "WorkflowDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "template": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Template",
+          "type": "string"
+        },
+        "nodes": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Nodes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "template",
+        "nodes"
+      ],
+      "title": "WorkflowDefinition",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "workflow": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Workflow",
+      "type": "string"
+    },
+    "workflow_definition": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/FrozenWorkflowDefinition"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "skills": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Skills",
+      "type": "array"
+    },
+    "prompt_packs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Prompt Packs",
+      "type": "array"
+    },
+    "prompt_bindings": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Prompt Bindings"
+    },
+    "creation_policy": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Creation Policy"
+    },
+    "tools": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tools",
+      "type": "array"
+    },
+    "mcp_policies": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Mcp Policies",
+      "type": "array"
+    },
+    "model_routes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Model Routes",
+      "type": "object"
+    },
+    "schema_versions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "minProperties": 1,
+      "title": "Schema Versions",
+      "type": "object"
+    },
+    "snapshot_hash": {
+      "default": "",
+      "title": "Snapshot Hash",
+      "type": "string"
+    }
+  },
+  "required": [
+    "workflow",
+    "schema_versions"
+  ],
+  "title": "CapabilitySnapshot",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/capability-snapshot.schema.json"
+}

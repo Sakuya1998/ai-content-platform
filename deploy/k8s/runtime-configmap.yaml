@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: novel-agent-runtime
+  namespace: novel-agent
+data:
+  RUNTIME_HOST: 0.0.0.0
+  RUNTIME_PORT: "8000"
+  RUNTIME_REDIS_URL: redis://redis:6379/0
+  RUNTIME_REDIS_KEY_PREFIX: "runtime:"
+  RUNTIME_ROCKETMQ_ENDPOINT: rocketmq-proxy:8081
+  RUNTIME_ROCKETMQ_TLS_ENABLED: "false"
+  RUNTIME_ENVIRONMENT: prod
+  RUNTIME_WORKER_HANDLER: agent_runtime.execution.handlers:generate_content
+  RUNTIME_MEMORY_HANDLER: agent_runtime.execution.handlers:refresh_memory
+  RUNTIME_LLM_PROVIDER: openai_compatible
+  RUNTIME_LLM_MODEL: ""
+  RUNTIME_LLM_BASE_URL: ""
+  RUNTIME_ANALYSIS_MODEL: ""
+  RUNTIME_EMBEDDING_MODEL: ""
+  RUNTIME_EMBEDDING_BASE_URL: ""
+  RUNTIME_ROCKETMQ_TASK_TOPIC: agent-prod-runtime-tasks
+  RUNTIME_ROCKETMQ_CONTROL_TOPIC: agent-prod-runtime-control
+  RUNTIME_ROCKETMQ_EVENT_TOPIC: agent-prod-runtime-events
+  RUNTIME_ROCKETMQ_MEMORY_TOPIC: agent-prod-memory-tasks
+  RUNTIME_ROCKETMQ_DISPATCH_GROUP: agent-prod-runtime-dispatch
+  RUNTIME_ROCKETMQ_CONTROL_GROUP: agent-prod-runtime-control
+  RUNTIME_ROCKETMQ_MEMORY_GROUP: agent-prod-memory-worker
+  RUNTIME_ROCKETMQ_MEMORY_SCHEDULER_GROUP: agent-prod-memory-scheduler
+  RUNTIME_OBJECT_STORAGE_ENDPOINT: http://rustfs:9000
+  RUNTIME_OBJECT_STORAGE_BUCKET: agent-artifacts
+  RUNTIME_OBJECT_STORAGE_REGION: us-east-1

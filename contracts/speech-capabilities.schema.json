@@ -1,0 +1,63 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "voices": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Voices",
+      "type": "array"
+    },
+    "formats": {
+      "items": {
+        "enum": [
+          "mp3",
+          "wav",
+          "opus",
+          "aac",
+          "flac",
+          "pcm"
+        ],
+        "type": "string"
+      },
+      "title": "Formats",
+      "type": "array"
+    },
+    "languages": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Languages",
+      "type": "array"
+    },
+    "min_speed": {
+      "default": 0.25,
+      "maximum": 4,
+      "minimum": 0.25,
+      "title": "Min Speed",
+      "type": "number"
+    },
+    "max_speed": {
+      "default": 4,
+      "maximum": 4,
+      "minimum": 0.25,
+      "title": "Max Speed",
+      "type": "number"
+    },
+    "max_input_chars": {
+      "default": 4096,
+      "minimum": 1,
+      "title": "Max Input Chars",
+      "type": "integer"
+    },
+    "instructions": {
+      "default": false,
+      "title": "Instructions",
+      "type": "boolean"
+    }
+  },
+  "title": "SpeechCapabilities",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/speech-capabilities.schema.json"
+}

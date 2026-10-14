@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - control-configmap.yaml
+  - runtime-configmap.yaml
+  - control-secrets.example.yaml
+  - runtime-secrets.example.yaml
+  - postgres.yaml
+  - redis.yaml
+  - rocketmq.yaml
+  - rustfs.yaml
+  - apps.yaml
+  - messaging.yaml

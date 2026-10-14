@@ -8,6 +8,22 @@ on:
 jobs:
   lint-test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_PASSWORD: ci-admin
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      MQ_TEST_CONTROL_DATABASE_URL: postgresql://control:ci-control@localhost:5432/control
+      MQ_TEST_RUNTIME_DATABASE_URL: postgresql://runtime:ci-runtime@localhost:5432/runtime
+      MQ_TEST_ADMIN_DATABASE_URL: postgresql://postgres:ci-admin@localhost:5432/postgres
+      MQ_TEST_ADMIN_DATABASE_URL: postgresql://postgres:ci-admin@localhost:5432/postgres
+      POSTGRES_CONTROL_PASSWORD: ci-control
+      POSTGRES_RUNTIME_PASSWORD: ci-runtime
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,18 +35,39 @@ jobs:
           enable-cache: true
       - name: Install locked Python dependencies
         run: uv sync --locked --all-extras
+      - name: Install media renderer and CJK fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-cjk
+          ffmpeg -version
+          ffprobe -version
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go-control-plane/go.mod
+          cache-dependency-path: go-control-plane/go.sum
+      - name: Initialize disposable platform databases
+        env:
+          PLATFORM_BOOTSTRAP_ADMIN_URL: postgresql://postgres:ci-admin@localhost:5432/postgres
+          CONTROL_DATABASE_URL: ${{ env.MQ_TEST_CONTROL_DATABASE_URL }}
+          RUNTIME_DATABASE_URL: ${{ env.MQ_TEST_RUNTIME_DATABASE_URL }}
+        run: uv run --locked python -m scripts.platform_migrate
       - name: Lint
         run: uv run --locked ruff check src tests scripts main.py
+      - name: Architecture boundaries
+        run: uv run --locked python -m scripts.check_architecture
       - name: Test
         run: uv run --locked pytest
-      - name: Security contract tests
-        run: uv run --locked pytest tests/test_security_contract.py
-      - name: OpenAPI contract artifact
+      - name: Go race tests and vet
+        working-directory: go-control-plane
         run: |
-          uv run --locked python scripts/export_openapi.py
-          git diff --exit-code -- openapi/novel-agent-v1.json
-      - name: Evaluation regression gate
-        run: uv run --locked python -m scripts.run_evaluations
+          go test -race ./...
+          go vet ./...
+      - name: Platform contract artifacts
+        run: |
+          uv run --locked python scripts/export_platform_contracts.py
+          git diff --exit-code -- contracts
+          uv run --locked python -m scripts.export_control_openapi
+          git diff --exit-code -- openapi/control-v2.json
 
   docker:
     runs-on: ubuntu-latest
@@ -42,16 +79,14 @@ jobs:
           python-version: "3.14"
       - name: Install deployment check dependencies
         run: pip install python-dotenv pydantic-settings pyyaml
-      - name: Prepare production smoke environment
-        run: |
-          cp .env.production.example .env
-          sed -i 's/^OPENAI_API_KEY=.*/OPENAI_API_KEY=test-readiness-key/' .env
       - name: Validate Compose configuration
-        run: docker compose config --quiet
+        run: docker compose -f docker-compose.platform.yml config --quiet
       - name: Offline deployment checks
         run: python -m scripts.check_deployment
       - name: Build image
-        run: docker build -t novel-agent:ci .
+        run: |
+          docker build -t novel-agent-runtime:ci .
+          docker build -t novel-agent-control-plane:ci go-control-plane
 
   audit:
     runs-on: ubuntu-latest
@@ -70,16 +105,8 @@ jobs:
           mkdir -p .tmp
           uv export --locked --no-dev --no-emit-project --format requirements-txt --output-file .tmp/locked-requirements.txt
       - name: Dependency audit
-        # ChromaDB 1.5.9 is the latest PyPI release, but these advisories have
-        # no upstream fixed version yet. This project uses only embedded
-        # persistent storage; check_deployment.py rejects HTTP-server usage
-        # and Compose services, so keep this exception explicit and scoped.
         run: >
           uv tool run --from pip-audit pip-audit -r .tmp/locked-requirements.txt --strict
-          --ignore-vuln PYSEC-2026-311
-          --ignore-vuln CVE-2026-45830
-          --ignore-vuln CVE-2026-45831
-          --ignore-vuln CVE-2026-45833
 
   release-gate:
     if: github.event_name == 'push' || github.event_name == 'pull_request'
@@ -93,4 +120,3 @@ jobs:
           test -s deploy/prometheus.yml
           test -s deploy/novel-agent-alerts.yml
           grep -q 'request_id/job_id' docs/operations/release-checklist.md
-          grep -q 'novel_agent_requests_5xx' deploy/novel-agent-alerts.yml

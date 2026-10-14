@@ -1,0 +1,151 @@
+{
+  "$defs": {
+    "ExecutionSnapshotReference": {
+      "additionalProperties": false,
+      "properties": {
+        "object_key": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Object Key",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 1,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "object_key",
+        "sha256",
+        "size_bytes"
+      ],
+      "title": "ExecutionSnapshotReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "A durable command accepted by Runtime before RocketMQ acknowledgement.",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "occurred_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Occurred At"
+    },
+    "causation_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Causation Id"
+    },
+    "command_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Command Id",
+      "type": "string"
+    },
+    "command_type": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Command Type",
+      "type": "string"
+    },
+    "workspace_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Workspace Id",
+      "type": "string"
+    },
+    "project_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Project Id",
+      "type": "string"
+    },
+    "job_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Job Id",
+      "type": "string"
+    },
+    "workflow_run_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Workflow Run Id",
+      "type": "string"
+    },
+    "capability_snapshot_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Capability Snapshot Hash",
+      "type": "string"
+    },
+    "execution_snapshot": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ExecutionSnapshotReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "trace_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "payload": {
+      "additionalProperties": true,
+      "title": "Payload",
+      "type": "object"
+    }
+  },
+  "required": [
+    "command_id",
+    "command_type",
+    "workspace_id",
+    "project_id",
+    "job_id",
+    "workflow_run_id",
+    "capability_snapshot_hash",
+    "trace_id",
+    "idempotency_key"
+  ],
+  "title": "RuntimeCommand",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-platform.dev/contracts/command.schema.json"
+}

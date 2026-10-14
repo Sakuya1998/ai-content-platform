@@ -6,17 +6,39 @@ from pathlib import Path
 import pytest
 from langchain_core.language_models.fake_chat_models import FakeListChatModel
 
-from novel_agent.api import server
-
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 
 @pytest.fixture(autouse=True)
+def explicit_offline_prompts(monkeypatch):
+    import importlib
+
+    from agent_runtime.domain.workflow_contracts import NOVEL_NODES
+    from agent_runtime.execution.context import current_execution
+    from agent_runtime.prompts.loader import fill_template
+    from agent_runtime.prompts.renderer import render_prompt
+    from tests.fixtures.prompts import prompt_versions
+
+    versions = prompt_versions()
+
+    def offline_or_claimed(node, **variables):
+        if current_execution(required=False):
+            return fill_template(node, **variables)
+        return "\n\n".join(message["content"] for message in render_prompt(versions[node], variables))
+
+    for node in NOVEL_NODES:
+        module = importlib.import_module("agent_runtime.workflows.novel.agents." + node)
+        monkeypatch.setattr(module, "fill_template", offline_or_claimed)
+
+
+@pytest.fixture(autouse=True)
 def fake_chapter_digest_model(monkeypatch) -> FakeListChatModel:
     """章节定稿提炼统一使用独立假模型，避免消耗其他 Agent 的响应序列。"""
-    fake = FakeListChatModel(responses=['''[
+    fake = FakeListChatModel(
+        responses=[
+            """[
       {
         "summary": "林寒穿过雾都城门，并在盘查中发现追兵逼近。",
         "events": ["林寒进入雾都", "城门追兵现身"],
@@ -27,30 +49,38 @@ def fake_chapter_digest_model(monkeypatch) -> FakeListChatModel:
           {"kind": "state", "subject": "林寒", "value": "已进入雾都"}
         ]
       }
-    ]'''])
-    monkeypatch.setattr("novel_agent.agents.chapter_digest.get_analyzer_llm", lambda: fake)
+    ]"""
+        ]
+    )
+    monkeypatch.setattr("agent_runtime.workflows.novel.agents.chapter_digest.get_analyzer_llm", lambda: fake)
     return fake
 
 
 @pytest.fixture(autouse=True)
 def fake_replanner_model(monkeypatch) -> FakeListChatModel:
     """重规划使用独立稳定响应，避免改变其他 Agent 的假模型序列。"""
-    fake = FakeListChatModel(responses=['''[
+    fake = FakeListChatModel(
+        responses=[
+            """[
       {
         "status": "stable",
         "impact": "low",
         "rationale": "实际成稿没有改变后续因果链。",
         "outline_updates": []
       }
-    ]'''])
-    monkeypatch.setattr("novel_agent.agents.replanner.get_analyzer_llm", lambda: fake)
+    ]"""
+        ]
+    )
+    monkeypatch.setattr("agent_runtime.workflows.novel.agents.replanner.get_analyzer_llm", lambda: fake)
     return fake
 
 
 @pytest.fixture(autouse=True)
 def fake_book_auditor_model(monkeypatch) -> FakeListChatModel:
     """全书终审使用独立响应，避免改变章节流水线的模型调用序列。"""
-    fake = FakeListChatModel(responses=['''[
+    fake = FakeListChatModel(
+        responses=[
+            """[
       {
         "scores": {
           "plot_coherence": 88,
@@ -63,8 +93,10 @@ def fake_book_auditor_model(monkeypatch) -> FakeListChatModel:
         "findings": ["主线因果完整，结局回应了开篇悬念。"],
         "revision_priorities": ["补强次要角色在结局前的选择。"]
       }
-    ]'''])
-    monkeypatch.setattr("novel_agent.agents.book_auditor.get_analyzer_llm", lambda: fake)
+    ]"""
+        ]
+    )
+    monkeypatch.setattr("agent_runtime.workflows.novel.agents.book_auditor.get_analyzer_llm", lambda: fake)
     return fake
 
 
@@ -84,36 +116,3 @@ def fake_llm() -> FakeListChatModel:
             "[]",
         ]
     )
-
-
-@pytest.fixture
-def store(tmp_path):
-    """隔离的 SQLite 存储。"""
-    from novel_agent.config import Config
-    from novel_agent.memory.sql_store import NovelStore
-
-    cfg = Config(sqlite_db_path=str(tmp_path / "test.db"), chroma_persist_dir=str(tmp_path / "chroma"))
-    return NovelStore(cfg)
-
-
-@pytest.fixture
-async def api_env(tmp_path, monkeypatch):
-    """Isolated API app and SQLite store for API contract tests."""
-    from novel_agent.config import Config
-    from novel_agent.memory.sql_store import NovelStore
-
-    cfg = Config(
-        sqlite_db_path=str(tmp_path / "novel_agent.api.db"),
-        chroma_persist_dir=str(tmp_path / "chroma"),
-        checkpoint_db_path=str(tmp_path / "checkpoints.db"),
-        model_secret_key_path=str(tmp_path / "data" / "model-settings.key"),
-        openai_api_key="test-openai-key",
-    )
-    cfg.ensure_dirs()
-    isolated = NovelStore(cfg)
-    monkeypatch.setattr(server, "cfg", cfg)
-    monkeypatch.setattr(server, "store", isolated)
-    monkeypatch.setattr("novel_agent.graph.nodes._store", isolated)
-    server._novel_locks.clear()
-    async with server.lifespan(server.app):
-        yield server

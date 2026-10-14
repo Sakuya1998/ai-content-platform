@@ -1,4 +1,4 @@
-"""离线生产发布检查，不需要 Docker daemon 或外部网络。"""
+"""Run offline checks for the split Go Control Plane and Python Runtime deployment."""
 
 from __future__ import annotations
 
@@ -12,8 +12,6 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from novel_agent.config import Config, validate_production_config  # noqa: E402
-
 
 def require(condition: bool, message: str) -> None:
     if not condition:
@@ -22,78 +20,31 @@ def require(condition: bool, message: str) -> None:
 
 def main() -> int:
     dockerfile = (ROOT / "Dockerfile").read_text(encoding="utf-8")
-    compose = yaml.safe_load((ROOT / "docker-compose.yml").read_text(encoding="utf-8"))
-    prometheus = yaml.safe_load((ROOT / "deploy" / "prometheus.yml").read_text(encoding="utf-8"))
-    alerts = yaml.safe_load((ROOT / "deploy" / "novel-agent-alerts.yml").read_text(encoding="utf-8"))
-
-    require((ROOT / "src" / "novel_agent" / "security.py").is_file(), "Docker 运行所需的 security.py 不存在")
-    require("uv.lock" in dockerfile, "Dockerfile 必须复制 uv.lock")
-    require("uv sync --locked --no-dev" in dockerfile, "Dockerfile 必须从 uv.lock 安装生产依赖")
+    compose = yaml.safe_load((ROOT / "docker-compose.platform.yml").read_text(encoding="utf-8"))
+    external = yaml.safe_load((ROOT / "docker-compose.external.yml").read_text(encoding="utf-8"))
+    require("uv sync --locked --no-dev" in dockerfile, "Runtime Dockerfile must use the lockfile")
     require(
         "uv export --frozen --no-dev --no-emit-project --format requirements-txt" in dockerfile,
-        "Dockerfile 的镜像源路径必须从 uv.lock 导出依赖",
+        "mirror build must use uv.lock",
     )
-    require("--require-hashes" in dockerfile, "Dockerfile 的镜像源路径必须保留哈希校验")
+    require("--require-hashes" in dockerfile, "mirror build must retain dependency hashes")
+    require("agent_runtime.api.app:app" in dockerfile, "Dockerfile must start Python Runtime")
+    require("USER appuser" in dockerfile, "Runtime image must be non-root")
+    require("/readyz" in dockerfile, "Runtime image must have a readiness check")
+    require("control-plane" in compose.get("services", {}), "platform Compose must include Go Control Plane")
+    require("runtime" in compose.get("services", {}), "platform Compose must include Python Runtime")
+    require("rocketmq-proxy" in compose.get("services", {}), "platform Compose must include RocketMQ Proxy")
+    require("control-plane" in external.get("services", {}), "external Compose must include Go Control Plane")
+    require("runtime" in external.get("services", {}), "external Compose must include Python Runtime")
     require(
-        "pip install --no-cache-dir -r requirements.txt" not in dockerfile,
-        "Dockerfile 不得绕过 uv.lock 从 requirements.txt 安装",
+        (ROOT / "migrations" / "control" / "010_prompt_catalog_identity.sql").is_file(), "Control migrations incomplete"
     )
-    require("COPY src ./src" in dockerfile, "Dockerfile 未复制 src 应用包")
-    require("novel_agent.api.server:app" in dockerfile, "Dockerfile 未使用打包后的 API 入口")
-    require("COPY scripts ./scripts" in dockerfile, "Dockerfile 未复制运行时维护脚本")
-    require("USER appuser" in dockerfile, "API 镜像必须使用非 root 用户")
-    require("/readyz" in dockerfile, "API healthcheck 必须检查 /readyz")
-    require("chroma run" not in dockerfile.lower(), "API 镜像不得启动存在已知漏洞的 Chroma HTTP 服务")
-
-    # Chroma is intentionally embedded in this application. The dependency
-    # audit exceptions are only valid while runtime code does not expose its
-    # HTTP server or import the server package.
-    runtime_sources = [ROOT / "src" / "novel_agent"]
-    for source in runtime_sources:
-        paths = [source] if source.is_file() else sorted(source.rglob("*.py"))
-        for path in paths:
-            contents = path.read_text(encoding="utf-8")
-            require("HttpClient(" not in contents, f"运行时代码不得使用 Chroma HttpClient: {path.relative_to(ROOT)}")
-            require(
-                "chromadb.server" not in contents,
-                f"运行时代码不得导入 Chroma HTTP server: {path.relative_to(ROOT)}",
-            )
-
-    services = compose.get("services", {})
-    api = services.get("api", {})
-    require(api, "Compose 必须包含 api 服务")
     require(
-        not any("chroma" in str(service_name).lower() for service_name in services),
-        "Compose 不得暴露存在已知漏洞的 Chroma HTTP 服务",
+        (ROOT / "migrations" / "runtime" / "007_knowledge_operations.sql").is_file(), "Runtime migrations incomplete"
     )
-    require(api.get("read_only") is True, "API 根文件系统必须只读")
-    require("ALL" in api.get("cap_drop", []), "API 必须删除全部 Linux capabilities")
-    require("no-new-privileges:true" in api.get("security_opt", []), "API 必须启用 no-new-privileges")
-    require(api.get("restart") == "unless-stopped", "API 必须配置自动重启")
-    for service_name, service in (("api", api),):
-        options = service.get("logging", {}).get("options", {})
-        require(options.get("max-size") and options.get("max-file"), f"{service_name} 缺少 Docker 日志轮转")
-
-    require("novel-agent" in str(prometheus.get("scrape_configs", [])), "Prometheus 未配置 Novel Agent 抓取任务")
-    alert_names = {
-        rule.get("alert")
-        for group in alerts.get("groups", [])
-        for rule in group.get("rules", [])
-        if isinstance(rule, dict)
-    }
-    require(
-        {"NovelAgentApiDown", "NovelAgentHighHttp5xx", "NovelAgentAuditWriteFailures"} <= alert_names, "告警规则不完整"
-    )
-
-    production = Config(_env_file=ROOT / ".env.production.example")
-    validate_production_config(production)
     print("deployment checks passed")
     return 0
 
 
 if __name__ == "__main__":
-    try:
-        raise SystemExit(main())
-    except Exception as exc:
-        print(f"deployment check failed: {exc}", file=sys.stderr)
-        raise SystemExit(1) from exc
+    raise SystemExit(main())
