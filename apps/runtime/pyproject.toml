@@ -2,7 +2,7 @@
 name = "novel-agent"
 version = "2.0.0"
 description = "General AI content platform Runtime"
-readme = "README.md"
+readme = {text = "Agent Runtime for Novel Agent Platform", content-type = "text/plain"}
 requires-python = ">=3.14"
 license = { text = "MIT" }
 dependencies = [
@@ -42,11 +42,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["agent_runtime*"]
+packages = ["agent_runtime"]
 
 # ---------------- Ruff ----------------
 [tool.ruff]
@@ -76,4 +72,4 @@ known-first-party = ["agent_runtime"]
 asyncio_mode = "auto"
 testpaths = ["tests"]
 addopts = "-q"
-pythonpath = ["src"]
+pythonpath = ["."]
