@@ -3,7 +3,7 @@ services:
   runtime-dispatch: &external-messaging
     image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
     restart: unless-stopped
-    env_file: [.env.runtime.external]
+    env_file: [../../apps/runtime/.env.external]
     depends_on:
       migrate: { condition: service_completed_successfully }
     healthcheck: { disable: true }
@@ -34,16 +34,17 @@ services:
       context: .
     restart: "no"
     env_file:
-      - .env.control.external
-      - .env.runtime.external
+      - ../../apps/control/.env.external
+      - ../../apps/runtime/.env.external
     command: ["python", "scripts/platform_migrate.py"]
   control-plane:
     image: ${CONTROL_PLANE_IMAGE:-novel-agent-control-plane:local}
     build:
-      context: ./go-control-plane
+      context: ../..
+      dockerfile: apps/control/Dockerfile
     restart: unless-stopped
     env_file:
-      - .env.control.external
+      - ../../apps/control/.env.external
     depends_on:
       migrate:
         condition: service_completed_successfully
