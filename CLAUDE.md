@@ -16,33 +16,57 @@
 ## 仓库结构
 
 ```
-go-control-plane/              Go 管理面模块
-  cmd/api/                     HTTP 服务器入口
-  cmd/mq-check/                MQ 连接诊断工具
-  internal/app/                依赖组装和生命周期
-  internal/transport/          Chi HTTP 路由和 RocketMQ 适配器
-  internal/modules/            业务模块（identity、project、content、task、governance 等）
-  internal/platform/           共享基础设施（config、database、messaging、storage、logger）
+apps/                          应用服务
+  control/                     Go 管理面
+    cmd/api/                   HTTP 服务器入口
+    cmd/mq-check/              MQ 连接诊断工具
+    internal/app/              依赖组装和生命周期
+    internal/transport/        Chi HTTP 路由和 RocketMQ 适配器
+    internal/modules/          业务模块（identity、project、content、task、governance 等）
+    internal/platform/         共享基础设施（config、database、messaging、storage、logger）
+    go.mod                     Go 模块定义
+    Dockerfile
+    config.example.yaml
   
-src/agent_runtime/             Python 运行时包
-  settings.py                  从 RUNTIME_* 环境变量加载的 Pydantic RuntimeSettings
-  domain/                      Content IR、能力快照、协议、记忆对象
-  execution/                   任务执行上下文、租约 Worker、处理器、结构化输出
-  infrastructure/              LLM/媒体客户端、MQ、PostgreSQL、RustFS 适配器
-  workflows/                   LangGraph 实现（content/、media/、novel/）
-  prompts/                     冻结提示词版本验证和字面量渲染
-  api/                         就绪/存活/诊断 HTTP 端点
-  entrypoints/                 MQ 角色启动器（dispatch、control、memory workers）
+  runtime/                     Python 运行时
+    agent_runtime/             主包
+      settings.py              从 RUNTIME_* 环境变量加载的 Pydantic RuntimeSettings
+      domain/                  Content IR、能力快照、协议、记忆对象
+      execution/               任务执行上下文、租约 Worker、处理器、结构化输出
+      infrastructure/          LLM/媒体客户端、MQ、PostgreSQL、RustFS 适配器
+      workflows/               LangGraph 实现（content/、media/、novel/）
+      prompts/                 冻结提示词版本验证和字面量渲染
+      api/                     就绪/存活/诊断 HTTP 端点
+      entrypoints/             MQ 角色启动器（dispatch、control、memory workers）
+    tests/                     Runtime 测试
+    pyproject.toml             Python 项目配置
+    uv.lock
+    Dockerfile
   
-migrations/                    SQL 迁移，分别应用到各个数据库
-  control/                     Control Plane 架构迁移
-  runtime/                     Runtime 架构迁移
-  seeds/                       初始数据（提示词、工作流）用于开发环境
+packages/                      共享包
+  contracts/                   Go 和 Python 之间共享的消息和内容契约
   
-contracts/                     Go 和 Python 之间共享的消息和内容契约
-deploy/                        Docker Compose 和 Kubernetes 清单
-scripts/                       平台初始化、备份、旧数据迁移工具
-docs/architecture/             ADR 和服务边界文档
+infra/                         基础设施
+  migrations/                  SQL 迁移，分别应用到各个数据库
+    control/                   Control Plane 架构迁移
+    runtime/                   Runtime 架构迁移
+    seeds/                     初始数据（提示词、工作流）
+  docker/                      Docker Compose 配置
+  k8s/                         Kubernetes 清单
+  monitoring/                  监控配置（prometheus.yml, alerts.yml）
+  rocketmq/                    RocketMQ 配置
+  
+tools/                         工具脚本
+  migrate/                     迁移工具（platform_migrate.py 等）
+  dev/                         开发工具（check_architecture.py 等）
+  seed/                        种子数据初始化
+  
+docs/                          文档
+  architecture/                架构设计和 ADR
+  api/                         API 文档（control-v2.json）
+  guides/                      开发指南
+  operations/                  运维文档
+  runbooks/                    运维手册
 ```
 
 ## 常用开发命令
