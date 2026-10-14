@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/identity"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/identity"
 )
 
 var ErrInvalid = errors.New("invalid controlled workflow definition")

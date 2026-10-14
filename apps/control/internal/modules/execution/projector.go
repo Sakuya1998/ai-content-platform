@@ -8,7 +8,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/sakuya/novel-agent/go-control-plane/internal/contracts"
+	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
 )
 
 var ErrProjectionConflict = errors.New("execution projection scope or hash conflict")

@@ -10,9 +10,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/identity"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/database"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/identity"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/database"
 )
 
 type catalogRequest struct {

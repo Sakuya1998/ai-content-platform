@@ -12,9 +12,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	contentmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/content"
-	taskmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/task"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/database"
+	contentmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/content"
+	taskmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/task"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/database"
 )
 
 type Repository struct {

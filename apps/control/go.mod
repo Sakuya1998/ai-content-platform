@@ -1,4 +1,4 @@
-module github.com/sakuya/novel-agent/go-control-plane
+module github.com/sakuya/novel-agent/apps/control
 
 go 1.25.0
 

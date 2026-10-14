@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/project/transfer"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/project/transfer"
 )
 
 type ResourceBackup = transfer.Backup

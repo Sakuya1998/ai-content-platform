@@ -9,12 +9,12 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/contracts"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/content"
-	executionmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/execution"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
-	productionmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/production"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/objectstorage"
+	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/content"
+	executionmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/execution"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
+	productionmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/production"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/objectstorage"
 )
 
 type GenerationRequest = executionmodule.Request

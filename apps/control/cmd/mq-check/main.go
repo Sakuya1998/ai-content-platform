@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/config"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/messaging"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/messaging"
 )
 
 func main() {

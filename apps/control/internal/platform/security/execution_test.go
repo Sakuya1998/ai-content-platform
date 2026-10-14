@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
 )
 
 type executionSnapshotWriterStub struct {

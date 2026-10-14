@@ -14,12 +14,12 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/contracts"
+	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
 
-	contentpostgres "github.com/sakuya/novel-agent/go-control-plane/internal/modules/content/postgres"
-	executionpostgres "github.com/sakuya/novel-agent/go-control-plane/internal/modules/execution/postgres"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/identity"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/config"
+	contentpostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/content/postgres"
+	executionpostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/execution/postgres"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/identity"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
 )
 
 func TestResourceImportRejectsTraversalAndTampering(t *testing.T) {

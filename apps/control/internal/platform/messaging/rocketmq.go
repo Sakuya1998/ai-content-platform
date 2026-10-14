@@ -8,7 +8,7 @@ import (
 	rmq "github.com/apache/rocketmq-clients/golang/v5"
 	"github.com/apache/rocketmq-clients/golang/v5/credentials"
 	v2 "github.com/apache/rocketmq-clients/golang/v5/protocol/v2"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/config"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
 )
 
 // RocketMQClient connects to the gRPC Proxy, never to NameServer.

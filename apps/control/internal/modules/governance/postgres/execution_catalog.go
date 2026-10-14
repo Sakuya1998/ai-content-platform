@@ -3,7 +3,7 @@ package postgres
 import (
 	"context"
 
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
 )
 
 func (g *GovernanceRepository) Prompt(ctx context.Context, workspace, id string) (governance.PromptVersion, error) {

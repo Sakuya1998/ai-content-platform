@@ -11,8 +11,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/project"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/database"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/project"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/database"
 )
 
 type Repository struct {

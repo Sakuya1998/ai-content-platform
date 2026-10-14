@@ -5,9 +5,9 @@ import (
 	"errors"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/contracts"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/execution"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/task"
+	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/execution"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/task"
 )
 
 type ProjectionAdapter struct {

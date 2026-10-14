@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/contracts"
+	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
 )
 
 type Request struct {

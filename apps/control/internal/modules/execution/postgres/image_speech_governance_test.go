@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-	projectmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/project"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/config"
+	projectmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/project"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
 )
 
 const imageSpeechProfileJSON = `{"name":"media profile","provider":"openai","api_key":"media-test-key","chat_models":["chat"],"embedding_models":["embed"],"image_models":[{"model_name":"image-a","capabilities":{"generation":true,"editing":true,"sizes":["1024x1024"],"formats":["png","webp"],"max_images":4}},{"model_name":"image-b","capabilities":{"generation":true,"editing":false,"sizes":["512x512"],"formats":["jpeg"],"max_images":1}}],"speech_models":[{"model_name":"speech-a","capabilities":{"voices":["alloy"],"formats":["mp3","wav"],"languages":["en","zh"],"min_speed":0.25,"max_speed":4,"max_input_chars":16000,"instructions":true}},{"model_name":"speech-b","capabilities":{"voices":["nova"],"formats":["opus"],"languages":["en"],"min_speed":1,"max_speed":2,"max_input_chars":1000,"instructions":false}}]}`

@@ -9,11 +9,11 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/contracts"
-	contentmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/content"
-	taskmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/task"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/config"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/database"
+	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
+	contentmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/content"
+	taskmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/task"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/database"
 )
 
 var ErrMessageConflict = taskmodule.ErrConflict

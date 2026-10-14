@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/contracts"
+	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
 )
 
 func (a Adapter) ReadEvents(ctx context.Context, scope, id string, after int64) ([]contracts.Event, bool, error) {

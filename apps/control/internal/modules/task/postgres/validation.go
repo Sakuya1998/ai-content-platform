@@ -5,8 +5,8 @@ import (
 	"errors"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/project"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/task"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/project"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/task"
 	"strings"
 )
 

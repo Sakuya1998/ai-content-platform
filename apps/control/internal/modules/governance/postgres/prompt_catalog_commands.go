@@ -9,7 +9,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
 )
 
 type promptWrite struct {

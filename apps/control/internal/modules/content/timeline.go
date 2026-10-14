@@ -2,7 +2,7 @@ package content
 
 import (
 	"encoding/json"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
 	"regexp"
 	"strings"
 	"unicode"

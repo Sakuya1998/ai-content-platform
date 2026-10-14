@@ -12,14 +12,14 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
-	governancepostgres "github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance/postgres"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/identity"
-	identitypostgres "github.com/sakuya/novel-agent/go-control-plane/internal/modules/identity/postgres"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/modelprovider"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/password"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/security"
-	identityhttp "github.com/sakuya/novel-agent/go-control-plane/internal/transport/http/identity"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
+	governancepostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/governance/postgres"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/identity"
+	identitypostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/identity/postgres"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/modelprovider"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/password"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/security"
+	identityhttp "github.com/sakuya/novel-agent/apps/control/internal/transport/http/identity"
 )
 
 type IdentityAPI = identityhttp.Handler

@@ -19,7 +19,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/config"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
 )
 
 var ErrArtifactConflict = errors.New("artifact version checksum conflict")

@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	projectmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/project"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/objectstorage"
+	projectmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/project"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/objectstorage"
 )
 
 type testSigner struct{ key string }

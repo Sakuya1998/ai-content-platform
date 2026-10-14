@@ -5,10 +5,10 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/content"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/execution"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/project"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/content"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/execution"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/project"
 )
 
 var ErrNotFound = project.ErrNotFound

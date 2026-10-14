@@ -2,9 +2,9 @@ package productionhttp
 
 import (
 	"github.com/google/uuid"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/production"
-	projectmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/project"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/transport/http/response"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/production"
+	projectmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/project"
+	"github.com/sakuya/novel-agent/apps/control/internal/transport/http/response"
 	"net/http"
 	"strings"
 )

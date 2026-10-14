@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/config"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
 )
 
 func TestRunWaitsForBackgroundTasksBeforeClosingResources(t *testing.T) {

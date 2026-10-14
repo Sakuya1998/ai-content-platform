@@ -2,9 +2,9 @@ package production
 
 import (
 	"github.com/google/uuid"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/content"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/task"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/content"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/task"
 	"strings"
 	"unicode/utf8"
 )

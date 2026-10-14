@@ -2,7 +2,7 @@ package resources
 
 import (
 	"context"
-	taskmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/task"
+	taskmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/task"
 )
 
 type taskSubmitter struct {

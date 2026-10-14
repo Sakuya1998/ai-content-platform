@@ -12,8 +12,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	projectmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/project"
-	projectmemory "github.com/sakuya/novel-agent/go-control-plane/internal/modules/project/memory"
+	projectmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/project"
+	projectmemory "github.com/sakuya/novel-agent/apps/control/internal/modules/project/memory"
 )
 
 var ErrNotFound = projectmodule.ErrNotFound

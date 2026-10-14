@@ -3,7 +3,7 @@ package workflow
 import (
 	"testing"
 
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
 )
 
 func TestWorkflowDefinitionRejectsUnregisteredEngineAndCode(t *testing.T) {

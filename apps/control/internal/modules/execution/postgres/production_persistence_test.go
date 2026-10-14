@@ -12,14 +12,14 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/contracts"
-	contentpostgres "github.com/sakuya/novel-agent/go-control-plane/internal/modules/content/postgres"
-	governancepostgres "github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance/postgres"
-	productionmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/production"
-	productionpostgres "github.com/sakuya/novel-agent/go-control-plane/internal/modules/production/postgres"
-	projectmodule "github.com/sakuya/novel-agent/go-control-plane/internal/modules/project"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/config"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/platform/objectstorage"
+	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
+	contentpostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/content/postgres"
+	governancepostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/governance/postgres"
+	productionmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/production"
+	productionpostgres "github.com/sakuya/novel-agent/apps/control/internal/modules/production/postgres"
+	projectmodule "github.com/sakuya/novel-agent/apps/control/internal/modules/project"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/config"
+	"github.com/sakuya/novel-agent/apps/control/internal/platform/objectstorage"
 )
 
 type ProductionBinding = productionmodule.Binding

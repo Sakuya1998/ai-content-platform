@@ -1,6 +1,6 @@
 package postgres
 
-import "github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
+import "github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
 
 type ModelProfile = governance.ModelProfile
 type RouteTarget = governance.RouteTarget

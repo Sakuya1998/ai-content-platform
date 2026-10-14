@@ -1,6 +1,6 @@
 package execution
 
-import "github.com/sakuya/novel-agent/go-control-plane/internal/modules/governance"
+import "github.com/sakuya/novel-agent/apps/control/internal/modules/governance"
 
 func GeneratedAudioWorkflow(arguments map[string]any) string {
 	purpose, valid := governance.ValidAudioGenerationArguments(arguments)

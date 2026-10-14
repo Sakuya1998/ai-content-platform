@@ -6,14 +6,14 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/sakuya/novel-agent/go-control-plane/internal/contracts"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/content"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/execution"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/identity"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/project"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/project/transfer"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/modules/task"
-	"github.com/sakuya/novel-agent/go-control-plane/internal/transport/http/response"
+	"github.com/sakuya/novel-agent/apps/control/internal/contracts"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/content"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/execution"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/identity"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/project"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/project/transfer"
+	"github.com/sakuya/novel-agent/apps/control/internal/modules/task"
+	"github.com/sakuya/novel-agent/apps/control/internal/transport/http/response"
 )
 
 type Messaging interface {
