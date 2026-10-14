@@ -49,7 +49,7 @@ func TestCommandRoundTripPreservesExecutionSnapshotReference(t *testing.T) {
 }
 
 func TestExecutionSnapshotContractFixtureMatchesCommand(t *testing.T) {
-	root := filepath.Join("..", "..", "..", "contracts", "examples")
+	root := filepath.Join("..", "..", "..", "..", "..", "packages", "contracts", "contracts", "examples")
 	commandData, err := os.ReadFile(filepath.Join(root, "command.json"))
 	if err != nil {
 		t.Fatal(err)

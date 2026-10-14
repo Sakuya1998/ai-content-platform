@@ -7,7 +7,7 @@ import (
 )
 
 func TestSharedObjectKeyContract(t *testing.T) {
-	data, err := os.ReadFile("../../../../contracts/object-keys.examples.json")
+	data, err := os.ReadFile("../../../../../packages/contracts/contracts/object-keys.examples.json")
 	if err != nil {
 		t.Fatal(err)
 	}
