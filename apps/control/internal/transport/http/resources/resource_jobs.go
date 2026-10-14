@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
-	taskmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
+	taskmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task"
 )
 
 func (a *ResourceAPI) listJobsHTTP(w http.ResponseWriter, r *http.Request, scope, project string) {

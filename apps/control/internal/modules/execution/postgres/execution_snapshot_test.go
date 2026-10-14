@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/objectstorage"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/config"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/objectstorage"
 )
 
 type executionSnapshotWriterStub struct {

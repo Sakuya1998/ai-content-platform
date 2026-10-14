@@ -6,11 +6,11 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/content"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/execution"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/governance"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/database"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/content"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/execution"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/database"
 )
 
 type CommandPort interface {

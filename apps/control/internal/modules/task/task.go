@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
 )
 
 type Request struct {

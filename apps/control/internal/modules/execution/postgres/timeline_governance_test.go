@@ -13,12 +13,12 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
-	contentpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/content/postgres"
-	projectmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/objectstorage"
-	resources "github.com/sakuya/ai-content-platform/apps/control/internal/transport/http/resources"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
+	contentpostgres "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/content/postgres"
+	projectmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/config"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/objectstorage"
+	resources "github.com/Sakuya1998/ai-content-platform/apps/control/internal/transport/http/resources"
 )
 
 func TestImmutableContentHTTPAndExecutionPreserveFloatHash(t *testing.T) {

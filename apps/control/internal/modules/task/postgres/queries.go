@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task"
 )
 
 type Job = task.Job

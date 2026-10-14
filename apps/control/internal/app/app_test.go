@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/config"
 )
 
 func TestRunWaitsForBackgroundTasksBeforeClosingResources(t *testing.T) {

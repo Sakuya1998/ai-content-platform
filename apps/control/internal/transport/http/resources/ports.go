@@ -6,14 +6,14 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/content"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/execution"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/identity"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/project/transfer"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/transport/http/response"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/content"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/execution"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/identity"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project/transfer"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/transport/http/response"
 )
 
 type Messaging interface {

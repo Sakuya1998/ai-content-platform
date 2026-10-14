@@ -12,9 +12,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	contentmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/content"
-	taskmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/database"
+	contentmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/content"
+	taskmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/database"
 )
 
 type Repository struct {

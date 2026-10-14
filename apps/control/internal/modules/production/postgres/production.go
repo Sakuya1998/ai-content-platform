@@ -10,9 +10,9 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
-	executionmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/execution"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/production"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
+	executionmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/execution"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/production"
 )
 
 type ProductionBinding = production.Binding

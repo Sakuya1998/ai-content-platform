@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	projectmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/objectstorage"
+	projectmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/objectstorage"
 )
 
 type testSigner struct{ key string }

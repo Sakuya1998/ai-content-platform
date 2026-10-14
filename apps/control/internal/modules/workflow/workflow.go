@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/governance"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/identity"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/identity"
 )
 
 var ErrInvalid = errors.New("invalid controlled workflow definition")

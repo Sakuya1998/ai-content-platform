@@ -8,7 +8,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
 )
 
 var ErrProjectionConflict = errors.New("execution projection scope or hash conflict")

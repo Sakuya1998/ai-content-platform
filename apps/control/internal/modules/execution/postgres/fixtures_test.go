@@ -3,7 +3,7 @@ package postgres
 import (
 	"context"
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
 )
 
 // Mutable fixtures simulate catalog retirement and storage failures after submission.

@@ -1,6 +1,6 @@
 package execution
 
-import "github.com/sakuya/ai-content-platform/apps/control/internal/modules/governance"
+import "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
 
 func GeneratedAudioWorkflow(arguments map[string]any) string {
 	purpose, valid := governance.ValidAudioGenerationArguments(arguments)

@@ -7,9 +7,9 @@ import (
 	"fmt"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/database"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/database"
 )
 
 func (r Repository) Within(ctx context.Context, scope string, fn func(pgx.Tx) error) error {

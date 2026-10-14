@@ -2,9 +2,9 @@ package execution
 
 import (
 	"github.com/google/uuid"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/content"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/governance"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/production"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/content"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/production"
 	"strings"
 )
 

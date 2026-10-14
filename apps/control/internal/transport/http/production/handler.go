@@ -2,9 +2,9 @@ package productionhttp
 
 import (
 	"github.com/google/uuid"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/production"
-	projectmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/transport/http/response"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/production"
+	projectmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/transport/http/response"
 	"net/http"
 	"strings"
 )

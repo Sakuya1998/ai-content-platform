@@ -9,13 +9,13 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/evaluation"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/identity"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/knowledge"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/observability"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/evaluation"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/identity"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/knowledge"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/observability"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task"
 )
 
 type OperationSubmitter interface {

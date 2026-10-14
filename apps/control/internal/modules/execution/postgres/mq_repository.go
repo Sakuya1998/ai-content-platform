@@ -9,11 +9,11 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
-	contentmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/content"
-	taskmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/database"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
+	contentmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/content"
+	taskmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/config"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/database"
 )
 
 var ErrMessageConflict = taskmodule.ErrConflict

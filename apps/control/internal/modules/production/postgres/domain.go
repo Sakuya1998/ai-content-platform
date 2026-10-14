@@ -6,12 +6,12 @@ import (
 	"errors"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/content"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/execution"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/governance"
-	productionmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/production"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/content"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/execution"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
+	productionmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/production"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task"
 )
 
 type GenerationRequest = execution.Request

@@ -7,8 +7,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
-	contentmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/content"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
+	contentmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/content"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project"
 )
 
 func CreateDocumentWithin(ctx context.Context, tx pgx.Tx, id, workspace, projectID, kind, title string) error {

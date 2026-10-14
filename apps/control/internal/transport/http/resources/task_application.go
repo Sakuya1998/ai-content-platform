@@ -2,7 +2,7 @@ package resources
 
 import (
 	"context"
-	taskmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
+	taskmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task"
 )
 
 type taskSubmitter struct {

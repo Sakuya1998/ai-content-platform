@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/config"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/messaging"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/config"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/messaging"
 )
 
 func main() {

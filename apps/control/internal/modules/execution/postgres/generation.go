@@ -9,12 +9,12 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/contracts"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/content"
-	executionmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/execution"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/governance"
-	productionmodule "github.com/sakuya/ai-content-platform/apps/control/internal/modules/production"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/platform/objectstorage"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/content"
+	executionmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/execution"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
+	productionmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/production"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/objectstorage"
 )
 
 type GenerationRequest = executionmodule.Request

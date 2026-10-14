@@ -2,17 +2,17 @@ package app
 
 import (
 	"github.com/jackc/pgx/v5/pgxpool"
-	contentpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/content/postgres"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/execution"
-	executionpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/execution/postgres"
-	identitypostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/identity/postgres"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/project"
-	projectpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/project/postgres"
-	projecttransfer "github.com/sakuya/ai-content-platform/apps/control/internal/modules/project/transfer"
-	transferpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/project/transfer/postgres"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/modules/task"
-	taskpostgres "github.com/sakuya/ai-content-platform/apps/control/internal/modules/task/postgres"
-	"github.com/sakuya/ai-content-platform/apps/control/internal/transport/http/resources"
+	contentpostgres "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/content/postgres"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/execution"
+	executionpostgres "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/execution/postgres"
+	identitypostgres "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/identity/postgres"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project"
+	projectpostgres "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project/postgres"
+	projecttransfer "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project/transfer"
+	transferpostgres "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project/transfer/postgres"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task"
+	taskpostgres "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task/postgres"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/transport/http/resources"
 )
 
 type resourceOptions struct {
