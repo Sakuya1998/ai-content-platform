@@ -4,26 +4,26 @@ services:
     image: apache/rocketmq:5.3.1
     restart: "no"
     env_file:
-      - path: .env.control.example
+      - path: ../../.env.control.example
         required: true
-      - path: .env.runtime.example
+      - path: ../../.env.runtime.example
         required: true
-      - path: .env.control
+      - path: ../../.env.control
         required: false
-      - path: .env.runtime
+      - path: ../../.env.runtime
         required: false
     environment:
       MQ_ADMIN_NAMESERVER: rocketmq-namesrv:9876
-    volumes: [./deploy/rocketmq/init.sh:/init-mq.sh:ro]
+    volumes: [../rocketmq/init.sh:/init-mq.sh:ro]
     command: [sh, /init-mq.sh]
     depends_on: [rocketmq-broker]
   runtime-dispatch: &runtime-messaging
     image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
     restart: unless-stopped
     env_file:
-      - path: .env.runtime.example
+      - path: ../../.env.runtime.example
         required: true
-      - path: .env.runtime
+      - path: ../../.env.runtime
         required: false
     depends_on:
       migrate: { condition: service_completed_successfully }
@@ -54,45 +54,48 @@ services:
   artifact-init:
     image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
     build:
-      context: .
+      context: ../..
+      dockerfile: apps/runtime/Dockerfile
     restart: "no"
     env_file:
-      - path: .env.runtime.example
+      - path: ../../.env.runtime.example
         required: true
-      - path: .env.runtime
+      - path: ../../.env.runtime
         required: false
     depends_on:
       rustfs: { condition: service_started }
-    command: ["python", "scripts/platform_storage_init.py", "--create-bucket"]
+    command: ["python", "tools/migrate/platform_storage_init.py", "--create-bucket"]
   migrate:
     image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
     build:
-      context: .
+      context: ../..
+      dockerfile: apps/runtime/Dockerfile
     restart: "no"
     env_file:
-      - path: .env.control.example
+      - path: ../../.env.control.example
         required: true
-      - path: .env.runtime.example
+      - path: ../../.env.runtime.example
         required: true
-      - path: .env.control
+      - path: ../../.env.control
         required: false
-      - path: .env.runtime
+      - path: ../../.env.runtime
         required: false
     depends_on:
       postgres-control: { condition: service_healthy }
       postgres-runtime: { condition: service_healthy }
-    command: ["python", "scripts/platform_migrate.py"]
+    command: ["python", "tools/migrate/platform_migrate.py"]
   control-plane:
     image: ${CONTROL_PLANE_IMAGE:-novel-agent-control-plane:local}
     build:
-      context: ./go-control-plane
+      context: ../../apps/control
+      dockerfile: Dockerfile
     restart: unless-stopped
     environment:
       SERVICE_NAME: control-plane
     env_file:
-      - path: .env.control.example
+      - path: ../../.env.control.example
         required: true
-      - path: .env.control
+      - path: ../../.env.control
         required: false
     depends_on:
       postgres-control: { condition: service_healthy }

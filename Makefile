@@ -68,7 +68,7 @@ dev-runtime:
 
 # Database migrations
 migrate:
-	cd apps/runtime && uv run --locked python ../../tools/migrate/platform_migrate.py
+	uv run --locked python tools/migrate/platform_migrate.py
 
 # Format code
 format:
