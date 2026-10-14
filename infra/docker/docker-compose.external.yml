@@ -31,7 +31,8 @@ services:
   migrate:
     image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
     build:
-      context: .
+      context: ../..
+      dockerfile: apps/runtime/Dockerfile
     restart: "no"
     env_file:
       - ../../apps/control/.env.external
@@ -53,10 +54,11 @@ services:
   runtime:
     image: ${RUNTIME_IMAGE:-novel-agent-runtime:local}
     build:
-      context: .
+      context: ../..
+      dockerfile: apps/runtime/Dockerfile
     restart: unless-stopped
     env_file:
-      - .env.runtime.external
+      - ../../apps/runtime/.env.external
     depends_on:
       migrate:
         condition: service_completed_successfully
