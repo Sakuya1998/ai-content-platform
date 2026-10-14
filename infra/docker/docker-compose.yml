@@ -93,9 +93,9 @@ services:
     environment:
       SERVICE_NAME: control-plane
     env_file:
-      - path: ../../.env.control.example
+      - path: ../../apps/control/.env.example
         required: true
-      - path: ../../.env.control
+      - path: ../../apps/control/.env
         required: false
     depends_on:
       postgres-control: { condition: service_healthy }
@@ -114,9 +114,9 @@ services:
     environment:
       SERVICE_NAME: runtime
     env_file:
-      - path: .env.runtime.example
+      - path: ../../apps/runtime/.env.example
         required: true
-      - path: .env.runtime
+      - path: ../../apps/runtime/.env
         required: false
     depends_on:
       postgres-runtime: { condition: service_healthy }
@@ -131,18 +131,18 @@ services:
   postgres-control:
     image: pgvector/pgvector:pg16
     env_file:
-      - path: .env.control.example
+      - path: ../../apps/control/.env.example
         required: true
-      - path: .env.control
+      - path: ../../apps/control/.env
         required: false
     volumes: [postgres-control-data:/var/lib/postgresql/data]
     healthcheck: { test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"], interval: 10s, timeout: 5s, retries: 5 }
   postgres-runtime:
     image: pgvector/pgvector:pg16
     env_file:
-      - path: .env.runtime.example
+      - path: ../../apps/runtime/.env.example
         required: true
-      - path: .env.runtime
+      - path: ../../apps/runtime/.env
         required: false
     volumes: [postgres-runtime-data:/var/lib/postgresql/data]
     healthcheck: { test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"], interval: 10s, timeout: 5s, retries: 5 }
@@ -168,9 +168,9 @@ services:
   redis:
     image: redis:7.4-alpine
     env_file:
-      - path: .env.runtime.example
+      - path: ../../apps/runtime/.env.example
         required: true
-      - path: .env.runtime
+      - path: ../../apps/runtime/.env
         required: false
     command: [sh, -c, 'if [ -n "$${REDIS_PASSWORD}" ]; then exec redis-server --appendonly yes --requirepass "$${REDIS_PASSWORD}"; else exec redis-server --appendonly yes; fi']
     volumes: [redis-data:/data]
@@ -180,9 +180,9 @@ services:
     image: rustfs/rustfs:latest
     command: [--console-address, ":9001", /data]
     env_file:
-      - path: .env.runtime.example
+      - path: ../../apps/runtime/.env.example
         required: true
-      - path: .env.runtime
+      - path: ../../apps/runtime/.env
         required: false
     volumes: [rustfs-data:/data]
     ports: ["${RUSTFS_API_PORT:-9000}:9000", "${RUSTFS_CONSOLE_PORT:-9001}:9001"]
