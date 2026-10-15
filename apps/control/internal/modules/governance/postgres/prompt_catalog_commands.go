@@ -12,6 +12,10 @@ import (
 	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
 )
 
+// ============================================================================
+// Prompt Catalog - Write Operations (Prompt resources)
+// ============================================================================
+
 type promptWrite struct {
 	Key             string           `json:"key"`
 	NodeKey         string           `json:"node_key"`

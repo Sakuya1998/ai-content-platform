@@ -10,6 +10,10 @@ import (
 	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
 )
 
+// ============================================================================
+// Creation Policy - Write Operations
+// ============================================================================
+
 type creationPolicyWrite struct {
 	Key             string          `json:"key"`
 	Name            string          `json:"name"`
