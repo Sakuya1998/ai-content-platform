@@ -14,4 +14,5 @@ var (
 	ErrInvalidTarget     = errors.New("invalid route target")
 	ErrInvalidKind       = errors.New("invalid model kind")
 	ErrModelNotFound     = errors.New("model not found in profile")
+	ErrWorkflowRequired  = errors.New("workflow is required")
 )
