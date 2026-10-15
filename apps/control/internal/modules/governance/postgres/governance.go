@@ -15,6 +15,10 @@ import (
 	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
 )
 
+// ============================================================================
+// Resource Management
+// ============================================================================
+
 type ResourceVersion = governance.ResourceVersion
 
 const resourceSelect = `SELECT r.id::text,v.id::text,r.workspace_id::text,r.kind,r.key,v.version,v.name,v.description,v.payload,v.status,v.content_hash,v.created_at FROM governance_resources r JOIN governance_resource_versions v ON v.resource_id=r.id `
@@ -289,6 +293,10 @@ func (g *GovernanceRepository) executeResource(w *catalogResult, r *catalogReque
 	catalogComplete(w, statusCode, next)
 }
 
+// ============================================================================
+// Model Profile Management
+// ============================================================================
+
 const modelProfileSelect = `SELECT p.id::text,v.id::text,v.version,v.name,v.provider,v.base_url,v.encrypted_key,v.chat_models,v.embedding_models,v.max_tokens,v.video_models,v.image_models,v.speech_models,v.music_models,v.sound_effect_models FROM governance_model_profiles p JOIN governance_model_profile_versions v ON v.profile_id=p.id `
 
 func scanModelProfile(row pgx.Row) (ModelProfile, error) {
@@ -322,6 +330,10 @@ func scanModelProfile(row pgx.Row) (ModelProfile, error) {
 	}
 	return p, err
 }
+
+// ============================================================================
+// Model Route Freezing and Resolution
+// ============================================================================
 
 func (g *GovernanceRepository) freezeTarget(ctx context.Context, tx pgx.Tx, workspace, kind string, target RouteTarget) (RouteTarget, error) {
 	if target.ModelName == "" || target.ProfileID == "" {
