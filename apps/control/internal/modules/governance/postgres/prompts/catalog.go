@@ -1,4 +1,4 @@
-package postgres
+package prompts
 
 import (
 	"context"
@@ -46,7 +46,7 @@ func promptPackEntries(ctx context.Context, tx pgx.Tx, id string) ([]PromptPackE
 	return result, rows.Err()
 }
 
-func (a *PromptRepository) FrozenVersion(ctx context.Context, workspace, id string) (PromptVersion, error) {
+func (a *Repository) FrozenVersion(ctx context.Context, workspace, id string) (PromptVersion, error) {
 	if _, err := uuid.Parse(id); err != nil {
 		return PromptVersion{}, promptInvalid("invalid prompt version ID")
 	}
@@ -118,7 +118,7 @@ func validatePackForWorkflow(ctx context.Context, tx pgx.Tx, workspace, id, work
 	return FrozenPromptBinding{PackVersionID: packID, Bindings: frozen}, nil
 }
 
-func (a *PromptRepository) Freeze(ctx context.Context, workspace, workflow string) (FrozenPromptBinding, error) {
+func (a *Repository) Freeze(ctx context.Context, workspace, workflow string) (FrozenPromptBinding, error) {
 	tx, err := workspaceTx(ctx, a.pool, workspace)
 	if err != nil {
 		return FrozenPromptBinding{}, err
