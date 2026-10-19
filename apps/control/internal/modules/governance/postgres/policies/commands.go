@@ -1,13 +1,13 @@
-package postgres
+package policies
 
 import (
 	"encoding/json"
 	"errors"
 	"strings"
 
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
-	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
 )
 
 // ============================================================================
@@ -23,7 +23,7 @@ type creationPolicyWrite struct {
 	Workflow        string          `json:"workflow"`
 }
 
-func (a *PolicyRepository) executePolicy(w *catalogResult, r *catalogRequest, p Principal, tx pgx.Tx, parts []string) {
+func (a *Repository) executePolicy(w *catalogResult, r *catalogRequest, p Principal, tx pgx.Tx, parts []string) {
 	ctx := r.Context()
 	if len(parts) > 3 {
 		catalogNotFound(w)
@@ -235,7 +235,7 @@ type creationPolicyBinding struct {
 	CreatedAt       any     `json:"created_at"`
 }
 
-func (a *PolicyRepository) executeBinding(w *catalogResult, r *catalogRequest, p Principal, tx pgx.Tx, parts []string) {
+func (a *Repository) executeBinding(w *catalogResult, r *catalogRequest, p Principal, tx pgx.Tx, parts []string) {
 	ctx := r.Context()
 	if len(parts) != 1 && !(len(parts) == 2 && parts[1] == "history" && r.action == governance.Read) {
 		catalogNotFound(w)

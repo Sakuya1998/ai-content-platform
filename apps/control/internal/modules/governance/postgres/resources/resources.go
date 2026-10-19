@@ -1,16 +1,22 @@
 package resources
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
+	"io"
 	"strings"
 	"time"
 
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/identity"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/platform/database"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
-	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/governance"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // ResourceVersion is an alias to the domain type
@@ -35,27 +41,20 @@ type resourceWrite struct {
 
 // Repository provides resource CRUD operations
 type Repository struct {
-	pool interface {
-		Begin(context.Context) (pgx.Tx, error)
-	}
-	writeAudit      func(context.Context, pgx.Tx, Principal, string, string, string) error
+	pool             *pgxpool.Pool
+	writeAudit       func(context.Context, pgx.Tx, Principal, string, string, string) error
 	normalizePayload func(string, json.RawMessage) (json.RawMessage, error)
-	builtinStyle    func(workspace, key string) (ResourceVersion, bool)
-	regexpKey       func(string) bool
-	builtinStyleMap map[string]bool
+	builtinStyle     func(workspace, key string) (ResourceVersion, bool)
+	regexpKey        func(string) bool
+	builtinStyleMap  map[string]bool
 }
 
 // Principal represents the authenticated user context
-type Principal struct {
-	WorkspaceID string
-	UserID      string
-}
+type Principal = identity.Principal
 
 // NewRepository creates a new resource repository
 func NewRepository(
-	pool interface {
-		Begin(context.Context) (pgx.Tx, error)
-	},
+	pool *pgxpool.Pool,
 	writeAudit func(context.Context, pgx.Tx, Principal, string, string, string) error,
 	normalizePayload func(string, json.RawMessage) (json.RawMessage, error),
 	builtinStyle func(workspace, key string) (ResourceVersion, bool),
@@ -63,26 +62,22 @@ func NewRepository(
 	builtinStyleMap map[string]bool,
 ) *Repository {
 	return &Repository{
-		pool:            pool,
-		writeAudit:      writeAudit,
+		pool:             pool,
+		writeAudit:       writeAudit,
 		normalizePayload: normalizePayload,
-		builtinStyle:    builtinStyle,
-		regexpKey:       regexpKey,
-		builtinStyleMap: builtinStyleMap,
+		builtinStyle:     builtinStyle,
+		regexpKey:        regexpKey,
+		builtinStyleMap:  builtinStyleMap,
 	}
 }
 
 // FrozenResource retrieves a specific frozen resource version by ID
-func (repo *Repository) FrozenResource(ctx context.Context, pool interface{ Begin(context.Context) (pgx.Tx, error) }, workspace, id string) (ResourceVersion, error) {
-	tx, err := pool.Begin(ctx)
+func (repo *Repository) FrozenResource(ctx context.Context, workspace, id string) (ResourceVersion, error) {
+	tx, err := database.BeginWorkspaceTx(ctx, repo.pool, workspace)
 	if err != nil {
 		return ResourceVersion{}, err
 	}
 	defer tx.Rollback(ctx)
-	_, err = tx.Exec(ctx, "SET LOCAL rls.workspace_id = $1", workspace)
-	if err != nil {
-		return ResourceVersion{}, err
-	}
 	return ScanResource(tx.QueryRow(ctx, resourceSelect+"WHERE r.workspace_id=$1 AND v.id::text=$2", workspace, id))
 }
 
@@ -96,16 +91,11 @@ func (repo *Repository) ExecuteResourceCatalogOp(
 	filters map[string]string,
 	body json.RawMessage,
 ) (statusCode int, result any, err error) {
-	tx, err := repo.pool.Begin(ctx)
+	tx, err := database.BeginWorkspaceTx(ctx, repo.pool, p.WorkspaceID)
 	if err != nil {
 		return 0, nil, err
 	}
 	defer tx.Rollback(ctx)
-
-	_, err = tx.Exec(ctx, "SET LOCAL rls.workspace_id = $1", p.WorkspaceID)
-	if err != nil {
-		return 0, nil, err
-	}
 
 	// List resources
 	if len(parts) == 0 && action == governance.Read {
@@ -138,7 +128,7 @@ func (repo *Repository) ExecuteResourceCatalogOp(
 				items = append(items, v)
 			}
 		}
-		return 200, map[string]any{"items": items, "has_more": false}, tx.Commit(ctx)
+		return 200, map[string]any{"items": items, "has_more": false}, nil
 	}
 
 	var current ResourceVersion
@@ -154,22 +144,22 @@ func (repo *Repository) ExecuteResourceCatalogOp(
 		if kind == "styles" && strings.HasPrefix(id, "system_style_") {
 			current, builtin = repo.builtinStyle(p.WorkspaceID, id)
 			if !builtin {
-				return 404, nil, governance.ErrNotFound
+				return 404, nil, errors.New("style not found")
 			}
 			if version := filters["version"]; version != "" && version != "1" {
-				return 404, nil, governance.ErrNotFound
+				return 404, nil, errors.New("version not found")
 			}
 			if action == governance.Read {
 				if len(parts) == 2 && parts[1] == "versions" {
-					return 200, map[string]any{"items": []ResourceVersion{current}}, tx.Commit(ctx)
+					return 200, map[string]any{"items": []ResourceVersion{current}}, nil
 				} else if len(parts) == 1 {
-					return 200, current, tx.Commit(ctx)
+					return 200, current, nil
 				} else {
 					return 404, nil, governance.ErrNotFound
 				}
 			}
 			if len(parts) != 2 || (parts[1] != "clone" && parts[1] != "copy") {
-				return 409, nil, governance.ErrConflict
+				return 409, nil, errors.New("built-in resources must be cloned before editing")
 			}
 			opAction = parts[1]
 		}
@@ -203,7 +193,7 @@ func (repo *Repository) ExecuteResourceCatalogOp(
 				if e = rows.Err(); e != nil {
 					return 0, nil, e
 				}
-				return 200, map[string]any{"items": items}, tx.Commit(ctx)
+				return 200, map[string]any{"items": items}, nil
 			}
 			query := resourceSelect + "WHERE r.workspace_id=$1 AND r.kind=$2 AND r.id=$3 AND v.version=r.current_version"
 			args := []any{p.WorkspaceID, kind, id}
@@ -216,20 +206,18 @@ func (repo *Repository) ExecuteResourceCatalogOp(
 				return 0, nil, err
 			}
 			if action == governance.Read && opAction == "" {
-				return 200, current, tx.Commit(ctx)
+				return 200, current, nil
 			}
 		}
 	}
 
 	var input resourceWrite
-	if len(body) > 0 {
-		if err := json.Unmarshal(body, &input); err != nil {
-			return 422, nil, err
-		}
+	if err := decodeResourceWrite(body, &input); err != nil {
+		return 400, nil, err
 	}
 
 	if input.ExpectedVersion > 0 && input.ExpectedVersion != current.Version {
-		return 409, nil, governance.ErrConflict
+		return 409, nil, errors.New("resource version changed")
 	}
 
 	next := current
@@ -239,18 +227,18 @@ func (repo *Repository) ExecuteResourceCatalogOp(
 
 	if len(parts) == 0 && action == governance.Create || opAction == "clone" || opAction == "copy" {
 		if action != governance.Create {
-			return 405, nil, governance.ErrMethodNotAllowed
+			return 405, nil, errors.New("operation not supported")
 		}
 		if !repo.regexpKey(input.Key) {
 			return 422, nil, governance.ErrInvalidKey
 		}
 		if kind == "styles" {
 			if repo.builtinStyleMap[input.Key] {
-				return 409, nil, governance.ErrConflict
+				return 409, nil, errors.New("built-in style key is reserved")
 			}
 		}
 		if strings.TrimSpace(input.Name) == "" {
-			return 422, nil, governance.ErrNameRequired
+			return 422, nil, errors.New("name required")
 		}
 		id = uuid.NewString()
 		next.ID = id
@@ -263,7 +251,7 @@ func (repo *Repository) ExecuteResourceCatalogOp(
 		statusCode = 201
 	} else if opAction == "publish" || opAction == "disable" {
 		if action != governance.Create {
-			return 405, nil, governance.ErrMethodNotAllowed
+			return 405, nil, errors.New("operation not supported")
 		}
 		if opAction == "publish" {
 			next.Status = "published"
@@ -272,13 +260,13 @@ func (repo *Repository) ExecuteResourceCatalogOp(
 		}
 	} else if opAction == "" && (action == governance.Update || action == governance.Replace) {
 		if input.Key != "" && input.Key != current.Key {
-			return 422, nil, governance.ErrKeyImmutable
+			return 422, nil, errors.New("resource key is immutable; clone to change it")
 		}
 		if input.Name != "" {
 			next.Name = input.Name
 		}
 	} else {
-		return 405, nil, governance.ErrMethodNotAllowed
+		return 405, nil, errors.New("operation not supported")
 	}
 
 	if input.Description != nil {
@@ -309,7 +297,7 @@ func (repo *Repository) ExecuteResourceCatalogOp(
 				return 0, nil, err
 			}
 			if !exists {
-				return 422, nil, governance.ErrParentNotFound
+				return 422, nil, errors.New("parent content type not found")
 			}
 		}
 	}
@@ -332,4 +320,17 @@ func (repo *Repository) ExecuteResourceCatalogOp(
 	}
 
 	return statusCode, next, err
+}
+
+func decodeResourceWrite(body json.RawMessage, value *resourceWrite) error {
+	decoder := json.NewDecoder(bytes.NewReader(body))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(value); err != nil {
+		return errors.New("invalid request body")
+	}
+	var extra any
+	if err := decoder.Decode(&extra); err != io.EOF {
+		return errors.New("request body must contain one JSON object")
+	}
+	return nil
 }
