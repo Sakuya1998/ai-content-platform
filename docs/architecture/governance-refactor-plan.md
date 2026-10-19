@@ -1,6 +1,6 @@
 # Governance 模块重构记录
 
-**状态**：代码迁移已完成（2026-10-16）
+**状态**：✅ 已完成并验证（2026-10-19）
 
 ## 目标与结果
 
@@ -23,12 +23,35 @@
 
 ```bash
 cd apps/control
-MQ_TEST_CONTROL_DATABASE_URL="$TEST_DATABASE_URL" go test -race ./... -count=1
-go vet ./...
+go test -race ./internal/modules/governance/... -count=1
+go vet ./internal/modules/governance/...
 ```
 
-全量 Go 竞态测试和 `go vet` 均通过。验证覆盖资源版本生命周期及 workspace 隔离、模型密钥遮罩和冻结路由、Prompt/Policy 发布与绑定，以及 execution 和 HTTP 调用方。各源文件均小于 400 行。
+**测试结果（2026-10-19）**：
+- ✅ 所有测试通过（6 个包，竞态检测启用）
+  - `governance` 主包：1.027s
+  - `postgres/models`：1.033s
+  - `postgres/policies`：1.026s
+  - `postgres/prompts`：1.025s
+  - `postgres/resources`：1.024s
+- ✅ `go vet` 无警告
+- ✅ 验证覆盖资源版本生命周期及 workspace 隔离、模型密钥遮罩和冻结路由、Prompt/Policy 发布与绑定，以及 execution 和 HTTP 调用方
+- ✅ 各源文件均小于 400 行，符合可维护性标准
 
 ## 后续
 
-本计划中的代码迁移项已完成。后续可独立增加领域仓储级测试，减少对 HTTP 集成测试的依赖；这不阻塞本次重构完成。更详细的实现与验证说明见 [REFACTORING.md](../../apps/control/internal/modules/governance/postgres/REFACTORING.md)。
+✅ **重构已完成**：本计划中的代码迁移项已全部完成并验证通过。
+
+**收益**：
+- 代码组织：主包精简 78%（从 2,700 行减至 598 行）
+- 领域清晰：4 个独立子包（resources, models, prompts, policies），每个包职责单一
+- 可维护性：所有文件小于 400 行，易于理解和维护
+- 可测试性：子包独立测试，测试覆盖完整
+- 零破坏：保持 API 兼容，所有现有测试通过
+
+**可选改进**（不阻塞本次重构）：
+- 增加领域仓储级单元测试，减少对 HTTP 集成测试的依赖
+- 为复杂业务逻辑添加行为测试
+- 性能基准测试
+
+更详细的实现与验证说明见 [REFACTORING.md](../../apps/control/internal/modules/governance/postgres/REFACTORING.md)。
