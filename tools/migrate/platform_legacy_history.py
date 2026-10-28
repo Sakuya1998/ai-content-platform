@@ -2,10 +2,10 @@
 
 from uuid import NAMESPACE_URL, uuid5
 
+from agent_runtime.domain.protocol import RuntimeCommand, RuntimeEvent
 from psycopg.types.json import Jsonb
 
-from agent_runtime.domain.protocol import RuntimeCommand, RuntimeEvent
-from scripts.platform_legacy_export import stable_id
+from tools.migrate.platform_legacy_export import stable_id
 
 
 def import_history(control, runtime, tables, decode, workspace, project, old_id, import_job, source_hash):

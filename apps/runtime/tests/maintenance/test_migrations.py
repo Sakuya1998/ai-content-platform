@@ -1,10 +1,10 @@
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def test_runtime_migration_matches_external_runtime_identifiers_and_fencing_contract():
-    migration = (ROOT / "migrations" / "runtime" / "001_init.sql").read_text(encoding="utf-8")
+    migration = (ROOT / "infra/migrations/migrations/runtime/001_init.sql").read_text(encoding="utf-8")
 
     assert "id text PRIMARY KEY" in migration
     assert "command_id text PRIMARY KEY" in migration
@@ -17,8 +17,9 @@ def test_runtime_migration_matches_external_runtime_identifiers_and_fencing_cont
 
 
 def test_runtime_service_documented_database_mode_is_present():
-    source = (ROOT / "src" / "agent_runtime" / "api" / "app.py").read_text(encoding="utf-8")
-    settings = (ROOT / "src" / "agent_runtime" / "settings.py").read_text(encoding="utf-8")
+    runtime = ROOT / "apps/runtime/agent_runtime"
+    source = (runtime / "api" / "app.py").read_text(encoding="utf-8")
+    settings = (runtime / "settings.py").read_text(encoding="utf-8")
 
     assert "database_url" in settings
     assert "PostgresRuntimeJobStore" in source

@@ -5,13 +5,13 @@ import pytest
 import yaml
 from dotenv import dotenv_values
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 @pytest.mark.parametrize("suffix", ["example", "external.example"])
 def test_service_templates_share_bucket_redis_db_and_mq_topics(suffix):
-    control = dotenv_values(ROOT / f".env.control.{suffix}")
-    runtime = dotenv_values(ROOT / f".env.runtime.{suffix}")
+    control = dotenv_values(ROOT / "apps/control" / f".env.{suffix}")
+    runtime = dotenv_values(ROOT / "apps/runtime" / f".env.{suffix}")
     assert control["CONTROL_PLANE_OBJECT_STORAGE_PROVIDERS_0_BUCKET"] == runtime["RUNTIME_OBJECT_STORAGE_BUCKET"]
     assert runtime["RUNTIME_OBJECT_STORAGE_BUCKET"] == "agent-artifacts"
     assert "CONTROL_PLANE_OBJECT_STORAGE_PROVIDERS_0_PREFIX" not in control
@@ -25,7 +25,7 @@ def test_service_templates_share_bucket_redis_db_and_mq_topics(suffix):
 
 
 def test_local_services_depend_on_proxy_and_do_not_expose_nameserver():
-    services = yaml.safe_load((ROOT / "docker-compose.platform.yml").read_text())["services"]
+    services = yaml.safe_load((ROOT / "infra/docker/docker-compose.yml").read_text())["services"]
     for name in ("control-plane", "runtime"):
         assert "rocketmq-proxy" in services[name]["depends_on"]
         assert "rocketmq-namesrv" not in services[name]["depends_on"]

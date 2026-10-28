@@ -384,7 +384,7 @@ def test_production_reuses_asset_generates_missing_media_and_freezes_routes():
                                     worker,
                                     "python",
                                     "-m",
-                                    "scripts.platform_task_once",
+                                    "tools.migrate.platform_task_once",
                                     "--workspace-id",
                                     workspace,
                                     "--job-id",

@@ -21,6 +21,14 @@ var governanceBuiltinStyles = map[string]struct {
 	"yu_hua":   {"余华风格", `{"syntax":["朴素直接的语法","少修辞","多用短句和白描"],"sentence_length":"简短,平均10-25字","vocabulary":["朴素","民间词汇","直白有力"],"narrative_techniques":["零度叙事","黑色幽默","残酷现实"],"pacing":"冷静克制,暗流涌动","examples":["他活着,像一头牲口那样活着。","那年冬天,我爷爷死了,死得很平静。","月光照在路上,像是撒满了盐。"]}`},
 }
 
+func builtinStyleKeys() map[string]bool {
+	keys := make(map[string]bool, len(governanceBuiltinStyles))
+	for key := range governanceBuiltinStyles {
+		keys[key] = true
+	}
+	return keys
+}
+
 func builtinGovernanceStyle(workspace, id string) (ResourceVersion, bool) {
 	key := strings.TrimPrefix(id, "system_style_")
 	style, ok := governanceBuiltinStyles[key]

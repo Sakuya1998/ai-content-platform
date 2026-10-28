@@ -3,8 +3,7 @@ import json
 import sqlite3
 
 import pytest
-
-from scripts.platform_legacy_export import export_legacy, stable_id
+from tools.migrate.platform_legacy_export import export_legacy, stable_id
 
 
 def test_export_reads_sqlite_without_mutation_and_keeps_stable_id_mapping(tmp_path):

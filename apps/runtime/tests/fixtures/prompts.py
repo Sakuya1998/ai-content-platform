@@ -2,15 +2,9 @@
 
 from uuid import NAMESPACE_URL, uuid5
 
+from tools.migrate.platform_seed_catalog import load_prompt_catalog
+
 from agent_runtime.prompts.renderer import PromptVersion
-import sys
-from pathlib import Path
-
-# Add tools directory to path for importing seed scripts
-tools_dir = Path(__file__).resolve().parents[4] / "tools" / "seed"
-sys.path.insert(0, str(tools_dir))
-
-from platform_seed_catalog import load_prompt_catalog
 
 
 def prompt_versions():

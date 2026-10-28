@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/google/uuid"
 	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/contracts"
 	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/evaluation"
 	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/identity"
@@ -16,6 +15,7 @@ import (
 	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/observability"
 	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project"
 	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/task"
+	"github.com/google/uuid"
 )
 
 type OperationSubmitter interface {
@@ -38,18 +38,31 @@ func writeJSON(w http.ResponseWriter, status int, value any) {
 	_ = json.NewEncoder(w).Encode(value)
 }
 func decodeJSON(w http.ResponseWriter, r *http.Request, value any) bool {
+	return decodeJSONWithLimit(w, r, value, 1<<20)
+}
+
+func decodeJSONWithLimit(w http.ResponseWriter, r *http.Request, value any, limit int64) bool {
+	r.Body = http.MaxBytesReader(w, r.Body, limit)
 	decoder := json.NewDecoder(r.Body)
 	decoder.DisallowUnknownFields()
-	if decoder.Decode(value) != nil {
-		writeJSON(w, 400, map[string]string{"error": "invalid request body"})
+	if err := decoder.Decode(value); err != nil {
+		writeJSON(w, requestBodyErrorStatus(err), map[string]string{"error": "invalid request body"})
 		return false
 	}
 	var extra any
-	if decoder.Decode(&extra) != io.EOF {
-		writeJSON(w, 400, map[string]string{"error": "invalid request body"})
+	if err := decoder.Decode(&extra); err != io.EOF {
+		writeJSON(w, requestBodyErrorStatus(err), map[string]string{"error": "invalid request body"})
 		return false
 	}
 	return true
+}
+
+func requestBodyErrorStatus(err error) int {
+	var tooLarge *http.MaxBytesError
+	if errors.As(err, &tooLarge) {
+		return http.StatusRequestEntityTooLarge
+	}
+	return http.StatusBadRequest
 }
 func canonicalPublicPath(path string) string {
 	for _, prefix := range []string{"/api/v2/", "/api/v1/"} {
@@ -64,13 +77,17 @@ func methodNotAllowed(w http.ResponseWriter) {
 }
 func operationError(w http.ResponseWriter, err error) {
 	status := 503
-	if errors.Is(err, identity.ErrNotFound) || errors.Is(err, project.ErrNotFound) {
+	message := "operation unavailable"
+	switch {
+	case errors.Is(err, evaluation.ErrInvalid):
+		status, message = 400, "invalid evaluation request"
+	case errors.Is(err, evaluation.ErrNotFound), errors.Is(err, identity.ErrNotFound), errors.Is(err, project.ErrNotFound):
 		status = 404
+		message = "resource not found"
+	case errors.Is(err, evaluation.ErrConflict), errors.Is(err, task.ErrConflict):
+		status, message = 409, "resource conflict"
 	}
-	if errors.Is(err, task.ErrConflict) {
-		status = 409
-	}
-	writeJSON(w, status, map[string]string{"error": "operation unavailable"})
+	writeJSON(w, status, map[string]string{"error": message})
 }
 
 func (a *OperationsAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -84,6 +101,14 @@ func (a *OperationsAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	path := canonicalPublicPath(r.URL.Path)
+	if path == "/api/evaluations/policies" || strings.HasPrefix(path, "/api/evaluations/policies/") {
+		a.evaluationPolicies(w, r, p, path)
+		return
+	}
+	if path == "/api/evaluations/stats" || path == "/api/evaluations/trends" || path == "/api/evaluations/dimensions" || path == "/api/evaluations/issues" {
+		a.evaluationAnalytics(w, r, p, path)
+		return
+	}
 	if path == "/api/monitoring/summary" {
 		if r.Method != http.MethodGet {
 			methodNotAllowed(w)

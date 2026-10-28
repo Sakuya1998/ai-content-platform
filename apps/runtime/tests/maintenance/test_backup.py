@@ -2,8 +2,7 @@ import os
 from uuid import uuid4
 
 import pytest
-
-from scripts.platform_backup import database_environment, make_archive, open_archive
+from tools.migrate.platform_backup import database_environment, make_archive, open_archive
 
 
 def test_backup_requires_encryption_and_detects_modified_content():
@@ -28,9 +27,9 @@ def test_real_pg_backup_restore_recovers_after_second_database_failure(tmp_path,
     import psycopg
     from psycopg import sql
     from psycopg.conninfo import conninfo_to_dict, make_conninfo
+    from tools.migrate import platform_backup
 
     from agent_runtime.settings import RuntimeSettings
-    from scripts import platform_backup
 
     admin = os.getenv("BACKUP_TEST_ADMIN_URL")
     if not admin:

@@ -5,9 +5,8 @@ from uuid import uuid4
 
 import psycopg
 import pytest
-
-from scripts.platform_legacy_export import export_legacy, stable_id
-from scripts.platform_legacy_import import import_bundle
+from tools.migrate.platform_legacy_export import export_legacy, stable_id
+from tools.migrate.platform_legacy_import import import_bundle
 
 
 def test_legacy_import_is_idempotent_and_preserves_manuscript_and_password(tmp_path):

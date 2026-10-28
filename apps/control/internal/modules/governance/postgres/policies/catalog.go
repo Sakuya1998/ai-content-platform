@@ -1,4 +1,4 @@
-package postgres
+package policies
 
 import (
 	"context"
@@ -27,7 +27,7 @@ func creationPolicyForWorkflow(ctx context.Context, tx pgx.Tx, workspace, id, wo
 	return v, err
 }
 
-func (a *PolicyRepository) FrozenVersion(ctx context.Context, workspace, id string) (CreationPolicyVersion, error) {
+func (a *Repository) FrozenVersion(ctx context.Context, workspace, id string) (CreationPolicyVersion, error) {
 	tx, err := workspaceTx(ctx, a.pool, workspace)
 	if err != nil {
 		return CreationPolicyVersion{}, err
@@ -36,7 +36,7 @@ func (a *PolicyRepository) FrozenVersion(ctx context.Context, workspace, id stri
 	return creationPolicyForWorkflow(ctx, tx, workspace, id, "")
 }
 
-func (a *PolicyRepository) Freeze(ctx context.Context, workspace, workflow string) (map[string]string, error) {
+func (a *Repository) Freeze(ctx context.Context, workspace, workflow string) (map[string]string, error) {
 	if _, err := workflowPromptNodes(workflow); err != nil {
 		return nil, err
 	}

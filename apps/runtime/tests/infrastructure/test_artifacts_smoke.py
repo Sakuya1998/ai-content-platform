@@ -6,15 +6,15 @@ import io
 from types import SimpleNamespace
 
 from botocore.stub import Stubber
+from tools.migrate.platform_artifacts_check import verify_artifacts
 
 from agent_runtime.infrastructure.storage.artifacts import S3ArtifactStore
 from agent_runtime.settings import RuntimeSettings
-from scripts.platform_artifacts_check import verify_artifacts
 from tests.infrastructure.test_artifacts import client
 
 
 def test_direct_artifact_smoke_checks_replay_conflict_and_download_hash(monkeypatch):
-    monkeypatch.setattr("scripts.platform_artifacts_check.uuid4", lambda: SimpleNamespace(hex="fixed"))
+    monkeypatch.setattr("tools.migrate.platform_artifacts_check.uuid4", lambda: SimpleNamespace(hex="fixed"))
     sdk = client()
     data = b"shared agent artifact integration"
     digest = hashlib.sha256(data).hexdigest()

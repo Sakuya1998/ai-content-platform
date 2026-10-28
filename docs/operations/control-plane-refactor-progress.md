@@ -23,6 +23,7 @@
 - Control 020..022：状态任务并发隔离、工作流目录和文档标题身份修正。
 - 迁移管理员执行跨工作区回填、自动授予应用表/序列权限；每个版本独立事务提交。
 - 历史 Control/Runtime 备份分别恢复到独立数据库，非空来源迁移、hash/count、归档与 RLS 验证。
+- **Governance 模块子包化重构**（2026-10-19）：将 PostgreSQL 适配器按领域拆分为 resources、models、prompts、policies 四个独立子包，主包精简 78%（2,700 → 598 行），保持 API 兼容性。详见 `docs/architecture/governance-refactor-plan.md`。
 
 ## 完成状态
 

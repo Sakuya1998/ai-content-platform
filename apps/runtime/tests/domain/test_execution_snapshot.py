@@ -8,7 +8,7 @@ from pydantic import ValidationError
 
 from agent_runtime.domain.protocol import RuntimeCommand
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def _snapshot_model():
@@ -20,8 +20,8 @@ def _snapshot_model():
 
 def test_execution_snapshot_fixture_matches_command_scope_and_capability_hash():
     model = _snapshot_model()
-    snapshot_data = json.loads((ROOT / "contracts/examples/execution-snapshot.json").read_text())
-    command_data = json.loads((ROOT / "contracts/examples/command.json").read_text())
+    snapshot_data = json.loads((ROOT / "packages/contracts/contracts/examples/execution-snapshot.json").read_text())
+    command_data = json.loads((ROOT / "packages/contracts/contracts/examples/command.json").read_text())
 
     snapshot = model.model_validate(snapshot_data)
     command = RuntimeCommand.model_validate(command_data)
@@ -34,7 +34,7 @@ def test_execution_snapshot_fixture_matches_command_scope_and_capability_hash():
 
 def test_execution_snapshot_rejects_unknown_schema_version():
     model = _snapshot_model()
-    data = json.loads((ROOT / "contracts/examples/execution-snapshot.json").read_text())
+    data = json.loads((ROOT / "packages/contracts/contracts/examples/execution-snapshot.json").read_text())
     data["schema_version"] = "2.0"
 
     with pytest.raises(ValidationError):
@@ -43,7 +43,7 @@ def test_execution_snapshot_rejects_unknown_schema_version():
 
 def test_execution_snapshot_rejects_forged_declared_capability_hash():
     model = _snapshot_model()
-    data = json.loads((ROOT / "contracts/examples/execution-snapshot.json").read_text())
+    data = json.loads((ROOT / "packages/contracts/contracts/examples/execution-snapshot.json").read_text())
     data["snapshot"]["snapshot_hash"] = "d" * 64
     with pytest.raises(ValidationError, match="capability snapshot checksum conflict"):
         model.model_validate(data)

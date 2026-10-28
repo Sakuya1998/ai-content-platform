@@ -37,7 +37,7 @@ services:
     env_file:
       - ../../apps/control/.env.external
       - ../../apps/runtime/.env.external
-    command: ["python", "scripts/platform_migrate.py"]
+    command: ["python", "tools/migrate/platform_migrate.py"]
   control-plane:
     image: ${CONTROL_PLANE_IMAGE:-ai-content-platform-control-plane:local}
     build:

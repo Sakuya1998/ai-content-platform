@@ -2,10 +2,10 @@ import os
 
 import psycopg
 import pytest
+from tools.migrate.platform_seed_catalog import load_prompt_catalog
+from tools.seed.platform_prompt_seed import seed
 
 from agent_runtime.domain.workflow_contracts import WORKFLOWS
-from scripts.platform_prompt_seed import seed
-from scripts.platform_seed_catalog import load_prompt_catalog
 
 
 def test_catalog_covers_all_nodes_with_independent_variable_contracts():

@@ -33,9 +33,12 @@
 - `runtime/012_music_sound_effect_media.sql`：扩展生成媒体持久化类型以支持音乐和音效。
 - `control/017..019`：通用项目和内容回填、来源 hash/count 校验、原始行归档及旧状态表删除。
 - `control/020..022`：状态任务并发限制、不可变工作流目录、文档 ID 与标题身份分离。
+- `control/023`：独立评测策略、全局评测维度和 benchmark 聚合查询字段。
 - `runtime/013..016`：通用工作流状态、检查点、分层记忆回填与校验、来源归档及旧表删除。
 
 Control 011 同时提供版本化 creation policy（Canon、memory、constraints、evaluation）及工作流绑定；默认策略由统一 seed 初始化。
+
+Control 023 的独立评测策略、benchmark 分析 API 和 Runtime 快照兼容说明见 `docs/architecture/evaluation.md`。
 
 基础设施变量模板按服务拆分：`.env.control.example` 给 Go 管理面和 Control PostgreSQL，`.env.runtime.example` 给 Python Runtime、Runtime PostgreSQL、Redis、RocketMQ 和 RustFS。分别复制为 `.env.control`、`.env.runtime` 后填写实际端点和密码；这两个文件已被 Git 忽略，不应提交。
 

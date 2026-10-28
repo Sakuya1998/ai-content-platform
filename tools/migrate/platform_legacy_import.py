@@ -9,17 +9,17 @@ from pathlib import Path
 from uuid import NAMESPACE_URL, uuid5
 
 import psycopg
-from dotenv import dotenv_values
-from psycopg.types.json import Jsonb
-
 from agent_runtime.domain.content import ContentBlock, ContentDocument
 from agent_runtime.domain.protocol import RuntimeCommand
 from agent_runtime.infrastructure.postgres.novel import RECORD_CATEGORIES
 from agent_runtime.workflows.novel.memory.hierarchical import build_hierarchical_memory
-from scripts.platform_control_content import import_brief, import_record
-from scripts.platform_legacy_export import stable_id
-from scripts.platform_legacy_governance import import_governance
-from scripts.platform_legacy_history import import_history
+from dotenv import dotenv_values
+from psycopg.types.json import Jsonb
+
+from tools.migrate.platform_control_content import import_brief, import_record
+from tools.migrate.platform_legacy_export import stable_id
+from tools.migrate.platform_legacy_governance import import_governance
+from tools.migrate.platform_legacy_history import import_history
 
 RECORDS = {
     "chapter_versions": ("chapter", "chapter_versions"),

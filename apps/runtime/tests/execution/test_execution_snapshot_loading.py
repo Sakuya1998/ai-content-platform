@@ -8,7 +8,7 @@ from pathlib import Path
 from agent_runtime.domain.protocol import ExecutionSnapshotReference, RuntimeCommand
 from agent_runtime.settings import RuntimeSettings
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def _loader_module():
@@ -18,7 +18,7 @@ def _loader_module():
 
 
 def _command_and_snapshot():
-    data = json.loads((ROOT / "contracts/examples/execution-snapshot.json").read_text())
+    data = json.loads((ROOT / "packages/contracts/contracts/examples/execution-snapshot.json").read_text())
     body = json.dumps(data, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
     digest = hashlib.sha256(body).hexdigest()
     command = RuntimeCommand(

@@ -4,7 +4,7 @@ from uuid import NAMESPACE_URL, uuid5
 
 from psycopg.types.json import Jsonb
 
-from scripts.platform_legacy_export import stable_id
+from tools.migrate.platform_legacy_export import stable_id
 
 
 def import_brief(connection, workspace, project, version, payload, summary=""):

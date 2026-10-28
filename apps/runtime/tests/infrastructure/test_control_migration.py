@@ -2,6 +2,8 @@
 
 import hashlib
 import os
+import sys
+from pathlib import Path
 from uuid import uuid4
 
 import psycopg
@@ -10,7 +12,11 @@ from psycopg import sql
 from psycopg.conninfo import conninfo_to_dict, make_conninfo
 from psycopg.types.json import Jsonb
 
-from scripts.platform_migrate import apply_database, migrations
+REPO_ROOT = Path(__file__).resolve().parents[4]
+sys.path.insert(0, str(REPO_ROOT))
+sys.path.insert(0, str(REPO_ROOT / "tools" / "migrate"))
+
+from tools.migrate.platform_migrate import apply_database, migrations  # noqa: E402
 
 
 def test_control_backfill_preserves_versions_keys_transfers_and_archive():
@@ -32,13 +38,17 @@ def test_control_backfill_preserves_versions_keys_transfers_and_archive():
         migration_url = make_conninfo(**admin_options)
         selected = tuple(item for item in migrations() if item.component == "control" and item.name < "017")
         apply_database(url, "control", selected)
-        scope, project, document, record = (str(uuid4()) for _ in range(4))
+        scope, project, document, record, legacy_evaluation = (str(uuid4()) for _ in range(5))
         payload = {"id": "chapter-1", "chapter_number": 1, "version_number": 1, "content": "Preserved manuscript"}
         body_hash = hashlib.sha256(b"preserved").hexdigest()
         transfer_body = b"encrypted-or-binary\x00\xff"
         with psycopg.connect(url) as connection:
             connection.execute("INSERT INTO workspaces(id,name) VALUES(%s,'Migration test')", (scope,))
             connection.execute("SELECT set_config('app.workspace_id',%s,true)", (scope,))
+            connection.execute(
+                "INSERT INTO evaluation_benchmark_runs(id,workspace_id,report) VALUES(%s,%s,%s)",
+                (legacy_evaluation, scope, Jsonb({"overall_score": 82.5, "scores": {"length": 80}})),
+            )
             connection.execute(
                 "INSERT INTO projects(id,workspace_id,project_type,name) VALUES(%s,%s,'novel','Book')", (project, scope)
             )
@@ -107,9 +117,42 @@ def test_control_backfill_preserves_versions_keys_transfers_and_archive():
                 None,
                 None,
             )
+            legacy = connection.execute(
+                "SELECT report,job_id,policy_version,overall_score,status FROM evaluation_benchmark_runs WHERE id=%s",
+                (legacy_evaluation,),
+            ).fetchone()
+            assert legacy == (
+                {"overall_score": 82.5, "scores": {"length": 80}},
+                None,
+                None,
+                None,
+                "completed",
+            )
+            fresh_evaluation = str(uuid4())
+            connection.execute(
+                "INSERT INTO evaluation_benchmark_runs"
+                "(id,workspace_id,job_id,policy_version,overall_score,status,report) "
+                "VALUES(%s,%s,%s,'content-quality@1',88.5,'completed',%s)",
+                (
+                    fresh_evaluation,
+                    scope,
+                    fresh_evaluation,
+                    Jsonb({"overall_score": 88.5, "scores": {"length": 90}}),
+                ),
+            )
+            assert connection.execute(
+                "SELECT overall_score,job_id FROM evaluation_benchmark_runs WHERE id=%s",
+                (fresh_evaluation,),
+            ).fetchone() == (88.5, fresh_evaluation)
+            assert connection.execute(
+                "SELECT count(*) FROM pg_indexes WHERE schemaname=current_schema() "
+                "AND indexname IN ('evaluation_benchmarks_job_idx','evaluation_benchmarks_score_idx',"
+                "'evaluation_benchmarks_trends_idx','evaluation_benchmarks_report_gin_idx')"
+            ).fetchone()[0] == 4
             connection.execute("SELECT set_config('app.workspace_id',%s,true)", (str(uuid4()),))
             assert connection.execute("SELECT count(*) FROM project_projections").fetchone()[0] == 0
             assert connection.execute("SELECT count(*) FROM legacy_resource_archive").fetchone()[0] == 0
+            assert connection.execute("SELECT count(*) FROM evaluation_benchmark_runs").fetchone()[0] == 0
     finally:
         with psycopg.connect(admin_url, autocommit=True) as admin:
             admin.execute(sql.SQL("DROP DATABASE {} WITH (FORCE)").format(sql.Identifier(name)))
