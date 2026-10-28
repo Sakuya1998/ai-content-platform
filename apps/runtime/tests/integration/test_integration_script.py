@@ -1,4 +1,4 @@
-from scripts.platform_integration import request_json
+from tools.migrate.platform_integration import request_json
 
 
 def test_integration_script_request_json_uses_json_contract(monkeypatch):
@@ -22,7 +22,7 @@ def test_integration_script_request_json_uses_json_contract(monkeypatch):
         captured["timeout"] = timeout
         return Response()
 
-    monkeypatch.setattr("scripts.platform_integration._opener.open", fake_urlopen)
+    monkeypatch.setattr("tools.migrate.platform_integration._opener.open", fake_urlopen)
     status, payload = request_json("http://runtime/readyz", payload={"probe": True}, method="POST")
 
     assert status == 200
@@ -34,7 +34,7 @@ def test_integration_script_request_json_uses_json_contract(monkeypatch):
 def test_smoke_submits_idempotent_public_tasks_without_runtime_business_http(monkeypatch, capsys):
     import sys
 
-    from scripts import platform_integration
+    from tools.migrate import platform_integration
 
     calls = []
     task_posts = 0

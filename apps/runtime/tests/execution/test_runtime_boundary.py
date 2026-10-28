@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def test_runtime_sources_cannot_import_local_storage_or_retired_management():
@@ -23,7 +23,7 @@ def test_runtime_sources_cannot_import_local_storage_or_retired_management():
         "novel_agent.models.model_settings",
         "novel_agent.models.resolver",
     )
-    sources = list((ROOT / "src" / "agent_runtime").rglob("*.py"))
+    sources = list((ROOT / "apps/runtime/agent_runtime").rglob("*.py"))
     assert sources
     for path in sources:
         for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
@@ -51,7 +51,7 @@ def test_dependencies_without_runtime_scope_fail_before_opening_local_storage(tm
 
 @pytest.mark.parametrize("folder", ["domain", "execution/context.py", "execution/errors.py"])
 def test_core_contracts_do_not_depend_on_services_or_infrastructure(folder):
-    source = ROOT / "src" / "agent_runtime" / folder
+    source = ROOT / "apps/runtime/agent_runtime" / folder
     paths = list(source.rglob("*.py")) if source.is_dir() else [source]
     forbidden = (
         "agent_runtime.infrastructure",
@@ -76,7 +76,16 @@ def test_core_contracts_do_not_depend_on_services_or_infrastructure(folder):
 
 def test_root_cli_exposes_remote_platform_without_old_local_options():
     result = subprocess.run(
-        [sys.executable, str(ROOT / "main.py"), "--help"], cwd=ROOT, capture_output=True, text=True, timeout=15
+        [
+            sys.executable,
+            "-c",
+            "from agent_runtime.entrypoints.cli import main; main()",
+            "--help",
+        ],
+        cwd=ROOT / "apps/runtime",
+        capture_output=True,
+        text=True,
+        timeout=15,
     )
     assert result.returncode == 0, result.stderr
     assert "--platform-url" in result.stdout

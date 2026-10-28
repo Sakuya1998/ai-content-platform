@@ -1,8 +1,13 @@
+import sys
 from pathlib import Path
 
 from psycopg.conninfo import conninfo_to_dict
 
-from scripts.platform_migrate import migration_connection, migrations
+REPO_ROOT = Path(__file__).resolve().parents[4]
+sys.path.insert(0, str(REPO_ROOT))
+sys.path.insert(0, str(REPO_ROOT / "tools" / "migrate"))
+
+from tools.migrate.platform_migrate import migration_connection, migrations  # noqa: E402
 
 
 def test_platform_migrations_are_ordered_and_exist():
@@ -30,6 +35,7 @@ def test_platform_migrations_are_ordered_and_exist():
         ("control", "020_project_workflow_concurrency"),
         ("control", "021_workflow_catalog"),
         ("control", "022_document_title_identity"),
+        ("control", "023_evaluation_management"),
         ("runtime", "001_init"),
         ("runtime", "002_runtime_defaults"),
         ("runtime", "003_artifacts"),
@@ -51,15 +57,27 @@ def test_platform_migrations_are_ordered_and_exist():
     assert all(len(item.checksum) == 64 for item in items)
 
 
+def test_evaluation_management_migration_adds_workspace_scoped_policy_storage():
+    items = [item for item in migrations() if item.component == "control"]
+    assert any(item.name == "023_evaluation_management" for item in items)
+    migration = next(item for item in items if item.name == "023_evaluation_management")
+    migration = migration.path.read_text(encoding="utf-8")
+    assert "ADD COLUMN job_id text" in migration
+    assert "CREATE TABLE evaluation_policies" in migration
+    assert "FORCE ROW LEVEL SECURITY" in migration
+    assert "current_setting('app.workspace_id', true)" in migration
+    assert "evaluation_dimensions" in migration
+
+
 def test_control_migration_is_owned_by_root_migrations():
     item = next(item for item in migrations() if item.name == "002_canonical")
-    assert Path("migrations/control/002_canonical.sql") == item.path.relative_to(Path.cwd())
+    assert Path("infra/migrations/migrations/control/002_canonical.sql") == item.path.relative_to(REPO_ROOT)
     assert not Path("go-control-plane/migrations/control/002_control_plane.sql").exists()
     assert not Path("go-control-plane/migrations").exists()
 
 
 def test_bootstrap_sql_is_at_repository_root():
-    bootstrap = Path("migrations/bootstrap.sql")
+    bootstrap = REPO_ROOT / "infra/migrations/migrations/bootstrap.sql"
     assert bootstrap.is_file()
     text = bootstrap.read_text(encoding="utf-8")
     assert "CREATE ROLE" in text

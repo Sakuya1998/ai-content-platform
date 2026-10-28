@@ -4,6 +4,8 @@ import os
 import subprocess
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[4]
+
 
 def test_init_retries_admin_success_exit_without_created_resource(tmp_path):
     home = tmp_path / "rocketmq"
@@ -22,7 +24,7 @@ def test_init_retries_admin_success_exit_without_created_resource(tmp_path):
         "esac\n"
     )
     result = subprocess.run(
-        ["sh", "deploy/rocketmq/init.sh"],
+        ["sh", str(ROOT / "infra/rocketmq/init.sh")],
         capture_output=True,
         text=True,
         timeout=15,
@@ -36,7 +38,7 @@ def test_init_retries_admin_success_exit_without_created_resource(tmp_path):
 def test_deployment_manifest_contains_independent_runtime_messaging_roles():
     import yaml
 
-    documents = list(yaml.safe_load_all(Path("deploy/k8s/messaging.yaml").read_text()))
+    documents = list(yaml.safe_load_all((ROOT / "infra/k8s/messaging.yaml").read_text()))
     roles = {
         doc["metadata"]["name"]: doc["spec"]["template"]["spec"]["containers"][0]["command"][-1] for doc in documents
     }

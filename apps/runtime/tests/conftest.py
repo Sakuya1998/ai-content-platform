@@ -1,14 +1,48 @@
 """pytest 共享夹具:确保项目根在 sys.path,并提供假 LLM。"""
 
+import os
 import sys
 from pathlib import Path
+from tempfile import gettempdir
 
 import pytest
 from langchain_core.language_models.fake_chat_models import FakeListChatModel
+from langchain_core.messages import AIMessage
+from langchain_core.outputs import ChatGeneration, ChatResult
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+
+_original_expanduser = None
+
+
+def pytest_configure(config):
+    global _original_expanduser
+    _original_expanduser = os.path.expanduser
+
+    def expanduser(path):
+        if path == "~/logs/rocketmq_python/":
+            return str(Path(gettempdir()) / "ai-content-platform-tests" / "rocketmq_python") + "/"
+        return _original_expanduser(path)
+
+    os.path.expanduser = expanduser
+
+    async def generate_fake_chat_response(self, messages, stop=None, run_manager=None, **kwargs):
+        response = self._call(
+            messages,
+            stop=stop,
+            run_manager=run_manager.get_sync() if run_manager else None,
+            **kwargs,
+        )
+        return ChatResult(generations=[ChatGeneration(message=AIMessage(content=response))])
+
+    FakeListChatModel._agenerate = generate_fake_chat_response
+
+
+def pytest_unconfigure(config):
+    if _original_expanduser is not None:
+        os.path.expanduser = _original_expanduser
 
 
 @pytest.fixture(autouse=True)

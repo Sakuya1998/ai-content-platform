@@ -112,6 +112,48 @@ def control_openapi():
                 "sequence": {"type": "integer", "minimum": 0},
             },
         },
+        "EvaluationRule": {
+            "type": "object",
+            "required": ["key", "dimension", "weight"],
+            "properties": {
+                "key": {"type": "string", "minLength": 1, "maxLength": 120},
+                "dimension": {"type": "string", "minLength": 1, "maxLength": 80},
+                "weight": {"type": "number", "exclusiveMinimum": 0},
+                "critical": {"type": "boolean"},
+                "parameters": {"type": "object", "maxProperties": 64, "additionalProperties": True},
+            },
+        },
+        "EvaluationPolicy": {
+            "type": "object",
+            "required": ["policy_id", "version", "engine_version", "gate_threshold", "critical_threshold", "rules"],
+            "properties": {
+                "policy_id": {"type": "string", "minLength": 1},
+                "version": {"type": "integer", "minimum": 1},
+                "engine_version": {"type": "string", "minLength": 1},
+                "gate_threshold": {"type": "number", "minimum": 0, "maximum": 100},
+                "critical_threshold": {"type": "number", "minimum": 0, "maximum": 100},
+                "rules": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 32,
+                    "items": {"$ref": "#/components/schemas/EvaluationRule"},
+                },
+            },
+        },
+        "BenchmarkComparisonRequest": {
+            "type": "object",
+            "required": ["current_id"],
+            "properties": {
+                "current_id": {"type": "string", "minLength": 1},
+                "threshold": {"type": "number", "minimum": 0, "maximum": 100},
+            },
+        },
+        "BenchmarkRequest": {
+            "type": "object",
+            "required": ["project_id"],
+            "properties": {"project_id": uuid_schema},
+            "additionalProperties": True,
+        },
     }
     paths = {}
 
@@ -124,7 +166,7 @@ def control_openapi():
         for method in methods.split():
             operation = {
                 "operationId": method + re.sub(r"[^a-zA-Z0-9]", "_", path),
-                "parameters": parameters,
+                "parameters": list(parameters),
                 "responses": {
                     status if method in {"post", "put"} else "200": {"description": "Success"},
                     "401": {"description": "Authentication required"},
@@ -139,6 +181,9 @@ def control_openapi():
                     "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + schema}}},
                 }
             target[method] = operation
+
+    def add_query_parameters(path, method, parameters):
+        paths["/api/v2" + path][method]["parameters"].extend(parameters)
 
     add("/projects", "get post", "ProjectRequest", "201")
     add("/projects/{project_id}", "get put delete", "ProjectUpdate")
@@ -195,6 +240,43 @@ def control_openapi():
     add("/workspaces/{workspace_id}/workflows/{workflow_id}", "get")
     add("/workspaces/{workspace_id}/workflows/{workflow_id}/publish", "post")
     add("/workspaces/{workspace_id}/workflows/{workflow_id}/disable", "post")
+    add("/evaluations/benchmarks", "get post", "BenchmarkRequest", "202")
+    add_query_parameters(
+        "/evaluations/benchmarks",
+        "get",
+        [
+            {"name": "job_id", "in": "query", "schema": {"type": "string"}},
+            {"name": "status", "in": "query", "schema": {"type": "string", "enum": ["completed", "passed", "failed"]}},
+        ],
+    )
+    add("/evaluations/benchmarks/{benchmark_id}", "get")
+    add("/evaluations/benchmarks/{baseline_id}/compare", "post", "BenchmarkComparisonRequest")
+    add("/evaluations/stats", "get")
+    add("/evaluations/trends", "get")
+    add("/evaluations/issues", "get")
+    add("/evaluations/dimensions", "get")
+    add("/evaluations/policies", "get post", "EvaluationPolicy", "201")
+    add("/evaluations/policies/{policy_id}/v/{version}", "get")
+    add("/evaluations/policies/{policy_id}/v/{version}/publish", "post")
+    add("/evaluations/policies/{policy_id}/v/{version}/archive", "post")
+    for path, parameters in {
+        "/evaluations/stats": [{"name": "since", "in": "query", "schema": {"type": "string", "format": "date-time"}}],
+        "/evaluations/trends": [
+            {"name": "dimension", "in": "query", "required": True, "schema": {"type": "string"}},
+            {"name": "limit", "in": "query", "schema": {"type": "integer", "minimum": 1, "maximum": 500}},
+        ],
+        "/evaluations/issues": [
+            {"name": "limit", "in": "query", "schema": {"type": "integer", "minimum": 1, "maximum": 100}}
+        ],
+        "/evaluations/dimensions": [
+            {"name": "category", "in": "query", "schema": {"type": "string", "enum": ["structure", "content", "style"]}}
+        ],
+        "/evaluations/policies": [
+            {"name": "policy_id", "in": "query", "schema": {"type": "string"}},
+            {"name": "status", "in": "query", "schema": {"type": "string", "enum": ["draft", "published", "archived"]}},
+        ],
+    }.items():
+        add_query_parameters(path, "get", parameters)
     return {
         "openapi": "3.1.0",
         "info": {"title": "Agent Control API", "version": "2.0.0"},
@@ -208,7 +290,7 @@ def control_openapi():
 
 
 def main():
-    destination = Path(__file__).resolve().parents[1] / "openapi/control-v2.json"
+    destination = Path(__file__).resolve().parents[2] / "docs/api/openapi/control-v2.json"
     destination.parent.mkdir(exist_ok=True)
     destination.write_text(json.dumps(control_openapi(), indent=2) + "\n")
 

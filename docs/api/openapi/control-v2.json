@@ -2632,6 +2632,490 @@
           }
         }
       }
+    },
+    "/api/v2/evaluations/benchmarks": {
+      "get": {
+        "operationId": "get_evaluations_benchmarks",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "completed",
+                "passed",
+                "failed"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_evaluations_benchmarks",
+        "parameters": [],
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BenchmarkRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/evaluations/benchmarks/{benchmark_id}": {
+      "get": {
+        "operationId": "get_evaluations_benchmarks__benchmark_id_",
+        "parameters": [
+          {
+            "name": "benchmark_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/evaluations/benchmarks/{baseline_id}/compare": {
+      "post": {
+        "operationId": "post_evaluations_benchmarks__baseline_id__compare",
+        "parameters": [
+          {
+            "name": "baseline_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BenchmarkComparisonRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/evaluations/stats": {
+      "get": {
+        "operationId": "get_evaluations_stats",
+        "parameters": [
+          {
+            "name": "since",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/evaluations/trends": {
+      "get": {
+        "operationId": "get_evaluations_trends",
+        "parameters": [
+          {
+            "name": "dimension",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/evaluations/issues": {
+      "get": {
+        "operationId": "get_evaluations_issues",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/evaluations/dimensions": {
+      "get": {
+        "operationId": "get_evaluations_dimensions",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "structure",
+                "content",
+                "style"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/evaluations/policies": {
+      "get": {
+        "operationId": "get_evaluations_policies",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "draft",
+                "published",
+                "archived"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_evaluations_policies",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationPolicy"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/evaluations/policies/{policy_id}/v/{version}": {
+      "get": {
+        "operationId": "get_evaluations_policies__policy_id__v__version_",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/evaluations/policies/{policy_id}/v/{version}/publish": {
+      "post": {
+        "operationId": "post_evaluations_policies__policy_id__v__version__publish",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/api/v2/evaluations/policies/{policy_id}/v/{version}/archive": {
+      "post": {
+        "operationId": "post_evaluations_policies__policy_id__v__version__archive",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Workspace access denied"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "409": {
+            "description": "Resource version or idempotency conflict"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2895,6 +3379,111 @@
             "minimum": 0
           }
         }
+      },
+      "EvaluationRule": {
+        "type": "object",
+        "required": [
+          "key",
+          "dimension",
+          "weight"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "dimension": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "weight": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "critical": {
+            "type": "boolean"
+          },
+          "parameters": {
+            "type": "object",
+            "maxProperties": 64,
+            "additionalProperties": true
+          }
+        }
+      },
+      "EvaluationPolicy": {
+        "type": "object",
+        "required": [
+          "policy_id",
+          "version",
+          "engine_version",
+          "gate_threshold",
+          "critical_threshold",
+          "rules"
+        ],
+        "properties": {
+          "policy_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "engine_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "gate_threshold": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "critical_threshold": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "rules": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "$ref": "#/components/schemas/EvaluationRule"
+            }
+          }
+        }
+      },
+      "BenchmarkComparisonRequest": {
+        "type": "object",
+        "required": [
+          "current_id"
+        ],
+        "properties": {
+          "current_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "threshold": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      },
+      "BenchmarkRequest": {
+        "type": "object",
+        "required": [
+          "project_id"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": true
       }
     },
     "securitySchemes": {

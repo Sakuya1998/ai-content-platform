@@ -9,11 +9,11 @@ import psycopg
 import pytest
 from psycopg import sql
 from psycopg.conninfo import conninfo_to_dict, make_conninfo
+from tools.migrate.platform_migrate import apply_database, migrations
 
 from agent_runtime.execution.context import ExecutionContext
 from agent_runtime.infrastructure.postgres.jobs import _json
 from agent_runtime.infrastructure.postgres.messaging import RuntimeMQStore
-from scripts.platform_migrate import apply_database, migrations
 from tests.infrastructure.test_mq_store import command
 
 

@@ -6,7 +6,7 @@ from pathlib import Path
 from agent_runtime.domain.workflow_contracts import WORKFLOWS
 from agent_runtime.prompts.renderer import PromptVersion
 
-SEED_ROOT = Path(__file__).resolve().parents[1] / "migrations" / "seeds"
+SEED_ROOT = Path(__file__).resolve().parents[2] / "infra" / "migrations" / "migrations" / "seeds"
 
 
 def load_prompt_catalog():

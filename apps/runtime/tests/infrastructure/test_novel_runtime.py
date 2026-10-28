@@ -355,7 +355,8 @@ async def test_synchronous_memory_embedding_does_not_block_worker_heartbeat(monk
 def test_novel_migration_enforces_rls_and_persists_pending_writes():
     from pathlib import Path
 
-    sql = Path("migrations/runtime/006_novel_workflows.sql").read_text()
+    migration = Path(__file__).resolve().parents[4] / "infra/migrations/migrations/runtime/006_novel_workflows.sql"
+    sql = migration.read_text()
     for table in ("novel_projects", "novel_records", "novel_checkpoints", "novel_checkpoint_writes", "novel_memories"):
         assert f"ALTER TABLE {table} FORCE ROW LEVEL SECURITY" in sql
     assert "vector(1536)" in sql

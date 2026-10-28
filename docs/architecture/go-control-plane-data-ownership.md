@@ -12,7 +12,8 @@
 | `documents`、`document_versions`、`content_blocks`、`derivations` | content | 初始文档、任务版本号、Runtime 生成版本及 derivations 都通过 content Postgres 事务端口执行 |
 | `workflow_templates` | workflow | Workflow 目录 API 和冻结版本读取 |
 | 模型、Prompt、能力资源、Skills、Tools、MCP 与创作策略目录 | governance | 所有目录按不可变版本治理，审计走 identity writer |
-| `evaluation_benchmark_runs` | evaluation | execution 在成功事件投影事务中调用 evaluation writer，HTTP 查询走 evaluation service |
+| `evaluation_benchmark_runs`、`evaluation_policies` | evaluation | execution 在成功事件投影事务中调用 benchmark writer；策略版本通过 workspace RLS 管理并经 identity audit writer 审计 |
+| `evaluation_dimensions` | evaluation | 全局共享的维度注册表；内置维度由 Migration 023 初始化，自定义维度由 evaluation repository 注册 |
 | Usage、trace、memory 与 knowledge pack 投影 | execution 写 `project_records` | knowledge 读取知识包/绑定；observability 读取 usage、trace 与运行指标，不写该表 |
 | `production_runs`、`production_children` | production | 生产进度、暂停恢复和恢复 Worker；子任务 Job/Outbox 通过 execution 命令端口写入同一事务 |
 | `project_transfers` | project/transfer | 项目备份、导入、导出和任务恢复 |
@@ -32,7 +33,7 @@
 | 事件 | 写入责任 | 面向 API 的读模型 |
 |---|---|---|
 | Go 任务命令 | execution `command_outbox` | `jobs` 状态和 SSE 事件 |
-| Runtime Job/Content/Project 事件 | execution Inbox 与 projection | Job、project state、Content 版本和 `project_records` |
+| Runtime Job/Content/Project 事件 | execution Inbox 与 projection | Job、project state、Content 版本、`project_records` 和 Evaluation benchmark |
 | `project.usage.recorded`、`project.trace.recorded` | execution `project_records` | observability 汇总 token/cost 并查询 traces |
 | knowledge 操作完成 | execution `project_records` | knowledge packs 和 project bindings |
 | benchmark 操作完成 | evaluation `evaluation_benchmark_runs` writer | evaluation benchmark API |

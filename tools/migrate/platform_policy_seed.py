@@ -6,14 +6,13 @@ from contextlib import contextmanager
 from uuid import NAMESPACE_URL, uuid5
 
 import psycopg
+from agent_runtime.domain.policies import CreationPolicy, policy_hash
 from dotenv import dotenv_values
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
-from agent_runtime.domain.policies import CreationPolicy, policy_hash
-
 try:
-    from scripts.platform_seed_catalog import SEED_ROOT
+    from tools.migrate.platform_seed_catalog import SEED_ROOT
 except ModuleNotFoundError:
     from platform_seed_catalog import SEED_ROOT
 
@@ -124,7 +123,7 @@ def main():
         parser.error("Control database URL required")
     try:
         print(json.dumps(seed(url)))
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 - keep the seed CLI's error response generic.
         print("policy seed failed: " + type(exc).__name__)
         return 1
     return 0

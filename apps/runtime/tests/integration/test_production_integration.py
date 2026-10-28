@@ -278,7 +278,7 @@ def test_storyboard_timeline_compose_freezes_inputs_and_publishes_real_video():
                             worker,
                             "python",
                             "-m",
-                            "scripts.platform_task_once",
+                            "tools.migrate.platform_task_once",
                             "--workspace-id",
                             workspace,
                             "--job-id",

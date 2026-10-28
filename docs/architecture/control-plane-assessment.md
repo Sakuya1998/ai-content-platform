@@ -205,7 +205,7 @@ Go 文件数:      150 个
   - workflow:      142 行 ✓
   - task:          158 行 ✓
   - project:       114 行 ✓
-  - evaluation:     23 行 ⚠️  未完全实现
+  - evaluation:     已支持独立策略版本、benchmark 对比和 workspace 统计
   - knowledge:      16 行 ⚠️  未完全实现
   - observability:  30 行 ⚠️  未完全实现
 ```
@@ -216,7 +216,7 @@ Go 文件数:      150 个
    - 建议拆分为 4 个子模块
 
 2. **部分模块未完全实现**
-   - evaluation（评测）- 23 行，只有接口
+   - evaluation（评测）- 已由独立实现补齐，详见 [Evaluation 模块](evaluation.md)
    - knowledge（知识包）- 16 行，只有接口
    - observability（可观测）- 30 行，只有接口
 
@@ -336,43 +336,9 @@ internal/modules/governance/
 
 #### 1.2 实现 evaluation 模块
 
-**当前状态**：只有 23 行接口定义
+**当前状态（2026-10-20）**：已实现 Evaluation Service、PostgreSQL policy/benchmark/dimension 仓储、Migration 023、HTTP API 和 OpenAPI 契约。策略支持 draft、published、archived 生命周期；benchmark 支持历史对比、维度趋势、工作区统计和问题频次查询。Runtime 仍使用 Execution snapshot 中冻结的 CreationPolicy evaluation 配置。
 
-**需要实现**：
-```go
-type EvaluationService struct {
-    repo Repository
-}
-
-// 评测维度
-type EvaluationDimension string
-const (
-    Coherence    EvaluationDimension = "coherence"     // 连贯性
-    Creativity   EvaluationDimension = "creativity"    // 创意性
-    Consistency  EvaluationDimension = "consistency"   // 一致性
-    Quality      EvaluationDimension = "quality"       // 整体质量
-)
-
-// 评测结果
-type EvaluationResult struct {
-    JobID       string
-    Dimension   EvaluationDimension
-    Score       float64  // 0-100
-    Feedback    string
-    EvaluatedAt time.Time
-}
-
-// 基准测试
-type Benchmark struct {
-    ID          string
-    Name        string
-    Version     int
-    TestCases   []BenchmarkCase
-    Baseline    *EvaluationResult
-}
-```
-
-**优先级**：高 🔴
+接口、数据归属和调用示例见 [Evaluation 模块](evaluation.md)。
 
 
 #### 1.3 实现 knowledge 模块
@@ -741,7 +707,7 @@ if featureFlags.IsEnabled("new-video-generation", workspaceID) {
 
 #### 短期（1 个月）
 1. ⭐ **拆分 governance 模块**（减少复杂度）
-2. ⭐ **实现 evaluation 模块**（补全核心能力）
+2. ✅ **实现 evaluation 模块**（已完成；详见 [Evaluation 模块](evaluation.md)）
 3. ⭐ **增强 observability**（提升可观测性）
 4. 增加集成测试（提升可靠性）
 
