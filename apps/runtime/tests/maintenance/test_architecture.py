@@ -1,4 +1,4 @@
-from scripts.check_architecture import violations
+from tools.dev.check_architecture import violations
 
 
 def test_architecture_rejects_transport_dependencies_and_old_authority(tmp_path):

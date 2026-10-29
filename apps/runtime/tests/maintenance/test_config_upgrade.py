@@ -1,7 +1,6 @@
 import pytest
 from dotenv import dotenv_values
-
-from scripts.platform_config_upgrade import upgrade
+from tools.migrate.platform_config_upgrade import upgrade
 
 
 def test_upgrade_preserves_credentials_and_replaces_only_platform_settings(tmp_path):

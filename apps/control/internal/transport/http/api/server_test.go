@@ -78,7 +78,9 @@ func TestGenericExactRoutesReachTheirResourceHandlers(t *testing.T) {
 	handler := func(owner string) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.Header().Set("X-Owner", owner); w.WriteHeader(200) })
 	}
-	server := NewServerWithDependencies(ServerDependencies{Resources: handler("resources"), Production: handler("production"), Workflows: handler("workflow")})
+	server := NewServerWithDependencies(ServerDependencies{
+		Resources: handler("resources"), Operations: handler("operations"), Production: handler("production"), Workflows: handler("workflow"),
+	})
 	for _, tc := range []struct{ path, owner string }{
 		{"/api/v2/projects/import", "resources"},
 		{"/api/v2/documents/document-id/versions", "resources"},
@@ -87,11 +89,16 @@ func TestGenericExactRoutesReachTheirResourceHandlers(t *testing.T) {
 		{"/api/v2/workspaces/workspace-id/workflows", "workflow"},
 		{"/api/v2/workspaces/workspace-id/workflows/workflow-id/publish", "workflow"},
 		{"/api/v2/workspaces/workspace-id/workflows/workflow-id/disable", "workflow"},
+		{"/api/v2/evaluations/benchmarks", "operations"},
+		{"/api/v2/evaluations/policies", "operations"},
+		{"/api/v2/evaluations/stats", "operations"},
+		{"/api/v2/evaluations/trends", "operations"},
+		{"/api/v2/evaluations/dimensions", "operations"},
 	} {
 		response := httptest.NewRecorder()
 		server.ServeHTTP(response, httptest.NewRequest("POST", tc.path, nil))
 		if response.Header().Get("X-Owner") != tc.owner {
-			t.Fatalf("%s owner=%s want%s", tc.path, response.Header().Get("X-Owner"), tc.owner)
+			t.Fatalf("%s owner=%s want%s status=%d body=%s", tc.path, response.Header().Get("X-Owner"), tc.owner, response.Code, response.Body.String())
 		}
 	}
 }

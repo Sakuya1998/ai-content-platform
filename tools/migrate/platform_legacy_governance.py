@@ -8,7 +8,7 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from psycopg.types.json import Jsonb
 
-from scripts.platform_legacy_export import stable_id
+from tools.migrate.platform_legacy_export import stable_id
 
 
 def import_governance(connection, tables, decode, digest, report, *, legacy_key=None, encryption_key=None):

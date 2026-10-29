@@ -18,11 +18,11 @@ from psycopg import sql
 from psycopg.conninfo import conninfo_to_dict, make_conninfo
 
 try:
-    from scripts.platform_bootstrap import bootstrap
+    from tools.migrate.platform_bootstrap import bootstrap
 except ModuleNotFoundError:
     from platform_bootstrap import bootstrap
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2] / "infra" / "migrations"
 LEDGER_DDL = """
 CREATE TABLE IF NOT EXISTS platform_migrations (
     component text NOT NULL,
@@ -79,6 +79,7 @@ def migrations() -> tuple[Migration, ...]:
         Migration(
             "control", "022_document_title_identity", ROOT / "migrations/control/022_document_title_identity.sql"
         ),
+        Migration("control", "023_evaluation_management", ROOT / "migrations/control/023_evaluation_management.sql"),
         Migration("runtime", "001_init", ROOT / "migrations/runtime/001_init.sql"),
         Migration("runtime", "002_runtime_defaults", ROOT / "migrations/runtime/002_runtime_defaults.sql"),
         Migration("runtime", "003_artifacts", ROOT / "migrations/runtime/003_artifacts.sql"),
@@ -217,13 +218,13 @@ def main() -> int:
     for line in apply_database(runtime_url, "runtime", runtime_migrations, application_role=runtime_role):
         print(line)
     try:
-        from scripts.platform_prompt_seed import seed
+        from tools.seed.platform_prompt_seed import seed
     except ModuleNotFoundError:
         from platform_prompt_seed import seed
 
     print("prompt catalog initialized: " + str(seed(args.control_url)))
     try:
-        from scripts.platform_policy_seed import seed as seed_policies
+        from tools.migrate.platform_policy_seed import seed as seed_policies
     except ModuleNotFoundError:
         from platform_policy_seed import seed as seed_policies
 

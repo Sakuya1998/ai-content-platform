@@ -72,4 +72,4 @@ known-first-party = ["agent_runtime"]
 asyncio_mode = "auto"
 testpaths = ["tests"]
 addopts = "-q"
-pythonpath = ["."]
+pythonpath = [".", "../.."]

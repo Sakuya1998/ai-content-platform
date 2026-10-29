@@ -7,12 +7,50 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/google/uuid"
+	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/evaluation"
 	"github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/identity"
+	"github.com/google/uuid"
 )
 
 func (a *OperationsAPI) benchmark(w http.ResponseWriter, r *http.Request, p identity.Principal) {
 	id := strings.TrimPrefix(strings.TrimPrefix(canonicalPublicPath(r.URL.Path), "/api/evaluations/benchmarks"), "/")
+	if r.Method == http.MethodPost && strings.HasSuffix(id, "/compare") {
+		if a.evaluations == nil {
+			operationError(w, errors.New("store unavailable"))
+			return
+		}
+		baselineID := strings.TrimSuffix(id, "/compare")
+		if baselineID == "" || strings.Contains(baselineID, "/") {
+			http.NotFound(w, r)
+			return
+		}
+		if _, err := uuid.Parse(baselineID); err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "benchmark id must be a UUID"})
+			return
+		}
+		var request struct {
+			CurrentID string   `json:"current_id"`
+			Threshold *float64 `json:"threshold"`
+		}
+		if !decodeJSON(w, r, &request) {
+			return
+		}
+		threshold := 3.0
+		if request.Threshold != nil {
+			threshold = *request.Threshold
+		}
+		if _, err := uuid.Parse(request.CurrentID); err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "current_id must be a UUID"})
+			return
+		}
+		comparison, err := a.evaluations.CompareBenchmarks(r.Context(), p.WorkspaceID, baselineID, request.CurrentID, threshold)
+		if err != nil {
+			operationError(w, err)
+			return
+		}
+		writeJSON(w, http.StatusOK, comparison)
+		return
+	}
 	if r.Method == http.MethodPost && id == "" {
 		args := map[string]any{}
 		if !readOperationArguments(w, r, &args) {
@@ -43,7 +81,9 @@ func (a *OperationsAPI) benchmark(w http.ResponseWriter, r *http.Request, p iden
 		writeJSON(w, 200, data)
 		return
 	}
-	items, err := a.evaluations.Benchmarks(r.Context(), p.WorkspaceID)
+	items, err := a.evaluations.ListBenchmarks(r.Context(), p.WorkspaceID, evaluation.BenchmarkFilters{
+		JobID: r.URL.Query().Get("job_id"), Status: r.URL.Query().Get("status"),
+	})
 	if err != nil {
 		operationError(w, err)
 		return

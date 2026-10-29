@@ -11,9 +11,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/go-chi/chi/v5"
 	projectmodule "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project"
 	projectmemory "github.com/Sakuya1998/ai-content-platform/apps/control/internal/modules/project/memory"
+	"github.com/go-chi/chi/v5"
 )
 
 var ErrNotFound = projectmodule.ErrNotFound
@@ -105,7 +105,7 @@ func (s *Server) routes() http.Handler {
 				}
 			}
 			if s.resources != nil {
-				for _, path := range []string{"/projects", "/jobs", "/documents", "/content", "/transfers", "/evaluations"} {
+				for _, path := range []string{"/projects", "/jobs", "/documents", "/content", "/transfers"} {
 					attach(path, s.resources)
 				}
 			} else {
@@ -129,7 +129,7 @@ func (s *Server) routes() http.Handler {
 			}
 			attach("/workspaces/{workspace}/workflows", s.workflows)
 			if s.operations != nil {
-				for _, path := range []string{"/knowledge-packs", "/evaluations/benchmarks", "/monitoring/summary", "/operations"} {
+				for _, path := range []string{"/knowledge-packs", "/evaluations", "/monitoring/summary", "/operations"} {
 					attach(path, s.operations)
 				}
 				for _, path := range []string{"knowledge-packs", "usage", "traces"} {

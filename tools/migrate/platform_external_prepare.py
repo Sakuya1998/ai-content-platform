@@ -3,11 +3,15 @@
 import argparse
 import os
 
-from dotenv import dotenv_values
-
 from agent_runtime.infrastructure.storage.artifacts import S3ArtifactStore
 from agent_runtime.settings import RuntimeSettings
-from scripts.platform_migrate import apply_database, migration_connection, migrations
+from dotenv import dotenv_values
+
+from tools.migrate.platform_migrate import (
+    apply_database,
+    migration_connection,
+    migrations,
+)
 
 
 def main():
@@ -31,10 +35,10 @@ def main():
                 for result in apply_database(migration_url, component, selected, application_role=role):
                     print(result)
                 if component == "control":
-                    from scripts.platform_prompt_seed import seed
+                    from tools.seed.platform_prompt_seed import seed
 
                     print("prompt catalog initialized: " + str(seed(url)))
-                    from scripts.platform_policy_seed import seed as seed_policies
+                    from tools.migrate.platform_policy_seed import seed as seed_policies
 
                     print("creation policies initialized: " + str(seed_policies(url)))
             else:
@@ -43,7 +47,7 @@ def main():
                 with psycopg.connect(url, connect_timeout=5) as connection:
                     connection.execute("SELECT 1")
                 print(component + " database reachable")
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001 - report preparation failures without leaking details.
             print(component + " database preparation failed: " + type(exc).__name__)
             failed = True
     try:
@@ -56,7 +60,7 @@ def main():
         if not artifacts.ready():
             raise RuntimeError("artifact bucket not ready")
         print("artifact bucket ready")
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 - report artifact failures without leaking details.
         print("artifact preparation failed: " + type(exc).__name__)
         failed = True
     if not runtime.rocketmq_endpoint:

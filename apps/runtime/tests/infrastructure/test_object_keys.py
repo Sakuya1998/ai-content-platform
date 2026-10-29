@@ -5,7 +5,9 @@ import pytest
 
 from agent_runtime.infrastructure.storage.keys import object_key
 
-EXAMPLES = json.loads((Path(__file__).resolve().parents[2] / "contracts/object-keys.examples.json").read_text())
+EXAMPLES = json.loads(
+    (Path(__file__).resolve().parents[4] / "packages/contracts/contracts/object-keys.examples.json").read_text()
+)
 
 
 @pytest.mark.parametrize("example", EXAMPLES)

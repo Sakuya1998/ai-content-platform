@@ -1,4 +1,4 @@
-from scripts.platform_bootstrap import database_url_for, ensure_role
+from tools.migrate.platform_bootstrap import database_url_for, ensure_role
 
 
 class Cursor:

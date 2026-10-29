@@ -124,16 +124,16 @@ func New(ctx context.Context, cfg config.Config, logger *slog.Logger) (*Applicat
 		}
 		settings := executionpostgres.RepositorySettings{
 			ContentArtifacts: reader, ResourceResolver: executionResources.Resolve,
-			SnapshotFreezer:        freezeSnapshot,
-			Projector:              executionpostgres.NewEventProjector(reader, 0, contentpostgres.PersistContentRecord),
-			FrozenModelProfile:     governancepostgres.FrozenModelProfile,
-			BenchmarkWriter:        evaluationpostgres.RecordBenchmark,
-			BenchmarkReader:        evaluationpostgres.ReadBenchmarkWithin,
+			SnapshotFreezer:         freezeSnapshot,
+			Projector:               executionpostgres.NewEventProjector(reader, 0, contentpostgres.PersistContentRecord),
+			FrozenModelProfile:      governancepostgres.FrozenModelProfile,
+			BenchmarkWriter:         evaluationpostgres.RecordBenchmark,
+			BenchmarkReader:         evaluationpostgres.ReadBenchmarkWithin,
 			BenchmarkReportResolver: evaluationpostgres.ResolveBenchmarkReport,
-			PrepareContentDocument: contentpostgres.PrepareGeneratedDocument,
-			CommitContentVersion:   contentpostgres.CommitGeneratedVersion,
-			ReadContentVersion:     contentpostgres.ReadVersionWithin,
-			VersionIDBySourceJob:   contentpostgres.VersionIDBySourceJob,
+			PrepareContentDocument:  contentpostgres.PrepareGeneratedDocument,
+			CommitContentVersion:    contentpostgres.CommitGeneratedVersion,
+			ReadContentVersion:      contentpostgres.ReadVersionWithin,
+			VersionIDBySourceJob:    contentpostgres.VersionIDBySourceJob,
 		}
 		if artifacts != nil {
 			settings.SnapshotStore = artifacts
@@ -155,7 +155,7 @@ func New(ctx context.Context, cfg config.Config, logger *slog.Logger) (*Applicat
 		dependencies.Production = productionhttp.NewHandler(production.Service{Repository: productionRepository})
 		dependencies.Operations = operations.NewOperationsAPI(
 			knowledge.NewService(knowledgepostgres.NewRepository(pool)),
-			evaluation.NewService(evaluationpostgres.NewRepository(pool)),
+			evaluation.NewService(evaluationpostgres.NewRepository(pool, identitypostgres.RecordPrincipalAudit)),
 			observability.NewService(observabilitypostgres.NewRepository(pool)),
 			messages,
 			cfg.Security.InternalToken,

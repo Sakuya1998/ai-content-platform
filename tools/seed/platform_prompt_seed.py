@@ -7,15 +7,14 @@ from contextlib import contextmanager
 from uuid import NAMESPACE_URL, uuid5
 
 import psycopg
+from agent_runtime.domain.workflow_contracts import WORKFLOWS
+from agent_runtime.prompts.renderer import PromptVersion
 from dotenv import dotenv_values
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
-from agent_runtime.domain.workflow_contracts import WORKFLOWS
-from agent_runtime.prompts.renderer import PromptVersion
-
 try:
-    from scripts.platform_seed_catalog import load_prompt_catalog
+    from tools.migrate.platform_seed_catalog import load_prompt_catalog
 except ModuleNotFoundError:
     from platform_seed_catalog import load_prompt_catalog
 
@@ -185,7 +184,7 @@ def main():
         parser.error("Control database URL is required")
     try:
         print(json.dumps(seed(url)))
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 - keep the seed CLI's error response generic.
         print("prompt seed failed: " + type(exc).__name__)
         return 1
     return 0

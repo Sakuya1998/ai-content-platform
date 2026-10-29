@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from pydantic import ValidationError
 
@@ -7,7 +9,6 @@ from agent_runtime.domain.protocol import RuntimeCommand, RuntimeEvent
 
 
 def test_shared_examples_match_the_actual_runtime_models():
-    from pathlib import Path
 
     import jsonschema
 
@@ -18,7 +19,7 @@ def test_shared_examples_match_the_actual_runtime_models():
     ]:
         import json
 
-        root = Path("contracts")
+        root = Path(__file__).resolve().parents[4] / "packages" / "contracts" / "contracts"
         value = json.loads((root / "examples" / f"{name}.json").read_text())
         instance = model.model_validate(value)
         schema = json.loads((root / f"{name}.schema.json").read_text())

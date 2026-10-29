@@ -1,6 +1,7 @@
+from tools.migrate.platform_policy_seed import load_policy_catalog
+from tools.migrate.platform_seed_catalog import load_prompt_catalog
+
 from agent_runtime.prompts.renderer import PromptVersion, render_prompt
-from scripts.platform_policy_seed import load_policy_catalog
-from scripts.platform_seed_catalog import load_prompt_catalog
 
 
 def test_generated_media_planning_are_database_contracts():

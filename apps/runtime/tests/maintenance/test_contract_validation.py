@@ -2,12 +2,12 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[4]
 
 
 def test_contract_validator_checks_existing_examples_without_requiring_every_schema_to_have_one():
     result = subprocess.run(
-        [sys.executable, "contracts/validate_examples.py"],
+        [sys.executable, "packages/contracts/contracts/validate_examples.py"],
         cwd=ROOT,
         capture_output=True,
         text=True,
